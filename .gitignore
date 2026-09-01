@@ -25,6 +25,7 @@
 *.pem
 .cursor/
 tmp-opt.*
+deploy-payload.json
 
 # debug
 npm-debug.log*
