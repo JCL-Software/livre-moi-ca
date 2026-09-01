@@ -1,69 +1,111 @@
-import Image from "next/image";
+import { Package, ShieldCheck, Users } from "lucide-react";
+import { EcologySection } from "@/components/marketing/ecology-section";
+import { HeroSection } from "@/components/marketing/hero-section";
+import { SearchForm } from "@/components/search/search-form";
+import { APP_NAME, CORRIDOR_CITIES } from "@/lib/constants";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div>
+      <HeroSection />
+
+      <EcologySection />
+
+      <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <div className="mb-12 max-w-3xl text-center md:mx-auto">
+          <p className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-extrabold text-orange-700 dark:bg-orange-950/60 dark:text-orange-300">
+            Comment ça marche
+          </p>
+          <h2 className="mt-5 font-space text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white md:text-5xl">
+            Covoiturage et cotransportage, simple et local
+          </h2>
+          <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-orange-500" />
+          <p className="mt-4 text-muted-foreground">
+            Une plateforme pensée pour le corridor abitibien — sans boîte noire payante.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="grid gap-5 md:grid-cols-3">
+          {[
+            {
+              icon: Users,
+              title: "Covoiturage régional",
+              text: "Places passagers, arrêts sur le corridor et matching spatial PostGIS à 25 km.",
+            },
+            {
+              icon: Package,
+              title: "Livraison de colis",
+              text: "Photo d'état, prise en charge, puis validation obligatoire par code OTP à 6 chiffres.",
+            },
+            {
+              icon: ShieldCheck,
+              title: "Ouvert et fiable",
+              text: "OpenStreetMap, Nominatim, OSRM / OpenRouteService et Supabase. Zéro Google Maps.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="feature-card rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400">
+                <item.icon className="h-5 w-5" />
+              </div>
+              <h3 className="font-space text-lg font-bold text-slate-950 dark:text-white">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {item.text}
+              </p>
+            </div>
+          ))}
         </div>
-      </main>
+      </section>
+
+      <section className="border-y border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+        <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+          <div className="mb-10 max-w-3xl text-center md:mx-auto">
+            <p className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-extrabold text-orange-700 dark:bg-orange-950/60 dark:text-orange-300">
+              Rechercher
+            </p>
+            <h2 className="mt-5 font-space text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white md:text-4xl">
+              Trouvez un trajet ou confiez un colis
+            </h2>
+            <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-orange-500" />
+            <p className="mt-4 text-muted-foreground">
+              Indiquez votre départ, votre destination et la date — on s&apos;occupe du matching.
+            </p>
+          </div>
+          <SearchForm />
+        </div>
+      </section>
+
+      <section className="bg-[#fffaf1] dark:bg-slate-950">
+        <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+          <div className="mb-10 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-extrabold text-orange-700 dark:bg-orange-950/60 dark:text-orange-300">
+                Zone desservie
+              </p>
+              <h2 className="mt-4 font-space text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white md:text-4xl">
+                Corridor desservi
+              </h2>
+              <div className="mt-4 h-1 w-20 rounded-full bg-orange-500" />
+            </div>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              De l&apos;Abitibi jusqu&apos;à Montréal via la route 117
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {CORRIDOR_CITIES.map((city) => (
+              <span
+                key={city.name}
+                className="rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-orange-400 hover:text-orange-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+              >
+                {city.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
