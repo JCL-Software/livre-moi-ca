@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Package, User } from "lucide-react";
 import { AddressAutocomplete } from "@/components/search/address-autocomplete";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -14,16 +15,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PARCEL_LABELS } from "@/lib/constants";
+import { LUGGAGE_FILTER_LABELS, PARCEL_LABELS } from "@/lib/constants";
 import type { BookingType, GeoPoint, ParcelSize } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function SearchForm({
   compact = false,
-  defaultType = "PASSENGER",
+  defaultType = "PARCEL",
+  showTypeToggle = true,
+  passengerExtras = false,
+  submitLabel = "Rechercher un trajet",
 }: {
   compact?: boolean;
   defaultType?: BookingType;
+  showTypeToggle?: boolean;
+  passengerExtras?: boolean;
+  submitLabel?: string;
 }) {
   const router = useRouter();
   const [origin, setOrigin] = useState<GeoPoint | null>(null);
@@ -31,6 +38,10 @@ export function SearchForm({
   const [date, setDate] = useState("");
   const [type, setType] = useState<BookingType>(defaultType);
   const [size, setSize] = useState<ParcelSize>("MEDIUM");
+  const [seats, setSeats] = useState("1");
+  const [luggage, setLuggage] = useState<keyof typeof LUGGAGE_FILTER_LABELS>("MEDIUM");
+  const [maxTwoRear, setMaxTwoRear] = useState(false);
+  const [intermediateStops, setIntermediateStops] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -57,9 +68,20 @@ export function SearchForm({
       date,
       type,
     });
-    if (type === "PARCEL") params.set("size", size);
+    if (type === "PARCEL") {
+      params.set("size", size);
+    } else {
+      params.set("seats", seats);
+      if (passengerExtras) {
+        params.set("luggage", luggage);
+        if (maxTwoRear) params.set("maxRear", "2");
+        if (intermediateStops) params.set("stops", "1");
+      }
+    }
     router.push(`/recherche?${params.toString()}`);
   }
+
+  const isPassenger = type === "PASSENGER";
 
   return (
     <form
@@ -69,29 +91,31 @@ export function SearchForm({
         compact && "shadow-sm",
       )}
     >
-      <div className="flex gap-2 md:col-span-12">
-        <Button
-          type="button"
-          variant={type === "PASSENGER" ? "default" : "outline"}
-          onClick={() => setType("PASSENGER")}
-        >
-          <User className="h-4 w-4" />
-          Passager
-        </Button>
-        <Button
-          type="button"
-          variant={type === "PARCEL" ? "default" : "outline"}
-          onClick={() => setType("PARCEL")}
-        >
-          <Package className="h-4 w-4" />
-          Colis
-        </Button>
-      </div>
+      {showTypeToggle && (
+        <div className="flex gap-2 md:col-span-12">
+          <Button
+            type="button"
+            variant={isPassenger ? "default" : "outline"}
+            onClick={() => setType("PASSENGER")}
+          >
+            <User className="h-4 w-4" />
+            Passager
+          </Button>
+          <Button
+            type="button"
+            variant={!isPassenger ? "default" : "outline"}
+            onClick={() => setType("PARCEL")}
+          >
+            <Package className="h-4 w-4" />
+            Colis
+          </Button>
+        </div>
+      )}
 
       <div className="md:col-span-4">
         <AddressAutocomplete
           id="origin"
-          label="Départ"
+          label={isPassenger ? "Ville de départ" : "Ville de départ"}
           placeholder="Val-d'Or, Amos, Rouyn…"
           value={origin}
           onChange={setOrigin}
@@ -100,7 +124,7 @@ export function SearchForm({
       <div className="md:col-span-4">
         <AddressAutocomplete
           id="destination"
-          label="Arrivée"
+          label={isPassenger ? "Ville d'arrivée" : "Ville de destination"}
           placeholder="Montréal, Gatineau…"
           value={destination}
           onChange={setDestination}
@@ -116,9 +140,26 @@ export function SearchForm({
           onChange={(event) => setDate(event.target.value)}
         />
       </div>
-      {type === "PARCEL" ? (
+
+      {isPassenger ? (
         <div className="space-y-1.5 md:col-span-2">
-          <Label>Taille</Label>
+          <Label htmlFor="seats">Nombre de places</Label>
+          <Select value={seats} onValueChange={setSeats}>
+            <SelectTrigger id="seats">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {[1, 2, 3, 4].map((n) => (
+                <SelectItem key={n} value={String(n)}>
+                  {n} place{n > 1 ? "s" : ""}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      ) : (
+        <div className="space-y-1.5 md:col-span-2">
+          <Label>Format du colis</Label>
           <Select value={size} onValueChange={(value) => setSize(value as ParcelSize)}>
             <SelectTrigger>
               <SelectValue />
@@ -132,15 +173,54 @@ export function SearchForm({
             </SelectContent>
           </Select>
         </div>
-      ) : (
-        <div className="hidden md:col-span-2 md:block" />
+      )}
+
+      {isPassenger && passengerExtras && (
+        <>
+          <div className="space-y-1.5 md:col-span-4">
+            <Label>Bagages autorisés</Label>
+            <Select
+              value={luggage}
+              onValueChange={(value) =>
+                setLuggage(value as keyof typeof LUGGAGE_FILTER_LABELS)
+              }
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(LUGGAGE_FILTER_LABELS).map(([key, label]) => (
+                  <SelectItem key={key} value={key}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex flex-col justify-end gap-3 md:col-span-8 md:flex-row md:items-center">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+              <Checkbox
+                checked={maxTwoRear}
+                onCheckedChange={(checked) => setMaxTwoRear(checked === true)}
+              />
+              Max. 2 personnes à l&apos;arrière
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+              <Checkbox
+                checked={intermediateStops}
+                onCheckedChange={(checked) => setIntermediateStops(checked === true)}
+              />
+              Arrêts intermédiaires possibles
+            </label>
+          </div>
+        </>
       )}
 
       {error && <p className="text-sm text-destructive md:col-span-12">{error}</p>}
 
       <div className="md:col-span-12">
         <Button type="submit" className="w-full md:w-auto">
-          Rechercher un trajet
+          {submitLabel}
         </Button>
       </div>
     </form>

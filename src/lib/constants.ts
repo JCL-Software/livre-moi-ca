@@ -51,3 +51,60 @@ export const CORRIDOR_CITIES = [
   { name: "Gatineau", lat: 45.4765, lng: -75.7013 },
   { name: "Montréal", lat: 45.5017, lng: -73.5673 },
 ] as const;
+
+export const POPULAR_CARPOOL_ROUTES = [
+  {
+    label: "Rouyn-Noranda ⇄ Montréal",
+    via: "via Val-d'Or et Mont-Laurier",
+    priceFrom: 45,
+    origin: "Rouyn-Noranda",
+    destination: "Montréal",
+    waypoints: ["Val-d'Or", "Mont-Laurier"] as const,
+  },
+  {
+    label: "Val-d'Or ⇄ Gatineau / Ottawa",
+    via: "via Grand-Remous",
+    priceFrom: 40,
+    origin: "Val-d'Or",
+    destination: "Gatineau",
+    waypoints: ["Mont-Laurier", "Maniwaki"] as const,
+  },
+  {
+    label: "Amos ⇄ Rouyn-Noranda",
+    via: "",
+    priceFrom: 15,
+    origin: "Amos",
+    destination: "Rouyn-Noranda",
+    waypoints: [] as const,
+  },
+  {
+    label: "La Sarre ⇄ Val-d'Or",
+    via: "",
+    priceFrom: 20,
+    origin: "La Sarre",
+    destination: "Val-d'Or",
+    waypoints: ["Amos"] as const,
+  },
+  {
+    label: "Ville-Marie / Témiscaming ⇄ Rouyn",
+    via: "",
+    priceFrom: 20,
+    origin: "Ville-Marie",
+    destination: "Rouyn-Noranda",
+    waypoints: [] as const,
+  },
+  {
+    label: "Val-d'Or ⇄ Québec",
+    via: "",
+    priceFrom: 55,
+    origin: "Val-d'Or",
+    destination: "Montréal",
+    waypoints: ["Mont-Laurier"] as const,
+  },
+] as const;
+
+export const LUGGAGE_FILTER_LABELS = {
+  SMALL: "Petit sac à dos",
+  MEDIUM: "Valise cabine",
+  LARGE: "Grand sac / équipement",
+} as const;

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Menu, Package } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { BrandLogo } from "@/components/layout/brand-logo";
+import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -30,6 +31,10 @@ export async function Header() {
     <header className="sticky top-0 z-40 border-b border-slate-200/50 bg-white/95 shadow-sm backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/95">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
         <BrandLogo priority />
+
+        <div className="hidden md:flex">
+          <ServiceModeToggle variant="header" />
+        </div>
 
         <nav className="hidden items-center gap-1 md:flex">
           {links.map((link) => (
@@ -85,6 +90,7 @@ export async function Header() {
             <SheetContent side="right" className="w-72">
               <div className="mt-8 flex flex-col gap-3">
                 <BrandLogo />
+                <ServiceModeToggle variant="header" className="w-fit" />
                 {links.map((link) => (
                   <Link key={link.href} href={link.href} className="text-base font-medium">
                     {link.label}
