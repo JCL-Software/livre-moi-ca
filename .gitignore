@@ -26,6 +26,9 @@
 .cursor/
 tmp-opt.*
 deploy-payload.json
+deploy-chunks/
+deploy-batches/
+scripts/mcp-deploy-bridge.mjs
 
 # debug
 npm-debug.log*
