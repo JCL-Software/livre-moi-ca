@@ -1,28 +1,70 @@
-import { Car, Leaf, Package, Route } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { Car, Leaf, Package, Route, Users } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
 
-const ECO_POINTS = [
-  {
-    icon: Car,
-    title: "Moins de véhicules",
-    description:
-      "Le covoiturage remplit les places déjà disponibles au lieu d'ajouter des départs à vide.",
-  },
-  {
-    icon: Package,
-    title: "Colis sur trajets existants",
-    description:
-      "Les envois profitent des trajets planifiés — sans camion dédié ni livraison express inutile.",
-  },
-  {
-    icon: Route,
-    title: "Corridor optimisé",
-    description:
-      "Route 117 et arrêts intermédiaires : chaque kilomètre parcouru sert passagers et colis.",
-  },
-];
+type EcologyVariant = "colis" | "covoiturage";
 
-export function EcologySection() {
+const CONTENT: Record<
+  EcologyVariant,
+  {
+    subtitle: string;
+    description: string;
+    points: { icon: LucideIcon; title: string; description: string }[];
+  }
+> = {
+  colis: {
+    subtitle: "Transformez vos trajets en actions écologiques concrètes",
+    description: `${APP_NAME} valorise les trajets existants pour rendre l'envoi de colis plus utile, plus simple et plus responsable.`,
+    points: [
+      {
+        icon: Car,
+        title: "Moins de véhicules",
+        description:
+          "Le covoiturage remplit les places déjà disponibles au lieu d'ajouter des départs à vide.",
+      },
+      {
+        icon: Package,
+        title: "Colis sur trajets existants",
+        description:
+          "Les envois profitent des trajets planifiés — sans camion dédié ni livraison express inutile.",
+      },
+      {
+        icon: Route,
+        title: "Corridor optimisé",
+        description:
+          "Route 117 et arrêts intermédiaires : chaque kilomètre parcouru sert passagers et colis.",
+      },
+    ],
+  },
+  covoiturage: {
+    subtitle: "Transformez vos déplacements en actions écologiques concrètes",
+    description: `${APP_NAME} facilite le partage de véhicules déjà en route pour rendre le covoiturage plus accessible, plus économique et plus responsable.`,
+    points: [
+      {
+        icon: Users,
+        title: "Sièges partagés",
+        description:
+          "Chaque place occupée évite qu'un autre conducteur parte seul sur la même route.",
+      },
+      {
+        icon: Car,
+        title: "Moins d'émissions",
+        description:
+          "Répartir les kilomètres entre plusieurs passagers réduit l'empreinte carbone par personne.",
+      },
+      {
+        icon: Route,
+        title: "Trajets déjà planifiés",
+        description:
+          "Pas de véhicule supplémentaire : vous profitez d'un déplacement qui aurait lieu de toute façon.",
+      },
+    ],
+  },
+};
+
+export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant }) {
+  const { subtitle, description, points } = CONTENT[variant];
+
   const card = (
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-200 via-sky-100 to-cyan-200 p-5 shadow-sm ring-1 ring-sky-200 dark:from-sky-950 dark:via-slate-900 dark:to-cyan-950 dark:ring-sky-900 md:p-7 lg:p-8">
       <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-cyan-300/35 blur-3xl dark:bg-cyan-500/20" />
@@ -43,16 +85,15 @@ export function EcologySection() {
           </div>
 
           <p className="mt-2.5 max-w-md text-sm leading-6 text-slate-700 dark:text-slate-300 md:text-[15px]">
-            Transformez vos trajets en actions écologiques concrètes
+            {subtitle}
           </p>
           <p className="mt-1.5 max-w-md text-xs leading-5 text-slate-600 dark:text-slate-400 md:text-sm md:leading-6">
-            {APP_NAME} valorise les trajets existants pour rendre l&apos;envoi de colis
-            plus utile, plus simple et plus responsable.
+            {description}
           </p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          {ECO_POINTS.map((point) => (
+          {points.map((point) => (
             <div
               key={point.title}
               className="rounded-xl border border-white bg-white/80 p-3.5 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-950/60 md:p-4"

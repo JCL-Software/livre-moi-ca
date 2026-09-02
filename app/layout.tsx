@@ -1,7 +1,5 @@
 import type { CSSProperties } from "react";
 import type { Metadata, Viewport } from "next";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { Providers } from "@/components/layout/providers";
 import { RegisterServiceWorker } from "@/components/pwa/register-sw";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
@@ -48,9 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <Providers>
           <RegisterServiceWorker />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          {children}
         </Providers>
       </body>
     </html>

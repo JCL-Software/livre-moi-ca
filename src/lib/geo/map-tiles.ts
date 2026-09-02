@@ -1,0 +1,5 @@
+/** Tuiles OpenStreetMap officielles — données libres, sans clé API. */
+export const OSM_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+export const OSM_TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';

@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Download, MapPinned, Package } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
+import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 import { APP_NAME } from "@/lib/constants";
 
 export function HeroSection() {
@@ -21,19 +22,14 @@ export function HeroSection() {
             <ServiceModeToggle variant="hero" />
           </div>
 
-          <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-orange-200 ring-1 ring-white/15">
-            <MapPinned className="h-4 w-4" />
-            Abitibi-Témiscamingue · Cotransportage
-          </p>
-
           <div className="space-y-4">
             <h1 className="font-space text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
               Envoyez ou livrez des colis entre villes facilement
             </h1>
-            <p className="max-w-xl text-lg font-semibold leading-8 text-orange-100 sm:text-xl">
+            <HeroSubtitle>
               Avec {APP_NAME}, chaque trajet compte. Livraison rapide, simple et
               écologique — avec preuve OTP à la remise.
-            </p>
+            </HeroSubtitle>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -45,18 +41,11 @@ export function HeroSection() {
               <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
-              href="/trajets/nouveau"
+              href="/livrer"
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-base font-extrabold text-slate-950 shadow-xl shadow-slate-900/10 ring-1 ring-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2"
             >
               Livrer et gagner
               <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              href="/recherche"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3.5 text-base font-semibold text-white shadow-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2"
-            >
-              <Download className="h-5 w-5 shrink-0" />
-              Télécharger l&apos;app
             </Link>
           </div>
         </div>

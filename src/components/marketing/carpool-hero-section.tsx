@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPinned } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
+import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 import { SearchForm } from "@/components/search/search-form";
 
 export function CarpoolHeroSection() {
@@ -22,19 +23,14 @@ export function CarpoolHeroSection() {
               <ServiceModeToggle variant="hero" />
             </div>
 
-            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-orange-200 ring-1 ring-white/15">
-              <MapPinned className="h-4 w-4" />
-              Abitibi-Témiscamingue · Route 117
-            </p>
-
             <div className="space-y-4">
               <h1 className="font-space text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
-                Le covoiturage simple, économique et fiable en Abitibi-Témiscamingue
+                Le covoiturage simple et économique
               </h1>
-              <p className="max-w-xl text-lg font-semibold leading-8 text-orange-100 sm:text-xl">
-                Partagez la route 117, réduisez vos frais d&apos;essence et voyagez en toute
-                sécurité entre nos villes et vers Montréal ou Gatineau.
-              </p>
+              <HeroSubtitle>
+                Partagez la route, réduisez vos frais d&apos;essence et voyagez en
+                toute sécurité entre vos villes préférées et vers Montréal ou Gatineau.
+              </HeroSubtitle>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -46,7 +42,7 @@ export function CarpoolHeroSection() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
-                href="/trajets/nouveau"
+                href="/covoiturage/proposer"
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-base font-extrabold text-slate-950 shadow-xl shadow-slate-900/10 ring-1 ring-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
               >
                 Proposer des places libres
