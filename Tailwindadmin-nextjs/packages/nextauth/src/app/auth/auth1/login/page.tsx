@@ -1,0 +1,41 @@
+"use client";
+
+import React from "react";
+import SocialButtons from "../../authforms/SocialButtons";
+import AuthLogin from "../../authforms/AuthLogin";
+import LeftSidebarPart from "../LeftSidebarPart";
+import FullLogo from "@/app/(DashboardLayout)/layout/shared/logo/FullLogo";
+import GuestGuard from "@/app/guards/auth-guard/GuestGaurd";
+
+const Login = () => {
+  return (
+    <>
+      <GuestGuard>
+        <div className="p-5 lg:bg-transparent lg:dark:bg-transparent bg-lightprimary lg:fixed top-0 z-50 w-full">
+          <FullLogo />
+        </div>
+        <div className="relative overflow-hidden h-screen">
+          <div className="grid grid-cols-12 gap-3 h-screen bg-white dark:bg-dark">
+            <div className="xl:col-span-8 lg:col-span-7 col-span-12 bg-lightprimary dark:bg-lightprimary lg:block hidden relative overflow-hidden">
+              <LeftSidebarPart />
+            </div>
+            <div className="xl:col-span-4 lg:col-span-5 col-span-12 sm:px-12 p-5">
+              <div className="flex h-screen items-center px-3 lg:justify-start justify-center">
+                <div className="max-w-[420px] w-full mx-auto">
+                  <h3 className="text-2xl font-bold">Admin Livre-moi.ca</h3>
+                  <p className="text-darklink text-sm font-medium">
+                    Connexion sécurisée via Supabase (rôle ADMIN requis)
+                  </p>
+                  <SocialButtons title="ou continuer avec" />
+                  <AuthLogin />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </GuestGuard>
+    </>
+  );
+};
+
+export default Login;

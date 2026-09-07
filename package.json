@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:web": "next dev",
+    "dev:admin": "npm run --prefix Tailwindadmin-nextjs/packages/nextauth dev",
     "build": "next build",
+    "build:admin": "npm run --prefix Tailwindadmin-nextjs/packages/nextauth build",
     "start": "next start",
     "lint": "eslint"
   },

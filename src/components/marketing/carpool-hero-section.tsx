@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPinned } from "lucide-react";
-import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
 import { SearchForm } from "@/components/search/search-form";
 
 export function CarpoolHeroSection() {
@@ -18,22 +17,18 @@ export function CarpoolHeroSection() {
       <div className="relative z-10 mx-auto max-w-6xl px-4 pb-12 pt-14 md:pb-16 md:pt-20">
         <div className="grid gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-center">
           <div className="fade-in-left space-y-8">
-            <div className="flex justify-center md:justify-start">
-              <ServiceModeToggle variant="hero" />
-            </div>
-
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-orange-200 ring-1 ring-white/15">
               <MapPinned className="h-4 w-4" />
-              Abitibi-Témiscamingue · Route 117
+              Québec · Ontario
             </p>
 
             <div className="space-y-4">
               <h1 className="font-space text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
-                Le covoiturage simple, économique et fiable en Abitibi-Témiscamingue
+                Le covoiturage simple, économique et fiable
               </h1>
               <p className="max-w-xl text-lg font-semibold leading-8 text-orange-100 sm:text-xl">
-                Partagez la route 117, réduisez vos frais d&apos;essence et voyagez en toute
-                sécurité entre nos villes et vers Montréal ou Gatineau.
+                Partagez la route, réduisez vos frais d&apos;essence et voyagez en toute
+                sécurité entre vos villes et vers l&apos;Ontario.
               </p>
             </div>
 

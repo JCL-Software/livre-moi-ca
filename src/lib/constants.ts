@@ -1,7 +1,7 @@
 import type { ParcelSize } from "@/lib/types";
 
 export const APP_NAME = "Livre-moi.ca";
-export const APP_TAGLINE = "Covoiturage et livraison de colis en Abitibi";
+export const APP_TAGLINE = "Covoiturage et livraison de colis au Québec et en Ontario";
 /** Identique Liquid-Action */
 export const BRAND_ORANGE = "#f97316";
 export const BRAND_ORANGE_DARK = "#ea580c";

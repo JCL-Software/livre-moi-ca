@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Download, MapPinned, Package } from "lucide-react";
-import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
+import { ArrowRight, Download, MapPinned } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
 
 export function HeroSection() {
@@ -17,22 +16,18 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
         <div className="fade-in-left space-y-8">
-          <div className="flex justify-center md:justify-start">
-            <ServiceModeToggle variant="hero" />
-          </div>
-
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-orange-200 ring-1 ring-white/15">
             <MapPinned className="h-4 w-4" />
-            Abitibi-Témiscamingue · Cotransportage
+            Québec · Ontario
           </p>
 
           <div className="space-y-4">
             <h1 className="font-space text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
-              Envoyez ou livrez des colis entre villes facilement
+              Envoyez ou livrez des colis entre les villes facilement
             </h1>
             <p className="max-w-xl text-lg font-semibold leading-8 text-orange-100 sm:text-xl">
               Avec {APP_NAME}, chaque trajet compte. Livraison rapide, simple et
-              écologique — avec preuve OTP à la remise.
+              écologique — Avec preuve OTP à la remise.
             </p>
           </div>
 

@@ -30,7 +30,7 @@ export function CtaSection() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mx-auto mt-4 max-w-2xl text-lg font-medium text-orange-100"
         >
-          Rentabilisez vos kilomètres entre l&apos;Abitibi et les grands centres en
+          Rentabilisez vos kilomètres au Québec et en Ontario en
           transportant un colis ou un passager.
         </motion.p>
 

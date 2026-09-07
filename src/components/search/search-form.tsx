@@ -116,7 +116,7 @@ export function SearchForm({
         <AddressAutocomplete
           id="origin"
           label={isPassenger ? "Ville de départ" : "Ville de départ"}
-          placeholder="Val-d'Or, Amos, Rouyn…"
+          placeholder="Ville de départ…"
           value={origin}
           onChange={setOrigin}
         />
@@ -125,7 +125,7 @@ export function SearchForm({
         <AddressAutocomplete
           id="destination"
           label={isPassenger ? "Ville d'arrivée" : "Ville de destination"}
-          placeholder="Montréal, Gatineau…"
+          placeholder="Ville d'arrivée…"
           value={destination}
           onChange={setDestination}
         />
