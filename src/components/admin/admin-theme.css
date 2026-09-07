@@ -1,0 +1,62 @@
+@import "./css/layouts/container.css" layer(utilities);
+@import "./css/layouts/sidebar.css" layer(utilities);
+@import "./css/layouts/header.css" layer(utilities);
+@import "simplebar-react/dist/simplebar.min.css";
+
+.admin-theme {
+  --radius: 10px;
+  --primary: #f97316;
+  --primary-foreground: #ffffff;
+  --secondary: #1a4a7a;
+  --secondary-foreground: #ffffff;
+  --info: #8754ec;
+  --success: #13deb9;
+  --warning: #f6b51e;
+  --error: #ef4444;
+  --white: #ffffff;
+  --dark: #1c2536;
+  --bodytext: #5a6a85bf;
+  --lightprimary: color-mix(in oklab, var(--primary) 12%, transparent);
+  --lightsecondary: color-mix(in oklab, var(--secondary) 12%, transparent);
+  --lightsuccess: color-mix(in oklab, var(--success) 12%, transparent);
+  --lightwarning: color-mix(in oklab, var(--warning) 12%, transparent);
+  --lighterror: color-mix(in oklab, var(--error) 12%, transparent);
+  --lightinfo: color-mix(in oklab, var(--info) 12%, transparent);
+
+  --background: var(--white);
+  --foreground: var(--dark);
+  --card: var(--white);
+  --card-foreground: var(--dark);
+  --muted: #f5f5f5;
+  --muted-foreground: #5a6a85bf;
+  --border: #dfe5ef;
+  --sidebar: var(--white);
+  --sidebar-foreground: #2a3547;
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--lightprimary);
+  --sidebar-accent-foreground: var(--primary);
+  --sidebar-border: var(--border);
+
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.admin-theme.dark,
+.dark .admin-theme {
+  --background: var(--dark);
+  --foreground: var(--white);
+  --card: var(--dark);
+  --card-foreground: var(--white);
+  --muted: #2a3851;
+  --muted-foreground: #7c8fac;
+  --border: #333f55;
+  --sidebar: var(--dark);
+  --sidebar-foreground: #7c8fac;
+}
+
+.admin-theme .mySwiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+  margin: 0 auto !important;
+}

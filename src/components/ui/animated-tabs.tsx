@@ -10,18 +10,23 @@ type Tab = {
   content?: string | React.ReactNode;
 };
 
+const defaultActiveClass =
+  "bg-orange-500 shadow-lg shadow-orange-500/25 dark:bg-orange-500 dark:shadow-orange-500/20";
+
 export const AnimatedTabs = ({
   tabs,
   containerClassName,
   activeTabClassName,
   tabClassName,
   contentClassName,
+  layoutId = "animated-tabs-pill",
 }: {
   tabs: Tab[];
   containerClassName?: string;
   activeTabClassName?: string;
   tabClassName?: string;
   contentClassName?: string;
+  layoutId?: string;
 }) => {
   const [activeValue, setActiveValue] = useState(tabs[0]?.value ?? "");
   const activeTab = tabs.find((tab) => tab.value === activeValue) ?? tabs[0];
@@ -44,14 +49,18 @@ export const AnimatedTabs = ({
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveValue(tab.value)}
-              className={cn("relative rounded-full px-4 py-2", tabClassName)}
+              className={cn(
+                "relative rounded-full px-4 py-2 transition-colors",
+                tabClassName,
+              )}
             >
               {isActive && (
                 <motion.div
-                  layoutId="how-it-works-tab"
+                  layoutId={layoutId}
                   transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                   className={cn(
-                    "absolute inset-0 rounded-full bg-gray-200 dark:bg-zinc-800",
+                    "absolute inset-0 rounded-full",
+                    defaultActiveClass,
                     activeTabClassName,
                   )}
                 />
@@ -61,7 +70,7 @@ export const AnimatedTabs = ({
                   "relative block font-semibold",
                   isActive
                     ? "text-white"
-                    : "text-slate-700 dark:text-slate-300",
+                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100",
                 )}
               >
                 {tab.title}

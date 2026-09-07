@@ -29,14 +29,12 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/50 bg-white/95 shadow-sm backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/95">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-3">
         <BrandLogo priority />
 
-        <div className="hidden md:flex">
-          <ServiceModeToggle variant="header" />
-        </div>
+        <ServiceModeToggle variant="header" />
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-1 md:flex">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className={navLinkClass}>
               {link.label}
@@ -74,7 +72,7 @@ export async function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="ml-auto flex items-center gap-1 md:hidden">
           <ThemeToggle />
           <Sheet>
             <SheetTrigger asChild>
@@ -90,7 +88,6 @@ export async function Header() {
             <SheetContent side="right" className="w-72">
               <div className="mt-8 flex flex-col gap-3">
                 <BrandLogo />
-                <ServiceModeToggle variant="header" className="w-fit" />
                 {links.map((link) => (
                   <Link key={link.href} href={link.href} className="text-base font-medium">
                     {link.label}

@@ -17,6 +17,7 @@ import {
   getRouteCityNames,
   type PopularRoute,
 } from "@/lib/carpool-routes";
+import { OSM_TILE_ATTRIBUTION, OSM_TILE_URL } from "@/lib/geo/map-tiles";
 
 const cityIcon = L.divIcon({
   className: "",
@@ -79,10 +80,7 @@ export default function CorridorRoutesMap({
       className="h-full min-h-[320px] w-full rounded-2xl"
       scrollWheelZoom={false}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Carto'
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-      />
+      <TileLayer attribution={OSM_TILE_ATTRIBUTION} url={OSM_TILE_URL} />
 
       {routes.map((route, index) => {
         const points = buildRoutePoints(route);

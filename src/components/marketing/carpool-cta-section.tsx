@@ -29,8 +29,8 @@ export function CarpoolCtaSection() {
           transition={{ delay: 0.1 }}
           className="mx-auto mt-4 max-w-2xl text-lg font-medium text-orange-100"
         >
-          Ne faites plus la 117 en solo. Économisez de l&apos;argent et faites de belles
-          rencontres régionales.
+          Ne faites plus vos trajets en solo. Économisez de l&apos;argent en covoiturant ou
+          proposez vos places libres, tout en faisant de belles rencontres régionales.
         </motion.p>
 
         <motion.div

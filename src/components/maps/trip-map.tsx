@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { MapContainer, Marker, Polyline, Popup, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { OSM_TILE_ATTRIBUTION, OSM_TILE_URL } from "@/lib/geo/map-tiles";
 
 const pin = new L.Icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -47,10 +48,7 @@ export default function TripMap({ origin, destination, route, stops = [] }: Prop
       className="h-full min-h-[280px] w-full rounded-xl"
       scrollWheelZoom={false}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Carto'
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-      />
+      <TileLayer attribution={OSM_TILE_ATTRIBUTION} url={OSM_TILE_URL} />
       <Marker position={[origin.lat, origin.lng]} icon={pin}>
         <Popup>{origin.name}</Popup>
       </Marker>

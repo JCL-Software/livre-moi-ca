@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import { searchPlaces } from "@/lib/geo/nominatim";
 import { CORRIDOR_CITIES } from "@/lib/constants";
@@ -17,6 +17,7 @@ type Props = {
 };
 
 export function AddressAutocomplete({ id, label, placeholder, value, onChange }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState(value?.name ?? "");
   const [results, setResults] = useState<GeoPoint[]>([]);
   const [open, setOpen] = useState(false);
@@ -42,8 +43,31 @@ export function AddressAutocomplete({ id, label, placeholder, value, onChange }:
     return () => clearTimeout(handle);
   }, [query]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(event: MouseEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
   return (
-    <div className="relative space-y-1.5">
+    <div ref={containerRef} className="relative space-y-1.5">
       <label htmlFor={id} className="text-sm font-medium">
         {label}
       </label>

@@ -19,11 +19,12 @@ export function ServiceModeToggle({
 }) {
   const pathname = usePathname();
   const isCovoiturage = pathname.startsWith("/covoiturage");
+  const iconOnly = variant === "header";
 
   return (
     <div
       className={cn(
-        "inline-flex rounded-xl p-1 ring-1 backdrop-blur-sm",
+        "inline-flex shrink-0 rounded-xl p-1 ring-1 backdrop-blur-sm",
         variant === "hero"
           ? "bg-white/10 ring-white/15"
           : "bg-slate-100 ring-slate-200 dark:bg-slate-900 dark:ring-slate-700",
@@ -40,8 +41,13 @@ export function ServiceModeToggle({
             href={href}
             role="tab"
             aria-selected={active}
+            aria-label={label}
+            title={label}
             className={cn(
-              "inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-extrabold transition-all duration-200 sm:px-5 sm:text-base",
+              "inline-flex items-center justify-center rounded-lg font-extrabold transition-all duration-200",
+              iconOnly
+                ? "h-9 w-9"
+                : "gap-2 px-4 py-2 text-sm sm:px-5 sm:text-base",
               variant === "hero"
                 ? active
                   ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
@@ -52,7 +58,7 @@ export function ServiceModeToggle({
             )}
           >
             <Icon className="h-4 w-4 shrink-0" />
-            {label}
+            {!iconOnly && label}
           </Link>
         );
       })}

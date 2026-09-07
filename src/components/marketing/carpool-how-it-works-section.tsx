@@ -73,6 +73,7 @@ export function CarpoolHowItWorksSection() {
         badge="Comment ça marche"
         title="Comment voyager avec Livre-moi.ca ?"
         subtitle="En quelques clics, trouvez votre place ou complétez votre véhicule."
+        inlineBadge
       />
 
       <AnimatedTabs
@@ -88,9 +89,9 @@ export function CarpoolHowItWorksSection() {
             content: <StepsGrid steps={DRIVER_STEPS} />,
           },
         ]}
-        containerClassName="mx-auto justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-1.5 dark:border-slate-800 dark:bg-slate-900/80"
+        containerClassName="mx-auto justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-1.5 dark:border-slate-700 dark:bg-slate-900"
         tabClassName="px-5 py-2.5 text-sm font-bold sm:text-base"
-        activeTabClassName="bg-orange-500 shadow-lg shadow-orange-500/25"
+        layoutId="how-it-works-covoiturage-tab"
       />
     </section>
   );
