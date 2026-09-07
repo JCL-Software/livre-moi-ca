@@ -1,4 +1,4 @@
-import { Backpack, Briefcase, Package } from "lucide-react";
+import { Backpack, Briefcase, Container, Package } from "lucide-react";
 import { AnimateIcon } from "@/components/ui/animate-icon";
 import { SectionHeader } from "@/components/marketing/section-header";
 
@@ -27,6 +27,14 @@ const FORMATS = [
     placement: "Coffre arrière du véhicule.",
     color: "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-300",
   },
+  {
+    size: "XL",
+    label: "Très grand format (Coffre plein / Gros volume)",
+    icon: Container,
+    ideal: "Plusieurs cartons, électroménagers compacts, équipements sportifs, colis volumineux.",
+    placement: "Coffre entier du véhicule.",
+    color: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300",
+  },
 ];
 
 export function ParcelFormatsSection() {
@@ -35,10 +43,10 @@ export function ParcelFormatsSection() {
       <SectionHeader
         badge="Formats acceptés"
         title="Quels formats pouvez-vous faire livrer ?"
-        subtitle="Tout ce qui tient dans un véhicule standard, du format enveloppe au carton de coffre."
+        subtitle="Tout ce qui tient dans un véhicule standard, du format enveloppe au coffre plein."
       />
 
-      <div className="grid gap-5 md:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {FORMATS.map(({ size, label, icon: Icon, ideal, placement, color }) => (
           <article
             key={size}

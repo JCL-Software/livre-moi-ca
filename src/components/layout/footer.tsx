@@ -50,7 +50,7 @@ export function Footer() {
           <h4 className="mb-6 font-space text-lg font-bold text-orange-400">Territoire</h4>
           <p className="text-sm leading-relaxed text-white/70">
             Trajets et colis entre les villes du Québec et de l&apos;Ontario —
-            sans liste figée de corridors.
+            Sans liste figée de corridors.
           </p>
         </div>
       </div>

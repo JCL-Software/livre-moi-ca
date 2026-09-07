@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Download, MapPinned } from "lucide-react";
-import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 import { APP_NAME } from "@/lib/constants";
 
@@ -19,7 +16,6 @@ export function HeroSection() {
       <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
         <div className="fade-in-left space-y-8">
           <div className="flex flex-col items-center gap-3 md:items-start">
-            <ServiceModeToggle variant="hero" />
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-orange-200 ring-1 ring-white/15">
               <MapPinned className="h-4 w-4" />
               Québec · Ontario
@@ -32,7 +28,7 @@ export function HeroSection() {
             </h1>
             <HeroSubtitle>
               Avec {APP_NAME}, chaque trajet compte. Livraison rapide, simple et
-              écologique — avec preuve OTP à la remise.
+              écologique — Avec preuve OTP à la remise.
             </HeroSubtitle>
           </div>
 
@@ -64,7 +60,7 @@ export function HeroSection() {
         <div className="fade-in-right relative mt-4 flex justify-center md:mt-0 md:justify-end">
           <Image
             src="/brand/axio-colis.png"
-            alt="Axio — livreur Livre-moi.ca avec un colis"
+            alt="Axio — Livreur Livre-moi.ca avec un colis"
             width={495}
             height={504}
             priority

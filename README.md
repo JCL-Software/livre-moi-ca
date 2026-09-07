@@ -49,10 +49,10 @@ Le MCP Cursor est préconfiguré dans [`.cursor/mcp.json`](.cursor/mcp.json).
 Le panneau admin utilise le package template [`Tailwindadmin-nextjs/packages/nextauth`](Tailwindadmin-nextjs/packages/nextauth) (auth Supabase déjà prévu par le template).
 
 ```bash
-# Terminal 1 — site public
+# Terminal 1 — Site public
 npm run dev
 
-# Terminal 2 — admin (port 3001)
+# Terminal 2 — Admin (port 3001)
 npm run dev:admin
 ```
 

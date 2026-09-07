@@ -26,7 +26,7 @@ const CONTENT: Record<
         icon: Package,
         title: "Colis sur trajets existants",
         description:
-          "Les envois profitent des trajets planifiés — sans camion dédié ni livraison express inutile.",
+          "Les envois profitent des trajets planifiés — Sans camion dédié ni livraison express inutile.",
       },
       {
         icon: Route,

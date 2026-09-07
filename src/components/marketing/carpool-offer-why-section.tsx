@@ -6,7 +6,7 @@ const REASONS = [
   {
     icon: HandCoins,
     title: "Partagez les frais d'essence",
-    text: "Les passagers contribuent à vos dépenses de route — un moyen simple de rentabiliser chaque déplacement.",
+    text: "Les passagers contribuent à vos dépenses de route — Un moyen simple de rentabiliser chaque déplacement.",
     accent: "from-orange-600/90 to-amber-700/90",
   },
   {

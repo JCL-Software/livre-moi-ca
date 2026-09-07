@@ -21,7 +21,7 @@ const STEPS = [
     step: 3,
     icon: MapPin,
     title: "Choisissez le colis",
-    text: "Vous n'acceptez que les demandes qui vous conviennent — format, horaire et point de rencontre.",
+    text: "Vous n'acceptez que les demandes qui vous conviennent — Format, horaire et point de rencontre.",
   },
   {
     step: 4,

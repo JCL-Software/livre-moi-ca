@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 
 export function DeliverHeroSection() {
@@ -17,10 +14,6 @@ export function DeliverHeroSection() {
 
       <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
         <div className="fade-in-left space-y-8">
-          <div className="flex justify-center md:justify-start">
-            <ServiceModeToggle variant="hero" />
-          </div>
-
           <p className="text-sm font-bold uppercase tracking-wider text-orange-300">
             Livrer avec Livre-moi.ca
           </p>

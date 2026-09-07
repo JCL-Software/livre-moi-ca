@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPinned } from "lucide-react";
-import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 import { SearchForm } from "@/components/search/search-form";
 
@@ -20,7 +17,6 @@ export function CarpoolHeroSection() {
         <div className="grid gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-center">
           <div className="fade-in-left space-y-8">
             <div className="flex flex-col items-center gap-3 md:items-start">
-              <ServiceModeToggle variant="hero" />
               <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-orange-200 ring-1 ring-white/15">
                 <MapPinned className="h-4 w-4" />
                 Québec · Ontario
@@ -58,7 +54,7 @@ export function CarpoolHeroSection() {
           <div className="fade-in-right relative flex justify-center md:justify-end">
             <Image
               src="/brand/axio-covoiturage.png"
-              alt="Axio — passager Livre-moi.ca sur son téléphone"
+              alt="Axio — Passager Livre-moi.ca sur son téléphone"
               width={496}
               height={503}
               priority

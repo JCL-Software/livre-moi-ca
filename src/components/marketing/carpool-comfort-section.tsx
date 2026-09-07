@@ -18,7 +18,7 @@ const COMFORT_POINTS = [
   {
     icon: Music,
     title: "Préférences de voyage personnalisées",
-    text: "Animaux acceptés ou non, véhicule non-fumeur, envie de jaser ou voyage calme, ambiance musicale ou silence — tout est indiqué sur chaque annonce.",
+    text: "Animaux acceptés ou non, véhicule non-fumeur, envie de jaser ou voyage calme, ambiance musicale ou silence — Tout est indiqué sur chaque annonce.",
   },
   {
     icon: Snowflake,

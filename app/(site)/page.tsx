@@ -36,7 +36,7 @@ export default function HomePage() {
             </h2>
             <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-orange-500" />
             <p className="mt-4 text-muted-foreground">
-              Indiquez votre départ, votre destination et la date — on vous met en
+              Indiquez votre départ, votre destination et la date — On vous met en
               relation avec un conducteur au Québec ou en Ontario.
             </p>
           </div>

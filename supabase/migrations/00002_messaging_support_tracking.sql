@@ -1,4 +1,4 @@
--- Livre-moi.ca — messagerie, tickets support, historique GPS
+-- Livre-moi.ca — Messagerie, tickets support, historique GPS
 -- Dépend de 00001_init.sql
 -- Exécuter après la migration initiale (SQL Editor ou supabase db push)
 
@@ -104,7 +104,7 @@ CREATE INDEX IF NOT EXISTS messages_conversation_created_idx
   ON public.messages (conversation_id, created_at);
 
 -- ---------------------------------------------------------------------------
--- Historique GPS (litiges / admin) — le live reste en Broadcast Realtime
+-- Historique GPS (litiges / admin) — Le live reste en Broadcast Realtime
 -- ---------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.trip_locations (

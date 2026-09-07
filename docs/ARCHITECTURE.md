@@ -26,7 +26,7 @@ Un compte = un `profiles.id` partout. Une base = une vérité.
 
 ## Répartition des fonctionnalités
 
-### Mobile (Expo) — épuré
+### Mobile (Expo) — Épuré
 - Publier un trajet (flux court)
 - Mes trajets / réservations
 - OTP / QR + photo colis
@@ -35,7 +35,7 @@ Un compte = un `profiles.id` partout. Une base = une vérité.
 - Ouvrir un ticket (« Signaler un problème »)
 - Push notifications
 
-### Web public (Next.js) — découverte
+### Web public (Next.js) — Découverte
 - Landing colis + covoiturage, FAQ, confiance
 - Recherche spatiale & réservation
 - Profil / tableau de bord léger (existant)
@@ -56,7 +56,7 @@ Un compte = un `profiles.id` partout. Une base = une vérité.
 | `trip_locations` | Points GPS persistés (litiges) ; le live utilise aussi Broadcast |
 | `support_tickets` + `ticket_messages` | Support / litiges |
 
-Les colis restent des `bookings` (`booking_type = PARCEL`) — pas de table `packages` séparée.
+Les colis restent des `bookings` (`booking_type = PARCEL`) — Pas de table `packages` séparée.
 
 ### Live GPS vs historique
 - **Live** : canal Realtime Broadcast `trip:{id}` (léger, pas d’écriture DB à chaque tick).
@@ -68,9 +68,9 @@ Les colis restent des `bookings` (`booking_type = PARCEL`) — pas de table `pac
 
 ## Ordre de construction recommandé
 
-1. **Schéma SQL** (`00002`, `00003`) — figé et appliqué sur Supabase.
+1. **Schéma SQL** (`00002`, `00003`) — Figé et appliqué sur Supabase.
 2. **Admin panel** — `Tailwindadmin-nextjs/packages/nextauth` (port `3001`, `npm run dev:admin`).
-3. **Expo** — cœur terrain (GPS, push, caméra) sur le même backend.
+3. **Expo** — Cœur terrain (GPS, push, caméra) sur le même backend.
 4. Paiements, avis UI, polish prod.
 
 ### Admin actuel
@@ -101,6 +101,6 @@ Plus tard : Turborepo avec `apps/web`, `apps/admin`, `apps/mobile`, `packages/sh
 
 ## Références SQL
 
-1. [`supabase/migrations/00001_init.sql`](../supabase/migrations/00001_init.sql) — cœur métier
-2. [`supabase/migrations/00002_messaging_support_tracking.sql`](../supabase/migrations/00002_messaging_support_tracking.sql) — messages, tickets, GPS
-3. [`supabase/migrations/00003_admin_policies.sql`](../supabase/migrations/00003_admin_policies.sql) — politiques lecture/écriture ADMIN
+1. [`supabase/migrations/00001_init.sql`](../supabase/migrations/00001_init.sql) — Cœur métier
+2. [`supabase/migrations/00002_messaging_support_tracking.sql`](../supabase/migrations/00002_messaging_support_tracking.sql) — Messages, tickets, GPS
+3. [`supabase/migrations/00003_admin_policies.sql`](../supabase/migrations/00003_admin_policies.sql) — Politiques lecture/écriture ADMIN

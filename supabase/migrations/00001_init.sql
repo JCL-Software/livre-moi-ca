@@ -1,4 +1,4 @@
--- NordTrajet — schéma initial (Supabase + PostGIS)
+-- NordTrajet — Schéma initial (Supabase + PostGIS)
 -- Exécuter dans le SQL Editor ou via `supabase db push`
 
 CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA extensions;

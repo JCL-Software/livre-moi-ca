@@ -21,7 +21,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Livre-moi.ca Admin",
-  description: "Administration Livre-moi.ca — trajets, litiges, utilisateurs",
+  description: "Administration Livre-moi.ca — Trajets, litiges, utilisateurs",
 };
 
 export default async function RootLayout({

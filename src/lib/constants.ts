@@ -14,10 +14,10 @@ export const BRAND_BLACK = "#020617";
 export const QUEBEC_VIEWBOX = "-81.5,45.0,-70.0,50.5";
 
 export const PARCEL_LABELS: Record<ParcelSize, string> = {
-  SMALL: "Petit — enveloppe ou boîte à chaussures",
-  MEDIUM: "Moyen — carton standard",
-  LARGE: "Grand — coffre partiel",
-  EXTRA_LARGE: "Très grand — coffre plein",
+  SMALL: "Petit — Enveloppe ou boîte à chaussures",
+  MEDIUM: "Moyen — Carton standard",
+  LARGE: "Grand — Coffre partiel",
+  EXTRA_LARGE: "Très grand — Coffre plein",
 };
 
 export const BOOKING_STATUS_LABELS: Record<string, string> = {
