@@ -39,12 +39,12 @@ const pathVariants = {
 };
 
 const DEFAULT_LINE_COLORS = [
-  "#1e3a5f",
-  "#f97316",
-  "#1a4a7a",
-  "#94a3b8",
-  "#ea580c",
-  "#0d2d4f",
+  "#000000",
+  "#5e5e5e",
+  "#1a1a1a",
+  "#c6c6c6",
+  "#9b9b9b",
+  "#e8e8e8",
 ];
 
 const SVG = ({

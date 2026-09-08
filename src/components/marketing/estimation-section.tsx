@@ -1,0 +1,60 @@
+"use client";
+
+import { Check } from "lucide-react";
+import { SearchForm } from "@/components/search/search-form";
+
+const BENEFITS = [
+  "Suivi en direct",
+  "Chat intégré avec le conducteur",
+  "Photo et confirmation à la remise",
+];
+
+export function EstimationSection() {
+  return (
+    <section
+      id="estimation"
+      className="section-muted scroll-mt-20"
+    >
+      <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+          <div className="max-w-xl">
+            <p className="text-sm font-medium text-neutral-500">
+              Trouvez un trajet
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
+              Votre colis a besoin d&apos;un trajet?
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-neutral-600 md:text-lg dark:text-neutral-400">
+              Indiquez simplement où votre colis doit partir, où il doit arriver
+              et l&apos;espace dont il a besoin. Découvrez ensuite les trajets
+              disponibles près de chez vous.
+            </p>
+
+            <ul className="mt-8 space-y-3">
+              {BENEFITS.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center gap-3 text-sm font-medium text-neutral-700 md:text-base dark:text-neutral-300"
+                >
+                  <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-black/5 md:p-7 dark:bg-neutral-900 dark:ring-white/10">
+            <SearchForm
+              appearance="navy"
+              defaultType="PARCEL"
+              showTypeToggle={false}
+              submitLabel="Voir les trajets disponibles"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

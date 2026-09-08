@@ -11,7 +11,7 @@ type Tab = {
 };
 
 const defaultActiveClass =
-  "bg-orange-500 shadow-lg shadow-orange-500/25 dark:bg-orange-500 dark:shadow-orange-500/20";
+  "bg-black dark:bg-white";
 
 export const AnimatedTabs = ({
   tabs,
@@ -69,8 +69,8 @@ export const AnimatedTabs = ({
                 className={cn(
                   "relative block font-semibold",
                   isActive
-                    ? "text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100",
+                    ? "text-white dark:text-black"
+                    : "text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white",
                 )}
               >
                 {tab.title}

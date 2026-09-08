@@ -7,13 +7,17 @@ type BrandLogoProps = {
   className?: string;
   priority?: boolean;
   showWordmark?: boolean;
+  variant?: "light" | "dark";
 };
 
 export function BrandLogo({
   className,
   priority = false,
   showWordmark = true,
+  variant = "dark",
 }: BrandLogoProps) {
+  const isLight = variant === "light";
+
   return (
     <Link
       href="/"
@@ -29,9 +33,13 @@ export function BrandLogo({
         className="h-9 w-9 rounded-lg object-contain transition-transform group-hover:scale-105"
       />
       {showWordmark && (
-        <span className="font-space text-lg font-bold text-slate-800 dark:text-white">
-          Livre-moi
-          <span className="text-orange-500 dark:text-orange-400">.ca</span>
+        <span
+          className={cn(
+            "text-xl font-semibold tracking-tight",
+            isLight ? "text-white" : "text-black dark:text-white",
+          )}
+        >
+          Livre-moi.ca
         </span>
       )}
     </Link>

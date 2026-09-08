@@ -33,12 +33,14 @@ const STEPS = [
 
 export function CarpoolOfferHowSection() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-      <SectionHeader
-        badge="Comment ça marche"
-        title="En quatre étapes simples."
-      />
-      <StepsGrid steps={STEPS} />
+    <section className="section-plain py-16 md:py-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHeader
+          badge="Comment ça marche"
+          title="En quatre étapes simples."
+        />
+        <StepsGrid steps={STEPS} />
+      </div>
     </section>
   );
 }

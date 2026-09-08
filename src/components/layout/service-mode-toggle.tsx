@@ -24,10 +24,10 @@ export function ServiceModeToggle({
   return (
     <div
       className={cn(
-        "inline-flex shrink-0 rounded-xl p-1 ring-1 backdrop-blur-sm",
+        "inline-flex shrink-0 rounded-full p-1 ring-1",
         variant === "hero"
-          ? "bg-white/10 ring-white/15"
-          : "bg-slate-100 ring-slate-200 dark:bg-slate-900 dark:ring-slate-700",
+          ? "bg-[#F3F3F3] ring-black/10 dark:bg-white/8 dark:ring-white/15"
+          : "bg-white/10 ring-white/20",
         className,
       )}
       role="tablist"
@@ -44,17 +44,17 @@ export function ServiceModeToggle({
             aria-label={label}
             title={label}
             className={cn(
-              "inline-flex items-center justify-center rounded-lg font-extrabold transition-all duration-200",
+              "inline-flex items-center justify-center rounded-full font-semibold transition-all duration-200",
               iconOnly
                 ? "h-9 w-9"
                 : "gap-2 px-4 py-2 text-sm sm:px-5 sm:text-base",
               variant === "hero"
                 ? active
-                  ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
-                  : "text-orange-100 hover:bg-white/10 hover:text-white"
+                  ? "bg-black text-white"
+                  : "text-[#5E5E5E] hover:bg-white hover:text-black dark:text-neutral-300 dark:hover:bg-white/10 dark:hover:text-white"
                 : active
-                  ? "bg-orange-500 text-white shadow-md shadow-orange-500/25"
-                  : "text-slate-600 hover:bg-white hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white",
+                  ? "bg-white text-black"
+                  : "text-white/80 hover:bg-white/10 hover:text-white",
             )}
           >
             <Icon className="h-4 w-4 shrink-0" />

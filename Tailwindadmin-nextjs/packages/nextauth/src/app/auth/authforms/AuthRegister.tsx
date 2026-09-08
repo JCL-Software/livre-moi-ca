@@ -74,7 +74,10 @@ const AuthRegister = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button className="w-full" type="submit">
+        <Button
+          className="w-full bg-orange-500 text-white hover:bg-orange-600"
+          type="submit"
+        >
           Sign Up
         </Button>
       </form>

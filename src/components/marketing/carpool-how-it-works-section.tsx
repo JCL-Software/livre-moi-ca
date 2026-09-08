@@ -68,7 +68,8 @@ const DRIVER_STEPS = [
 
 export function CarpoolHowItWorksSection() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+    <section className="section-plain py-16 md:py-20">
+      <div className="mx-auto max-w-6xl px-4">
       <SectionHeader
         badge="Comment ça marche"
         title="Comment voyager avec Livre-moi.ca ?"
@@ -89,10 +90,11 @@ export function CarpoolHowItWorksSection() {
             content: <StepsGrid steps={DRIVER_STEPS} />,
           },
         ]}
-        containerClassName="mx-auto justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-1.5 dark:border-slate-700 dark:bg-slate-900"
-        tabClassName="px-5 py-2.5 text-sm font-bold sm:text-base"
+        containerClassName="mx-auto justify-center gap-1.5 rounded-lg bg-[#F6F6F6] p-1.5 dark:bg-neutral-900"
+        tabClassName="rounded-md px-5 py-2.5 text-sm font-medium sm:text-base"
         layoutId="how-it-works-covoiturage-tab"
       />
+      </div>
     </section>
   );
 }

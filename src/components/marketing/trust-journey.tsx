@@ -18,7 +18,7 @@ const JOURNEY_STEPS = [
     icon: BellRing,
     title: "Demande acceptée",
     text: "Recevez une confirmation dès qu'un conducteur prend votre colis en charge.",
-    accent: "text-orange-600 dark:text-orange-300",
+    accent: "text-black dark:text-white",
     preview: "accepted" as const,
   },
   {
@@ -26,7 +26,7 @@ const JOURNEY_STEPS = [
     icon: RouteIcon,
     title: "Suivi en direct",
     text: "Suivez la progression du trajet et échangez avec le conducteur dans le chat intégré.",
-    accent: "text-sky-700 dark:text-sky-300",
+    accent: "text-black dark:text-white",
     preview: "tracking" as const,
   },
   {
@@ -34,7 +34,7 @@ const JOURNEY_STEPS = [
     icon: GalleryHorizontal,
     title: "Photos à chaque étape",
     text: "L'état du colis est photographié lors de la prise en charge et de la remise.",
-    accent: "text-violet-700 dark:text-violet-300",
+    accent: "text-black dark:text-white",
     preview: "photos" as const,
   },
   {
@@ -42,7 +42,7 @@ const JOURNEY_STEPS = [
     icon: CircleCheckBig,
     title: "Livraison confirmée",
     text: "Le destinataire valide la réception avec un code ou un QR code généré par l'application.",
-    accent: "text-emerald-700 dark:text-emerald-300",
+    accent: "text-black dark:text-white",
     preview: "confirm" as const,
   },
 ];
@@ -131,7 +131,7 @@ export function TrustJourney() {
       <ol className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-[12%] right-[12%] top-[18px] hidden h-0.5 bg-orange-500 lg:block"
+          className="pointer-events-none absolute left-[12%] right-[12%] top-[18px] hidden h-0.5 bg-black lg:block"
         />
         {JOURNEY_STEPS.map(({ step, icon: Icon, title, text, accent, preview: cardPreview }) => {
           const isActive = highlighted === cardPreview;
@@ -150,14 +150,19 @@ export function TrustJourney() {
               <article
                 aria-current={isActive ? "step" : undefined}
                 className={cn(
-                  "feature-card flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm before:hidden dark:border-slate-800 dark:bg-slate-900",
+                  "feature-card flex h-full flex-col rounded-lg border border-neutral-200 bg-white p-4 shadow-sm before:hidden dark:border-neutral-800 dark:bg-neutral-900",
                   isActive && "is-active",
                 )}
               >
-                <span className={cn("mb-3 inline-flex", accent)}>
-                  <Icon size={22} animate={isActive} loop={isActive} animateOnHover animateOnView />
+                <span
+                  className={cn(
+                    "mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] dark:bg-neutral-800",
+                    accent,
+                  )}
+                >
+                  <Icon size={22} animate={isActive} animateOnHover />
                 </span>
-                <h3 className="font-space text-base font-bold text-slate-950 dark:text-white">
+                <h3 className="text-base font-semibold text-black dark:text-white">
                   {title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">

@@ -8,7 +8,7 @@ const FORMATS = [
     icon: Briefcase,
     ideal: "Documents, clés, petits accessoires, vêtements légers et petits appareils électroniques.",
     placement: "Se glisse facilement sous un siège ou dans un petit espace du coffre.",
-    color: "text-sky-700 dark:text-sky-300",
+    color: "text-black dark:text-white",
   },
   {
     size: "M",
@@ -16,7 +16,7 @@ const FORMATS = [
     icon: Backpack,
     ideal: "Livres, vêtements, petits colis Marketplace, accessoires et objets du quotidien.",
     placement: "Peut être placé dans le coffre ou sur un siège, selon l'espace disponible.",
-    color: "text-orange-700 dark:text-orange-300",
+    color: "text-black dark:text-white",
   },
   {
     size: "L",
@@ -24,7 +24,7 @@ const FORMATS = [
     icon: Package,
     ideal: "Petits meubles démontés, outils, équipement de plein air et cartons de déménagement légers.",
     placement: "Nécessite un espace libre dans le coffre ou dans l'habitacle.",
-    color: "text-violet-700 dark:text-violet-300",
+    color: "text-black dark:text-white",
   },
   {
     size: "XL",
@@ -32,13 +32,14 @@ const FORMATS = [
     icon: Container,
     ideal: "Équipement sportif, objets volumineux, plusieurs cartons ou articles nécessitant une grande partie du coffre.",
     placement: "À confirmer directement avec le conducteur avant la réservation.",
-    color: "text-emerald-700 dark:text-emerald-300",
+    color: "text-black dark:text-white",
   },
 ];
 
 export function ParcelFormatsSection() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+    <section className="section-plain py-16 md:py-20">
+      <div className="mx-auto max-w-6xl px-4">
       <SectionHeader
         badge="Formats acceptés"
         title="Quels formats pouvez-vous faire livrer ?"
@@ -49,17 +50,19 @@ export function ParcelFormatsSection() {
         {FORMATS.map(({ size, label, icon: Icon, ideal, placement, color }) => (
           <article
             key={size}
-            className="feature-card flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm before:hidden dark:border-slate-800 dark:bg-slate-900"
+            className="feature-card flex flex-col rounded-lg border border-neutral-200 bg-card p-6 shadow-sm before:hidden dark:border-white/10 dark:bg-card"
           >
             <div className="mb-4 flex items-start justify-between gap-3">
-              <span className={`inline-flex ${color}`}>
-                <Icon className="h-6 w-6" />
+              <span
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] dark:bg-neutral-800 ${color}`}
+              >
+                <Icon className="h-5 w-5" />
               </span>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-extrabold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              <span className="rounded-full bg-[#F3F3F3] px-3 py-1 text-xs font-semibold text-black dark:bg-white/10 dark:text-neutral-300">
                 Format {size}
               </span>
             </div>
-            <h3 className="font-space text-lg font-bold text-slate-950 dark:text-white">
+            <h3 className="text-lg font-semibold text-black dark:text-white">
               {label}
             </h3>
             <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
@@ -80,11 +83,12 @@ export function ParcelFormatsSection() {
         ))}
       </div>
 
-      <p className="mt-8 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-medium text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+      <p className="mt-8 rounded-xl border border-neutral-200 bg-[#F6F6F6] px-4 py-3 text-center text-sm font-medium text-neutral-800 dark:border-white/10 dark:bg-neutral-900 dark:text-neutral-200">
         Les matières dangereuses, les armes, les produits illégaux, les articles mal
         emballés et les denrées périssables qui ne peuvent pas être transportées de
         façon sécuritaire ne sont pas acceptés.
       </p>
+      </div>
     </section>
   );
 }

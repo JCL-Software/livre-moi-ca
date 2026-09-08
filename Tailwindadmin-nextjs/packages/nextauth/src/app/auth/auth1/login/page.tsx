@@ -23,9 +23,6 @@ const Login = () => {
               <div className="flex h-screen items-center px-3 lg:justify-start justify-center">
                 <div className="max-w-[420px] w-full mx-auto">
                   <h3 className="text-2xl font-bold">Admin Livre-moi.ca</h3>
-                  <p className="text-darklink text-sm font-medium">
-                    Connexion sécurisée via Supabase (rôle ADMIN requis)
-                  </p>
                   <SocialButtons title="ou continuer avec" />
                   <AuthLogin />
                 </div>

@@ -34,12 +34,12 @@ function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md border-slate-200 shadow-xl shadow-slate-900/10">
+    <Card className="w-full max-w-md border-[#E8E8E8] shadow-none">
       <CardHeader>
-        <p className="inline-flex w-fit rounded-full bg-orange-100 px-3 py-1 text-xs font-extrabold text-orange-700">
+        <p className="text-sm font-medium text-neutral-500">
           Compte
         </p>
-        <CardTitle className="font-space text-2xl font-extrabold">Connexion</CardTitle>
+        <CardTitle className="text-2xl font-bold tracking-tight">Connexion</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <form className="space-y-3" onSubmit={onSubmit}>
@@ -86,7 +86,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex justify-center bg-[#fffaf1] px-4 py-16 dark:bg-background">
+    <div className="flex justify-center bg-[#F6F6F6] px-4 py-16 dark:bg-background">
       <Suspense>
         <LoginForm />
       </Suspense>

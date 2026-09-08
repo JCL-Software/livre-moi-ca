@@ -86,12 +86,16 @@ const AuthLogin = () => {
           </div>
           <Link
             href={"/auth/auth1/forgot-password"}
-            className="text-primary text-sm font-medium"
+            className="text-sm font-medium text-orange-500 hover:text-orange-600"
           >
             Mot de passe oublié ?
           </Link>
         </div>
-        <Button className="w-full" type="submit" disabled={loading}>
+        <Button
+          className="w-full bg-orange-500 text-white hover:bg-orange-600"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Connexion…" : "Se connecter"}
         </Button>
       </form>

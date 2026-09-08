@@ -14,9 +14,19 @@ type Props = {
   placeholder?: string;
   value: GeoPoint | null;
   onChange: (value: GeoPoint | null) => void;
+  labelClassName?: string;
+  inputClassName?: string;
 };
 
-export function AddressAutocomplete({ id, label, placeholder, value, onChange }: Props) {
+export function AddressAutocomplete({
+  id,
+  label,
+  placeholder,
+  value,
+  onChange,
+  labelClassName,
+  inputClassName,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState(value?.name ?? "");
   const [results, setResults] = useState<GeoPoint[]>([]);
@@ -68,7 +78,7 @@ export function AddressAutocomplete({ id, label, placeholder, value, onChange }:
 
   return (
     <div ref={containerRef} className="relative space-y-1.5">
-      <label htmlFor={id} className="text-sm font-medium">
+      <label htmlFor={id} className={cn("text-sm font-medium", labelClassName)}>
         {label}
       </label>
       <div className="relative">
@@ -78,7 +88,7 @@ export function AddressAutocomplete({ id, label, placeholder, value, onChange }:
           value={query}
           autoComplete="off"
           placeholder={placeholder}
-          className="pl-9"
+          className={cn("pl-9", inputClassName)}
           onFocus={() => setOpen(true)}
           onChange={(event) => {
             setQuery(event.target.value);

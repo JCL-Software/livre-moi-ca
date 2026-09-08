@@ -25,7 +25,7 @@ const REASONS = [
 
 export function DeliverWhySection() {
   return (
-    <section className="border-b border-slate-200 bg-[#fffaf1] py-16 dark:border-slate-800 dark:bg-slate-950 md:py-20">
+    <section className="section-muted py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           badge="Pourquoi livrer"

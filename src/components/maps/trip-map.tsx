@@ -60,7 +60,7 @@ export default function TripMap({ origin, destination, route, stops = [] }: Prop
       <Marker position={[destination.lat, destination.lng]} icon={pin}>
         <Popup>{destination.name}</Popup>
       </Marker>
-      <Polyline positions={positions} pathOptions={{ color: "#f97316", weight: 4 }} />
+      <Polyline positions={positions} pathOptions={{ color: "#000000", weight: 4 }} />
       <FitBounds points={[origin, destination, ...stops]} />
     </MapContainer>
   );

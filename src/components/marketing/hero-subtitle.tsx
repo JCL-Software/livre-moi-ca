@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 export const heroSubtitleClassName =
-  "max-w-xl text-base font-semibold leading-7 text-orange-100 sm:text-lg";
+  "max-w-xl text-base font-normal leading-7 text-neutral-600 sm:text-lg dark:text-neutral-400";
 
 export function HeroSubtitle({
   children,

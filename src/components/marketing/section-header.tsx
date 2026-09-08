@@ -10,61 +10,30 @@ type SectionHeaderProps = {
 };
 
 export function SectionHeader({
-  badge,
   title,
   subtitle,
   align = "center",
-  inlineBadge = false,
   className,
 }: SectionHeaderProps) {
   return (
     <div
       className={cn(
-        "mb-10 w-full max-w-6xl",
-        inlineBadge && "max-w-4xl",
-        align === "center" && "text-center md:mx-auto",
+        "mb-10 w-full",
+        align === "center" && "mx-auto text-center",
         className,
       )}
     >
-      {badge && inlineBadge ? (
-        <div
-          className={cn(
-            "flex flex-wrap items-center gap-3",
-            align === "center" && "justify-center",
-          )}
-        >
-          <p className="inline-flex shrink-0 items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-extrabold text-orange-700 dark:bg-orange-950/60 dark:text-orange-300">
-            {badge}
-          </p>
-          <h2 className="font-space text-[clamp(1.15rem,0.7rem+1.8vw,2.1rem)] font-extrabold tracking-tight text-slate-950 whitespace-nowrap dark:text-white max-md:whitespace-normal max-md:leading-tight">
-            {title}
-          </h2>
-        </div>
-      ) : (
-        <>
-          {badge && (
-            <p className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-extrabold text-orange-700 dark:bg-orange-950/60 dark:text-orange-300">
-              {badge}
-            </p>
-          )}
-          <h2
-            className={cn(
-              "font-space text-[clamp(1.2rem,0.75rem+2.1vw,2.2rem)] font-extrabold tracking-tight text-slate-950 whitespace-nowrap dark:text-white max-md:whitespace-normal max-md:leading-tight",
-              badge && "mt-5",
-            )}
-          >
-            {title}
-          </h2>
-        </>
-      )}
+      <h2 className="text-[clamp(1.45rem,0.95rem+2.2vw,2.5rem)] font-semibold leading-tight tracking-tight text-black text-balance dark:text-white">
+        {title}
+      </h2>
       <div
         className={cn(
-          "mt-5 h-1 w-20 rounded-full bg-orange-500",
+          "mt-5 h-px w-16 bg-black",
           align === "center" && "mx-auto",
         )}
       />
       {subtitle && (
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+        <p className="mt-4 text-base leading-relaxed text-[#5E5E5E] md:text-lg dark:text-neutral-400">
           {subtitle}
         </p>
       )}

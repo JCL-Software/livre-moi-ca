@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,12 +37,10 @@ export function ThemeToggle({ className }: { className?: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className={triggerClass} aria-label="Changer le thème">
-          {theme === "dark" ? (
+          {resolvedTheme === "dark" ? (
             <Moon className="h-4 w-4" />
-          ) : theme === "light" ? (
-            <Sun className="h-4 w-4" />
           ) : (
-            <Monitor className="h-4 w-4" />
+            <Sun className="h-4 w-4" />
           )}
         </Button>
       </DropdownMenuTrigger>
@@ -54,10 +52,6 @@ export function ThemeToggle({ className }: { className?: string }) {
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           <Moon className="h-4 w-4" />
           Sombre
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          <Monitor className="h-4 w-4" />
-          Système
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

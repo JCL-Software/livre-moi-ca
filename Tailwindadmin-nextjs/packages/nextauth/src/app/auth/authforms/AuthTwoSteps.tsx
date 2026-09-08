@@ -20,7 +20,7 @@ const AuthTwoSteps = () => {
             <Input type="text" className="text-center" />
           </div>
         </div>
-        <Button className="w-full">
+        <Button className="w-full bg-orange-500 text-white hover:bg-orange-600">
           Verify My Account
         </Button>
       </form>

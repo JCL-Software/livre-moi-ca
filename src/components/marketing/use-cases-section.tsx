@@ -9,22 +9,22 @@ import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { SectionHeader } from "@/components/marketing/section-header";
 import { cn } from "@/lib/utils";
 
-const LINE_COLORS = ["#1e3a5f", "#f97316", "#1a4a7a", "#cbd5e1", "#ea580c"];
+const LINE_COLORS = ["#000000", "#5e5e5e", "#1a1a1a", "#c6c6c6", "#9b9b9b"];
 
 function RoutePreview() {
   return (
-    <div className="flex h-28 items-center overflow-hidden rounded-xl bg-slate-50 px-3 dark:bg-slate-800/70">
+    <div className="flex h-28 items-center overflow-hidden rounded-xl bg-[#F6F6F6] px-3 dark:bg-neutral-800/70">
       <svg viewBox="0 0 320 80" className="h-full w-full" aria-hidden="true">
         <path
           d="M28 54 C 90 14, 140 70, 198 30 S 268 18, 292 42"
           fill="none"
-          stroke="#1e3a5f"
+          stroke="#000000"
           strokeWidth="2"
           strokeDasharray="5 7"
           opacity="0.35"
         />
-        <circle cx="28" cy="54" r="7" fill="#f97316" />
-        <circle cx="292" cy="42" r="7" fill="#1e3a5f" />
+        <circle cx="28" cy="54" r="7" fill="#000000" />
+        <circle cx="292" cy="42" r="7" fill="#5e5e5e" />
       </svg>
     </div>
   );
@@ -82,7 +82,7 @@ function HoverBentoItem({
         {hoveredIndex === index ? (
           <motion.span
             layoutId="use-cases-hover"
-            className="absolute -inset-1 block rounded-3xl bg-orange-500/10"
+            className="absolute -inset-1 block rounded-xl bg-black/5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.18 } }}
             exit={{ opacity: 0, transition: { duration: 0.18, delay: 0.12 } }}
@@ -98,13 +98,13 @@ export function UseCasesSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="relative overflow-hidden border-y border-slate-200 bg-[#fdfaf5] py-16 dark:border-slate-800 dark:bg-slate-950 md:py-20">
+    <section className="section-muted relative overflow-hidden py-16 md:py-20">
       <BackgroundLines
         className="pointer-events-none absolute inset-0 h-full min-h-full w-full bg-transparent md:h-full"
         svgOptions={{ duration: 16 }}
         colors={LINE_COLORS}
       >
-        <div className="absolute inset-0 bg-[#fdfaf5]/88 dark:bg-slate-950/88" />
+        <div className="absolute inset-0 bg-[#F6F6F6]/88 dark:bg-neutral-950/88" />
       </BackgroundLines>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4">
@@ -131,7 +131,7 @@ export function UseCasesSection() {
                   className="h-full"
                   header={useCase.header}
                   icon={
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy dark:bg-orange-500/10 dark:text-orange-300">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
                       <Icon className="h-5 w-5 transition duration-200 group-hover/bento:-translate-y-0.5" />
                     </span>
                   }
@@ -139,7 +139,7 @@ export function UseCasesSection() {
                   description={
                     <>
                       <span>{useCase.description}</span>
-                      <span className="mt-3 flex items-center gap-1 text-sm font-bold text-orange-600 opacity-0 transition duration-200 group-hover/bento:translate-x-0.5 group-hover/bento:opacity-100 dark:text-orange-400">
+                      <span className="mt-3 flex items-center gap-1 text-sm font-semibold text-black opacity-0 transition duration-200 group-hover/bento:translate-x-0.5 group-hover/bento:opacity-100 dark:text-white">
                         Publier un colis
                         <ArrowRight className="h-3.5 w-3.5" />
                       </span>

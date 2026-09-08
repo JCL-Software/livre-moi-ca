@@ -11,7 +11,7 @@ const PROFILES = [
 
 export function DeliverProfilesSection() {
   return (
-    <section className="border-y border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-950 md:py-20">
+    <section className="section-muted py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           badge="Qui peut livrer"
@@ -22,14 +22,14 @@ export function DeliverProfilesSection() {
           {PROFILES.map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="feature-card flex flex-col items-center rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-800 dark:bg-slate-900"
+              className="feature-card flex flex-col items-center rounded-lg border border-neutral-200 bg-white p-6 text-center shadow-sm before:hidden dark:border-white/10 dark:bg-neutral-900"
             >
               <AnimateIcon animateOnView className="mb-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400">
-                  <Icon className="h-6 w-6" />
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
+                  <Icon className="h-5 w-5" />
                 </span>
               </AnimateIcon>
-              <p className="font-space text-sm font-bold text-slate-950 dark:text-white md:text-base">
+              <p className="text-sm font-semibold text-black dark:text-white md:text-base">
                 {label}
               </p>
             </div>

@@ -72,22 +72,19 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
   const { badge, title, subtitle, description, points } = CONTENT[variant];
 
   const card = (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-200 via-sky-100 to-cyan-200 p-5 shadow-sm ring-1 ring-sky-200 dark:from-sky-950 dark:via-slate-900 dark:to-cyan-950 dark:ring-sky-900 md:p-7 lg:p-8">
-      <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-cyan-300/35 blur-3xl dark:bg-cyan-500/20" />
-      <div className="absolute bottom-0 left-0 h-28 w-28 rounded-full bg-sky-300/45 blur-3xl dark:bg-sky-500/20" />
-
+    <div className="relative overflow-hidden rounded-lg bg-[#F6F6F6] p-5 shadow-sm ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/10 md:p-7 lg:p-8">
       <div className="relative grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-6">
         <div>
-          <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-white/70 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-slate-950/50 dark:text-emerald-300">
+          <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-2.5 py-0.5 text-[11px] font-semibold text-black dark:border-white/15 dark:bg-black dark:text-white">
             <Leaf className="h-3 w-3" />
             {badge}
           </div>
 
           <div className="flex items-center gap-2">
-            <h2 className="font-space text-2xl font-black italic tracking-tight text-slate-950 dark:text-slate-50 md:text-3xl">
+            <h2 className="text-2xl font-semibold tracking-tight text-black dark:text-white md:text-3xl">
               {title}
             </h2>
-            <Leaf className="h-5 w-5 shrink-0 rotate-12 text-emerald-500 dark:text-emerald-400 md:h-6 md:w-6" />
+            <Leaf className="h-5 w-5 shrink-0 text-black dark:text-white md:h-6 md:w-6" />
           </div>
 
           <p className="mt-2.5 max-w-md text-sm leading-6 text-slate-700 dark:text-slate-300 md:text-[15px]">
@@ -104,9 +101,9 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
           {points.map((point) => (
             <div
               key={point.title}
-              className="rounded-xl border border-white bg-white/80 p-3.5 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-950/60 md:p-4"
+              className="rounded-lg border border-white bg-white p-3.5 shadow-sm dark:border-neutral-700 dark:bg-black md:p-4"
             >
-              <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-300">
+              <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#F3F3F3] text-black dark:bg-white/10 dark:text-white">
                 <point.icon className="h-4 w-4" />
               </div>
               <h3 className="text-xs font-extrabold text-slate-950 dark:text-slate-50 md:text-sm">
@@ -123,7 +120,7 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
   );
 
   return (
-    <section className="bg-white py-10 dark:bg-slate-950 md:py-14">
+    <section className="bg-transparent py-10 md:py-14">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">{card}</div>
     </section>
   );

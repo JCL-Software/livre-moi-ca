@@ -21,14 +21,14 @@ import { OSM_TILE_ATTRIBUTION, OSM_TILE_URL } from "@/lib/geo/map-tiles";
 
 const cityIcon = L.divIcon({
   className: "",
-  html: `<span style="display:block;width:10px;height:10px;border-radius:9999px;background:#1e3a5f;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25)"></span>`,
+  html: `<span style="display:block;width:10px;height:10px;border-radius:9999px;background:#000;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25)"></span>`,
   iconSize: [10, 10],
   iconAnchor: [5, 5],
 });
 
 const activeCityIcon = L.divIcon({
   className: "",
-  html: `<span style="display:block;width:14px;height:14px;border-radius:9999px;background:#f97316;border:2px solid #fff;box-shadow:0 2px 8px rgba(249,115,22,.45)"></span>`,
+  html: `<span style="display:block;width:14px;height:14px;border-radius:9999px;background:#000;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25)"></span>`,
   iconSize: [14, 14],
   iconAnchor: [7, 7],
 });
@@ -92,7 +92,7 @@ export default function CorridorRoutesMap({
             key={route.label}
             positions={points}
             pathOptions={{
-              color: isActive ? "#f97316" : "#94a3b8",
+              color: isActive ? "#000000" : "#c6c6c6",
               weight: isActive ? 5 : 2,
               opacity: isActive ? 1 : 0.45,
               dashArray: isActive ? undefined : "6 8",

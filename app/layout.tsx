@@ -1,9 +1,15 @@
-import type { CSSProperties } from "react";
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import { Providers } from "@/components/layout/providers";
 import { RegisterServiceWorker } from "@/components/pwa/register-sw";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -21,8 +27,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f97316" },
-    { media: "(prefers-color-scheme: dark)", color: "#020617" },
+    { media: "(prefers-color-scheme: light)", color: "#000000" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -33,17 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="fr-CA"
       suppressHydrationWarning
-      className="h-full antialiased"
-      style={
-        {
-          "--font-body":
-            '"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif',
-          "--font-display":
-            '"Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif',
-        } as CSSProperties
-      }
+      className={`${inter.variable} ${inter.className} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         <Providers>
           <RegisterServiceWorker />
           {children}

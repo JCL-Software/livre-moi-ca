@@ -1,9 +1,19 @@
 import { TrustJourney } from "@/components/marketing/trust-journey";
 import { SectionHeader } from "@/components/marketing/section-header";
 
-export function TrustSection() {
+export function TrustSection({
+  tone = "muted",
+}: {
+  tone?: "muted" | "plain";
+}) {
   return (
-    <section className="border-y border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-950 md:py-20">
+    <section
+      className={
+        tone === "muted"
+          ? "section-muted py-16 md:py-20"
+          : "section-plain py-16 md:py-20"
+      }
+    >
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           badge="Dans l'application"

@@ -2,14 +2,13 @@ import type { ParcelSize } from "@/lib/types";
 
 export const APP_NAME = "Livre-moi.ca";
 export const APP_TAGLINE = "Covoiturage et livraison de colis au Québec et en Ontario";
-/** Identique Liquid-Action */
-export const BRAND_ORANGE = "#f97316";
-export const BRAND_ORANGE_DARK = "#ea580c";
-export const BRAND_NAVY = "#1e3a5f";
-export const BRAND_NAVY_MID = "#1a4a7a";
-export const BRAND_NAVY_DEEP = "#0d2d4f";
-export const BRAND_CREAM = "#fffaf1";
-export const BRAND_BLACK = "#020617";
+export const BRAND_ORANGE = "#000000";
+export const BRAND_ORANGE_DARK = "#1a1a1a";
+export const BRAND_NAVY = "#000000";
+export const BRAND_NAVY_MID = "#1a1a1a";
+export const BRAND_NAVY_DEEP = "#000000";
+export const BRAND_CREAM = "#f6f6f6";
+export const BRAND_BLACK = "#000000";
 
 export const QUEBEC_VIEWBOX = "-81.5,45.0,-70.0,50.5";
 

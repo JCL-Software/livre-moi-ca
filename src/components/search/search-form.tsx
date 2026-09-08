@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Package, User } from "lucide-react";
 import { AddressAutocomplete } from "@/components/search/address-autocomplete";
 import { Button } from "@/components/ui/button";
+import { Button as MovingBorderButton } from "@/components/ui/moving-border";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,18 +20,23 @@ import { LUGGAGE_FILTER_LABELS, PARCEL_LABELS } from "@/lib/constants";
 import type { BookingType, GeoPoint, ParcelSize } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+const navyFieldClass =
+  "h-12 w-full rounded-lg border-transparent bg-white text-black shadow-none placeholder:text-neutral-400 transition-[border-color,box-shadow] duration-200 focus-visible:border-black focus-visible:ring-2 focus-visible:ring-black/10 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500 dark:focus-visible:border-white";
+
 export function SearchForm({
   compact = false,
   defaultType = "PARCEL",
   showTypeToggle = true,
   passengerExtras = false,
   submitLabel = "Rechercher un trajet",
+  appearance = "default",
 }: {
   compact?: boolean;
   defaultType?: BookingType;
   showTypeToggle?: boolean;
   passengerExtras?: boolean;
   submitLabel?: string;
+  appearance?: "default" | "navy";
 }) {
   const router = useRouter();
   const [origin, setOrigin] = useState<GeoPoint | null>(null);
@@ -82,13 +88,18 @@ export function SearchForm({
   }
 
   const isPassenger = type === "PASSENGER";
+  const isNavy = appearance === "navy";
+  const fieldLabelClass = isNavy ? "text-sm font-medium text-black dark:text-white" : undefined;
 
   return (
     <form
       onSubmit={onSubmit}
       className={cn(
-        "grid gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-900/10 md:grid-cols-12 md:p-6 dark:border-slate-700 dark:bg-slate-900",
-        compact && "shadow-sm",
+        "grid gap-4",
+        isNavy
+          ? "grid-cols-1"
+          : "rounded-xl border border-[#E8E8E8] bg-white p-4 md:grid-cols-12 md:p-6 dark:border-white/10 dark:bg-neutral-950",
+        compact && !isNavy && "shadow-sm",
       )}
     >
       {showTypeToggle && (
@@ -112,40 +123,61 @@ export function SearchForm({
         </div>
       )}
 
-      <div className="md:col-span-4">
+      <div className={cn(!isNavy && "md:col-span-4")}>
         <AddressAutocomplete
           id="origin"
-          label={isPassenger ? "Ville de départ" : "Le colis part de"}
+          label={
+            isNavy
+              ? "Départ"
+              : isPassenger
+                ? "Ville de départ"
+                : "Le colis part de"
+          }
           placeholder={isPassenger ? "Ville de départ…" : "Ville de départ…"}
           value={origin}
           onChange={setOrigin}
+          labelClassName={fieldLabelClass}
+          inputClassName={isNavy ? navyFieldClass : undefined}
         />
       </div>
-      <div className="md:col-span-4">
+      <div className={cn(!isNavy && "md:col-span-4")}>
         <AddressAutocomplete
           id="destination"
-          label={isPassenger ? "Ville d'arrivée" : "Le colis se rend à"}
+          label={
+            isNavy
+              ? "Destination"
+              : isPassenger
+                ? "Ville d'arrivée"
+                : "Le colis se rend à"
+          }
           placeholder={isPassenger ? "Ville d'arrivée…" : "Ville d'arrivée…"}
           value={destination}
           onChange={setDestination}
+          labelClassName={fieldLabelClass}
+          inputClassName={isNavy ? navyFieldClass : undefined}
         />
       </div>
-      <div className="space-y-1.5 md:col-span-2">
-        <Label htmlFor="date">{isPassenger ? "Date" : "Date souhaitée"}</Label>
+      <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
+        <Label htmlFor="date" className={fieldLabelClass}>
+          {isPassenger && !isNavy ? "Date" : "Date souhaitée"}
+        </Label>
         <Input
           id="date"
           type="date"
           value={date}
           min={new Date().toISOString().slice(0, 10)}
           onChange={(event) => setDate(event.target.value)}
+          className={isNavy ? navyFieldClass : undefined}
         />
       </div>
 
       {isPassenger ? (
-        <div className="space-y-1.5 md:col-span-2">
-          <Label htmlFor="seats">Nombre de places</Label>
+        <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
+          <Label htmlFor="seats" className={fieldLabelClass}>
+            Nombre de places
+          </Label>
           <Select value={seats} onValueChange={setSeats}>
-            <SelectTrigger id="seats">
+            <SelectTrigger id="seats" className={isNavy ? navyFieldClass : undefined}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -159,10 +191,12 @@ export function SearchForm({
         </div>
       ) : (
         <>
-          <div className="space-y-1.5 md:col-span-2">
-            <Label>Quel espace votre colis occupe-t-il?</Label>
+          <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
+            <Label className={fieldLabelClass}>
+              {isNavy ? "Format du colis" : "Quel espace votre colis occupe-t-il?"}
+            </Label>
             <Select value={size} onValueChange={(value) => setSize(value as ParcelSize)}>
-              <SelectTrigger>
+              <SelectTrigger className={isNavy ? cn(navyFieldClass, "w-full data-[size=default]:h-11") : undefined}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -174,10 +208,12 @@ export function SearchForm({
               </SelectContent>
             </Select>
           </div>
-          <p className="text-xs leading-relaxed text-slate-500 md:col-span-12 dark:text-slate-400">
-            En cas de doute, choisissez le format supérieur. Le conducteur pourra
-            confirmer l&apos;espace disponible avant d&apos;accepter.
-          </p>
+          {!isNavy && (
+            <p className="text-xs leading-relaxed text-slate-500 md:col-span-12 dark:text-slate-400">
+              En cas de doute, choisissez le format supérieur. Le conducteur pourra
+              confirmer l&apos;espace disponible avant d&apos;accepter.
+            </p>
+          )}
         </>
       )}
 
@@ -222,12 +258,29 @@ export function SearchForm({
         </>
       )}
 
-      {error && <p className="text-sm text-destructive md:col-span-12">{error}</p>}
+      {error && (
+        <p className={cn("text-sm text-destructive", !isNavy && "md:col-span-12")}>
+          {error}
+        </p>
+      )}
 
-      <div className="md:col-span-12">
-        <Button type="submit" className="w-full md:w-auto">
-          {submitLabel}
-        </Button>
+      <div className={cn(!isNavy && "md:col-span-12")}>
+        {isNavy ? (
+          <MovingBorderButton
+            type="submit"
+            borderRadius="0.5rem"
+            duration={6000}
+            containerClassName="h-12 w-full p-[1px] text-base"
+            borderClassName="h-16 w-16 bg-[radial-gradient(#000000_40%,transparent_60%)] opacity-40"
+            className="border-black/10 bg-black font-medium text-white hover:bg-neutral-800 dark:border-white/10 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+          >
+            {submitLabel}
+          </MovingBorderButton>
+        ) : (
+          <Button type="submit" className="w-full md:w-auto">
+            {submitLabel}
+          </Button>
+        )}
       </div>
     </form>
   );

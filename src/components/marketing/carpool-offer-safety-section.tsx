@@ -32,7 +32,7 @@ const SAFETY_POINTS = [
 
 export function CarpoolOfferSafetySection() {
   return (
-    <section className="border-y border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-950 md:py-20">
+    <section className="section-plain py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           badge="Sécurité"
@@ -43,18 +43,17 @@ export function CarpoolOfferSafetySection() {
           {SAFETY_POINTS.map(({ icon: Icon, title, text }) => (
             <div
               key={title}
-              className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-slate-800 dark:from-slate-900 dark:to-slate-950"
+              className="feature-card rounded-lg border border-neutral-200 bg-card p-6 shadow-sm dark:border-white/10 dark:bg-card"
             >
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-orange-500/5 transition-transform group-hover:scale-150" />
-              <AnimateIcon animateOnView className="relative mb-4">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E3A5F] text-orange-400">
+              <AnimateIcon animateOnView className="mb-4">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
                   <Icon className="h-5 w-5" />
                 </span>
               </AnimateIcon>
-              <h3 className="relative font-space text-lg font-bold text-slate-950 dark:text-white">
+              <h3 className="text-lg font-semibold text-black dark:text-white">
                 {title}
               </h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                 {text}
               </p>
             </div>

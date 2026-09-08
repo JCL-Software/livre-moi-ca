@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { APP_NAME, APP_TAGLINE, BRAND_BLACK, BRAND_ORANGE } from "@/lib/constants";
+import { APP_NAME, APP_TAGLINE, BRAND_BLACK } from "@/lib/constants";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     background_color: BRAND_BLACK,
-    theme_color: BRAND_ORANGE,
+    theme_color: BRAND_BLACK,
     lang: "fr-CA",
     icons: [
       { src: "/brand/icon-192.png", sizes: "192x192", type: "image/png" },
