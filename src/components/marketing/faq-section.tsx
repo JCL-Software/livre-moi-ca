@@ -8,29 +8,34 @@ import { SectionHeader } from "@/components/marketing/section-header";
 
 const FAQ_ITEMS = [
   {
-    question: "Comment se passe le point de rencontre pour récupérer le colis ?",
+    question: "Comment se passe le point de rencontre pour récupérer le colis?",
     answer:
-      "Les utilisateurs s'entendent via la messagerie sur un point de repère simple et accessible sur le trajet du conducteur (par exemple : le stationnement d'un Tim Hortons, d'un Petro-Canada ou une sortie familière le long de la 117).",
+      "L'expéditeur et le conducteur choisissent ensemble un endroit public, accessible et pratique. Il peut s'agir d'un stationnement, d'une station-service, d'un commerce ou d'un autre lieu sécuritaire.",
   },
   {
-    question: "Comment est fixé le prix de la livraison ?",
+    question: "Comment choisir le bon format de colis?",
     answer:
-      "Le prix est calculé en fonction de la distance parcourue et de la taille du colis. Il s'agit d'une participation aux frais de déplacement, bien plus économique qu'une livraison express traditionnelle.",
+      "Choisissez le format selon l'espace réellement occupé par votre colis. En cas de doute, sélectionnez le format supérieur et ajoutez les dimensions ou une photo dans votre demande.",
   },
   {
-    question: "Que faire si le destinataire n'est pas présent à l'arrivée ?",
+    question: "Puis-je envoyer un colis sans accompagner le trajet?",
     answer:
-      "L'expéditeur et le destinataire s'engagent à respecter l'horaire convenu avec le conducteur. En cas d'imprévu, le conducteur peut convenir d'un lieu de dépôt sécurisé ou retourner l'objet selon les consignes convenues avec l'expéditeur via l'application.",
+      "Oui. Le colis peut voyager avec un conducteur qui effectue déjà le trajet, sans que vous soyez présent dans le véhicule.",
   },
   {
-    question: "Puis-je combiner covoiturage de passagers et transport de colis ?",
+    question: "Comment la livraison est-elle confirmée?",
     answer:
-      "Absolument ! En tant que conducteur, vous pouvez accepter un passager sur un siège et un colis dans votre coffre pour maximiser la rentabilité de votre trajet vers Montréal ou entre les villes de la région.",
+      "Le destinataire remet un code de confirmation au conducteur lors de la réception. Cette étape permet de confirmer que le colis est arrivé à destination.",
   },
   {
-    question: "Quels types d'objets sont interdits ?",
+    question: "Que puis-je faire livrer?",
     answer:
-      "Tout produit illégal, alcool/cannabis non scellé selon les lois en vigueur, matières inflammables, armes, animaux vivants et objets d'une valeur marchande excessive sans accord préalable.",
+      "Vous pouvez envoyer des documents, des vêtements, des achats Marketplace, des pièces, des outils et plusieurs objets du quotidien. Le colis doit être légal, sécuritaire, correctement emballé et compatible avec l'espace disponible.",
+  },
+  {
+    question: "Quels articles sont interdits?",
+    answer:
+      "Les matières dangereuses, les armes, les produits illégaux, les articles mal emballés et les denrées périssables qui ne peuvent pas être transportées de façon sécuritaire ne sont pas acceptés.",
   },
 ];
 

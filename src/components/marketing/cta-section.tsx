@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Calculator } from "lucide-react";
+import { ArrowRight, Package } from "lucide-react";
 import { motion } from "motion/react";
 import { AnimateIcon } from "@/components/ui/animate-icon";
 
@@ -19,19 +19,21 @@ export function CtaSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="font-space text-3xl font-extrabold text-white md:text-4xl lg:text-5xl"
+          className="font-space text-[clamp(1.2rem,0.75rem+2.1vw,2.2rem)] font-extrabold text-white whitespace-nowrap max-md:whitespace-normal max-md:leading-tight"
         >
-          Vous prenez la route cette semaine ?
+          Votre colis est prêt à prendre la route?
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mx-auto mt-4 max-w-2xl text-lg font-medium text-orange-100"
+          className="mx-auto mt-4 max-w-3xl text-base font-medium leading-relaxed text-orange-100 md:text-lg"
         >
-          Rentabilisez vos kilomètres au Québec et en Ontario en
-          transportant un colis ou un passager.
+          Trouvez un trajet existant, coordonnez une remise simple
+          <br />
+          et faites avancer votre colis avec quelqu&apos;un qui va déjà dans la
+          bonne direction.
         </motion.p>
 
         <motion.div
@@ -39,25 +41,29 @@ export function CtaSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap"
         >
           <Link
-            href="/trajets/nouveau"
+            href="/recherche?type=PARCEL"
             className="group inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-base font-extrabold text-white shadow-xl shadow-orange-500/30 transition-all hover:-translate-y-0.5 hover:bg-orange-600"
           >
-            Publier un trajet
+            Envoyer un colis
             <AnimateIcon>
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
             </AnimateIcon>
           </Link>
           <Link
-            href="/recherche?type=PARCEL"
+            href="#estimation"
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-base font-extrabold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/15"
           >
-            <AnimateIcon>
-              <Calculator className="h-5 w-5" />
-            </AnimateIcon>
             Estimer le coût d&apos;un colis
+          </Link>
+          <Link
+            href="/livrer"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3.5 text-base font-extrabold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/15"
+          >
+            <Package className="h-5 w-5" />
+            Je veux transporter un colis
           </Link>
         </motion.div>
       </div>

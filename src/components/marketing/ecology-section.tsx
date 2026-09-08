@@ -7,36 +7,42 @@ type EcologyVariant = "colis" | "covoiturage";
 const CONTENT: Record<
   EcologyVariant,
   {
+    badge: string;
+    title: string;
     subtitle: string;
-    description: string;
+    description?: string;
     points: { icon: LucideIcon; title: string; description: string }[];
   }
 > = {
   colis: {
-    subtitle: "Transformez vos trajets en actions écologiques concrètes",
-    description: `${APP_NAME} valorise les trajets existants pour rendre l'envoi de colis plus utile, plus simple et plus responsable.`,
+    badge: "Un trajet peut servir à plus",
+    title: "Votre colis profite d'un trajet qui existe déjà",
+    subtitle:
+      "Au lieu d'ajouter un véhicule sur la route, Livre-moi.ca utilise les déplacements déjà prévus. Votre colis avance, le conducteur rentabilise son trajet et la communauté évite des déplacements supplémentaires.",
     points: [
       {
         icon: Car,
-        title: "Moins de véhicules",
+        title: "Un trajet, deux utilités",
         description:
-          "Le covoiturage remplit les places déjà disponibles au lieu d'ajouter des départs à vide.",
+          "Le conducteur se déplace déjà. Votre colis profite simplement de l'espace disponible dans son véhicule.",
       },
       {
         icon: Package,
-        title: "Colis sur trajets existants",
+        title: "Une livraison qui rapproche",
         description:
-          "Les envois profitent des trajets planifiés — Sans camion dédié ni livraison express inutile.",
+          "Faites circuler vos achats, vos effets personnels ou vos pièces importantes entre les villes.",
       },
       {
-        icon: Route,
-        title: "Corridor optimisé",
+        icon: Leaf,
+        title: "Une option plus responsable",
         description:
-          "Route 117 et arrêts intermédiaires : chaque kilomètre parcouru sert passagers et colis.",
+          "Optimiser les trajets existants permet de limiter les déplacements consacrés uniquement à la livraison.",
       },
     ],
   },
   covoiturage: {
+    badge: "Écologie",
+    title: "Chaque trajet compte",
     subtitle: "Transformez vos déplacements en actions écologiques concrètes",
     description: `${APP_NAME} facilite le partage de véhicules déjà en route pour rendre le covoiturage plus accessible, plus économique et plus responsable.`,
     points: [
@@ -63,7 +69,7 @@ const CONTENT: Record<
 };
 
 export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant }) {
-  const { subtitle, description, points } = CONTENT[variant];
+  const { badge, title, subtitle, description, points } = CONTENT[variant];
 
   const card = (
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-200 via-sky-100 to-cyan-200 p-5 shadow-sm ring-1 ring-sky-200 dark:from-sky-950 dark:via-slate-900 dark:to-cyan-950 dark:ring-sky-900 md:p-7 lg:p-8">
@@ -74,12 +80,12 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
         <div>
           <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-white/70 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-slate-950/50 dark:text-emerald-300">
             <Leaf className="h-3 w-3" />
-            Écologie
+            {badge}
           </div>
 
           <div className="flex items-center gap-2">
             <h2 className="font-space text-2xl font-black italic tracking-tight text-slate-950 dark:text-slate-50 md:text-3xl">
-              Chaque trajet compte
+              {title}
             </h2>
             <Leaf className="h-5 w-5 shrink-0 rotate-12 text-emerald-500 dark:text-emerald-400 md:h-6 md:w-6" />
           </div>
@@ -87,9 +93,11 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
           <p className="mt-2.5 max-w-md text-sm leading-6 text-slate-700 dark:text-slate-300 md:text-[15px]">
             {subtitle}
           </p>
-          <p className="mt-1.5 max-w-md text-xs leading-5 text-slate-600 dark:text-slate-400 md:text-sm md:leading-6">
-            {description}
-          </p>
+          {description ? (
+            <p className="mt-1.5 max-w-md text-xs leading-5 text-slate-600 dark:text-slate-400 md:text-sm md:leading-6">
+              {description}
+            </p>
+          ) : null}
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">

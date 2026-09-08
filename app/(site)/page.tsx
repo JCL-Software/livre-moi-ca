@@ -25,22 +25,26 @@ export default function HomePage() {
 
       <FaqSection />
 
-      <section className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+      <section
+        id="estimation"
+        className="scroll-mt-20 border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950"
+      >
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">
           <div className="mb-10 max-w-3xl text-center md:mx-auto">
             <p className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-extrabold text-orange-700 dark:bg-orange-950/60 dark:text-orange-300">
-              Rechercher
+              Estimation
             </p>
             <h2 className="mt-5 font-space text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white md:text-4xl">
-              Trouvez un trajet ou confiez un colis
+              Donnez une direction à votre colis
             </h2>
             <div className="mx-auto mt-5 h-1 w-20 rounded-full bg-orange-500" />
             <p className="mt-4 text-muted-foreground">
-              Indiquez votre départ, votre destination et la date — On vous met en
-              relation avec un conducteur au Québec ou en Ontario.
+              Indiquez d&apos;où part votre colis, où il doit aller et l&apos;espace
+              qu&apos;il occupe. Vous pourrez ensuite découvrir les trajets disponibles
+              et les options possibles.
             </p>
           </div>
-          <SearchForm defaultType="PARCEL" />
+          <SearchForm defaultType="PARCEL" submitLabel="Voir les trajets disponibles" />
         </div>
       </section>
 

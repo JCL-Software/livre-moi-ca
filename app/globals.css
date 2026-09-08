@@ -163,6 +163,25 @@ html {
   z-index: 0;
 }
 
+.live-tracking-map .leaflet-control-attribution {
+  margin: 0 8px 72px 0;
+  font-size: 8px;
+  background: rgb(255 255 255 / 0.82);
+}
+
+.live-tracking-driver {
+  background: transparent !important;
+  border: none !important;
+}
+
+.live-tracking-arrow {
+  display: block;
+  width: 34px;
+  height: 34px;
+  transform-origin: 50% 58%;
+  filter: drop-shadow(0 1px 3px rgb(15 23 42 / 0.45));
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -213,13 +232,15 @@ html {
   transform: scaleX(1);
 }
 
-.feature-card:hover {
+.feature-card:hover,
+.feature-card.is-active {
   transform: translateY(-8px);
   box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
   border-color: var(--orange);
 }
 
-.dark .feature-card:hover {
+.dark .feature-card:hover,
+.dark .feature-card.is-active {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
   border-color: var(--orange);
 }
@@ -245,7 +266,8 @@ html {
   }
   .feature-card,
   .feature-card::before,
-  .feature-card:hover {
+  .feature-card:hover,
+  .feature-card.is-active {
     transition: none !important;
     transform: none !important;
   }

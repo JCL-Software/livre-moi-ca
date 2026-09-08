@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/layout/brand-logo";
-import { APP_TAGLINE } from "@/lib/constants";
 
 export function Footer() {
   return (
@@ -8,7 +7,9 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
         <div className="space-y-6">
           <BrandLogo className="[&_span]:!text-white" />
-          <p className="max-w-md text-lg leading-relaxed text-white/70">{APP_TAGLINE}</p>
+          <p className="max-w-md text-lg leading-relaxed text-white/70">
+            Des personnes et des colis qui avancent ensemble au Québec et en Ontario.
+          </p>
           <p className="text-sm text-white/60">
             Couverture Québec · Ontario
           </p>
@@ -49,8 +50,8 @@ export function Footer() {
         <div>
           <h4 className="mb-6 font-space text-lg font-bold text-orange-400">Territoire</h4>
           <p className="text-sm leading-relaxed text-white/70">
-            Trajets et colis entre les villes du Québec et de l&apos;Ontario —
-            Sans liste figée de corridors.
+            De ville en ville, au Québec et en Ontario. Trouvez un trajet qui
+            correspond à votre réalité.
           </p>
         </div>
       </div>

@@ -115,8 +115,8 @@ export function SearchForm({
       <div className="md:col-span-4">
         <AddressAutocomplete
           id="origin"
-          label={isPassenger ? "Ville de départ" : "Ville de départ"}
-          placeholder="Ville de départ…"
+          label={isPassenger ? "Ville de départ" : "Le colis part de"}
+          placeholder={isPassenger ? "Ville de départ…" : "Ville de départ…"}
           value={origin}
           onChange={setOrigin}
         />
@@ -124,14 +124,14 @@ export function SearchForm({
       <div className="md:col-span-4">
         <AddressAutocomplete
           id="destination"
-          label={isPassenger ? "Ville d'arrivée" : "Ville de destination"}
-          placeholder="Ville d'arrivée…"
+          label={isPassenger ? "Ville d'arrivée" : "Le colis se rend à"}
+          placeholder={isPassenger ? "Ville d'arrivée…" : "Ville d'arrivée…"}
           value={destination}
           onChange={setDestination}
         />
       </div>
       <div className="space-y-1.5 md:col-span-2">
-        <Label htmlFor="date">Date</Label>
+        <Label htmlFor="date">{isPassenger ? "Date" : "Date souhaitée"}</Label>
         <Input
           id="date"
           type="date"
@@ -158,21 +158,27 @@ export function SearchForm({
           </Select>
         </div>
       ) : (
-        <div className="space-y-1.5 md:col-span-2">
-          <Label>Format du colis</Label>
-          <Select value={size} onValueChange={(value) => setSize(value as ParcelSize)}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.entries(PARCEL_LABELS).map(([key, label]) => (
-                <SelectItem key={key} value={key}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <>
+          <div className="space-y-1.5 md:col-span-2">
+            <Label>Quel espace votre colis occupe-t-il?</Label>
+            <Select value={size} onValueChange={(value) => setSize(value as ParcelSize)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(PARCEL_LABELS).map(([key, label]) => (
+                  <SelectItem key={key} value={key}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-xs leading-relaxed text-slate-500 md:col-span-12 dark:text-slate-400">
+            En cas de doute, choisissez le format supérieur. Le conducteur pourra
+            confirmer l&apos;espace disponible avant d&apos;accepter.
+          </p>
+        </>
       )}
 
       {isPassenger && passengerExtras && (

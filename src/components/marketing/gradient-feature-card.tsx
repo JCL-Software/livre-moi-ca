@@ -18,7 +18,7 @@ export function GradientFeatureCard({
   return (
     <article
       className={cn(
-        "feature-card relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 shadow-sm sm:p-6",
+        "feature-card relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 shadow-sm before:hidden sm:p-6",
         accent,
       )}
     >
