@@ -69,7 +69,8 @@ function CtaCard({
         <Icon
           className="h-5 w-5"
           size={20}
-          animate={active ? (primary ? "find" : true) : false}
+          animate={active}
+          animation={primary ? "find" : undefined}
         />
       </span>
       <h3 className="mt-4 text-xl font-semibold text-white">{title}</h3>

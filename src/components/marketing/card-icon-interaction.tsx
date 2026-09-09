@@ -8,13 +8,9 @@ import {
 } from "react";
 import type { LucideIcon } from "lucide-react";
 
-export type AppIcon = ComponentType<{
-  className?: string;
-  size?: number;
-  animate?: boolean | string;
-  animateOnHover?: boolean;
-  animation?: string;
-}>;
+/** Heterogeneous animated / Lucide icons used in marketing cards. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AppIcon = ComponentType<any>;
 
 /** Wraps a static Lucide icon so card `animate` props are not forwarded to the DOM. */
 export function staticIcon(Icon: LucideIcon): AppIcon {
