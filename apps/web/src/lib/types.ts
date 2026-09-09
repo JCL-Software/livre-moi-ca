@@ -1,0 +1,18 @@
+export type {
+  ActionResult,
+  Booking,
+  BookingStatus,
+  BookingType,
+  CreateBookingInput,
+  GeoPoint,
+  IntermediateStop,
+  ParcelSize,
+  Profile,
+  PublishTripInput,
+  SearchTripResult,
+  SearchTripsInput,
+  Trip,
+  TripPreferences,
+  TripStatus,
+  UpdateProfileInput,
+} from "@livre-moi/shared";

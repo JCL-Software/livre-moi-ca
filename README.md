@@ -1,62 +1,74 @@
-# NordTrajet
+# Livre-moi.ca
 
-Plateforme unifiée de **covoiturage** et de **cotransportage de colis** pour l’Abitibi-Témiscamingue et le corridor vers Montréal / Gatineau.
+Monorepo **Turborepo + npm workspaces** pour le covoiturage et le cotransportage de colis au Québec et en Ontario.
 
-Stack : Next.js 16 (App Router) · TypeScript · Tailwind · shadcn/ui · Supabase (Auth, Postgres, PostGIS, Storage) · Leaflet · Nominatim · OSRM / OpenRouteService.
+Ouvrez `G:\Livre-moi.ca\livre-moi-monorepo` comme projet unique dans Cursor.
+
+```
+G:\Livre-moi.ca\livre-moi-monorepo\
+  apps/
+    web/          Next.js — site public, SEO, recherche, réservation
+    mobile/       Expo — app terrain (GPS, push, caméra, OTP/QR)
+  packages/
+    shared/       Types, client Supabase, validations, logique métier
+  Tailwindadmin-nextjs/packages/nextauth/   Admin (@livre-moi/admin)
+  supabase/       Migrations Postgres + PostGIS
+```
+
+## Stack
+
+| Surface | Package | Stack |
+|---------|---------|--------|
+| Web public | `@livre-moi/web` | Next.js 16, Tailwind, shadcn/ui |
+| Admin | `@livre-moi/admin` | Next.js + Tailwind Admin (port 3001) |
+| Mobile | `@livre-moi/mobile` | Expo 57 / React Native |
+| Partagé | `@livre-moi/shared` | Types, Zod, Supabase JS, pricing, data |
+| Backend | `supabase/` | Auth, Postgres, PostGIS, Realtime, Storage |
+
+Un compte = un `profiles.id` partout. Une base = une vérité.
 
 ## Démarrage local
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env.local          # référence racine
+cp apps/web/.env.example apps/web/.env.local
+cp apps/mobile/.env.example apps/mobile/.env
 npm install
-npm run dev
 ```
 
-Renseignez dans `.env.local` :
+Renseignez les clés Supabase (`NEXT_PUBLIC_*` pour le web/admin, `EXPO_PUBLIC_*` pour le mobile — mêmes valeurs).
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `NEXT_PUBLIC_SITE_URL` (ex. `http://localhost:3000`)
+```bash
+npm run dev:web       # http://localhost:3000
+npm run dev:admin     # http://localhost:3001
+npm run dev:mobile    # Expo Go / simulateur
+```
+
+`npm run dev` lance web + admin en parallèle via Turborepo.
 
 ## Supabase
 
 1. Projet cible : `baubdtpbsbaewfuctcig` (région suggérée : `ca-central-1`).
 2. SQL Editor : exécutez dans l’ordre
    - [`supabase/migrations/00001_init.sql`](supabase/migrations/00001_init.sql)
-   - [`supabase/migrations/00002_messaging_support_tracking.sql`](supabase/migrations/00002_messaging_support_tracking.sql) (chat, tickets, GPS)
+   - [`supabase/migrations/00002_messaging_support_tracking.sql`](supabase/migrations/00002_messaging_support_tracking.sql)
    - [`supabase/seed.sql`](supabase/seed.sql)
 
-Architecture cible (web / admin / Expo) : [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-3. Authentication → Providers : activez **Email** et **Google**.
-4. URL de redirection : `https://votre-domaine/auth/callback` et `http://localhost:3000/auth/callback`.
-5. Modèle courriel « Confirm signup » :  
-   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email`
+Architecture (web / admin / Expo) : [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-Le MCP Cursor est préconfiguré dans [`.cursor/mcp.json`](.cursor/mcp.json).
+## Package partagé
 
-## Fonctionnalités
+`@livre-moi/shared` contient ce que le web et le mobile doivent réutiliser :
 
-- Recherche spatiale `ST_DWithin` (25 / 30 km) + arrêts du corridor (Val-d’Or, Amos, Rouyn, Louvicourt, Mont-Laurier, Maniwaki, etc.)
-- Publication de trajet (places, tarifs, colis, préférences)
-- Réservation passager ou colis
-- Cycle colis : `PENDING` → `CONFIRMED` → `PICKED_UP` → `DELIVERED`
-- OTP à 6 chiffres (hash SHA-256, code visible seulement à l’expéditeur)
-- Cartes Carto / OSM, géocodage Nominatim mis en cache, routing OSRM (ou ORS si clé)
-- PWA installable, mode hors-ligne de base
+- Types (`Trip`, `Booking`, `Profile`, …)
+- Client Supabase navigateur (`createBrowserSupabaseClient`)
+- Accès données (recherche, trajets, réservations, profils)
+- Validations Zod
+- Calculateur de prix colis (`estimerPrixColis`)
+- Helpers géo / corridor
 
-## Admin (Tailwind Admin)
+Les clients Next.js *cookies* (`@supabase/ssr`) restent dans `apps/web` : ils sont spécifiques au runtime web.
 
-Le panneau admin utilise le package template [`Tailwindadmin-nextjs/packages/nextauth`](Tailwindadmin-nextjs/packages/nextauth) (auth Supabase déjà prévu par le template).
+## Déploiement Vercel
 
-```bash
-# Terminal 1 — Site public
-npm run dev
-
-# Terminal 2 — Admin (port 3001)
-npm run dev:admin
-```
-
-Connexion : compte Supabase avec `profiles.role = 'ADMIN'`.  
-Le compte démo `demo@nordtrajet.app` a été promu ADMIN sur le projet `baubdtpbsbaewfuctcig`.
-
-Doc template : [TailwindAdmin Next.js](https://tailwind-admin.github.io/tailwind-admin-documentation/premium-documentation/nextjs/index.html)
+Dans le projet Vercel, définissez **Root Directory** = `apps/web`.

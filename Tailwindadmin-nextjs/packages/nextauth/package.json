@@ -1,5 +1,5 @@
 {
-  "name": "tailwind-admin",
+  "name": "@livre-moi/admin",
   "version": "1.2.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "@casl/react": "6.0.0",
     "@headlessui/react": "^2.2.10",
     "@hello-pangea/dnd": "^18.0.1",
+    "@livre-moi/shared": "*",
     "@iconify/react": "6.0.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.10",

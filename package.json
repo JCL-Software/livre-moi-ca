@@ -1,58 +1,30 @@
 {
-  "name": "nordtrajet",
+  "name": "livre-moi.ca",
   "version": "0.1.0",
   "private": true,
+  "description": "Monorepo Livre-moi.ca — covoiturage et cotransportage de colis (web, admin, mobile).",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "Tailwindadmin-nextjs/packages/nextauth"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "dev:web": "next dev",
-    "dev:admin": "npm run --prefix Tailwindadmin-nextjs/packages/nextauth dev",
-    "build": "next build",
-    "build:admin": "npm run --prefix Tailwindadmin-nextjs/packages/nextauth build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@iconify/react": "^6.0.2",
-    "@radix-ui/react-tabs": "^1.1.21",
-    "@supabase/ssr": "^0.12.5",
-    "@supabase/supabase-js": "^2.112.4",
-    "@tabler/icons-react": "^3.46.0",
-    "@tanstack/react-table": "^9.2.4",
-    "apexcharts": "^7.1.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "date-fns": "^4.4.0",
-    "leaflet": "^1.9.4",
-    "lodash": "^4.18.1",
-    "lucide-react": "^1.37.0",
-    "motion": "^13.1.1",
-    "next": "16.3.3",
-    "next-themes": "^0.4.6",
-    "radix-ui": "^1.6.7",
-    "react": "19.2.8",
-    "react-apexcharts": "^2.1.1",
-    "react-day-picker": "^10.0.1",
-    "react-dom": "19.2.8",
-    "react-leaflet": "^5.0.0",
-    "shadcn": "^4.19.0",
-    "simplebar-react": "^3.3.2",
-    "sonner": "^2.0.8",
-    "swiper": "^14.2.0",
-    "tailwind-merge": "^3.6.0",
-    "tailwind-sidebar": "^1.3.4",
-    "tw-animate-css": "^1.4.0",
-    "zod": "^4.5.4"
+    "dev": "turbo run dev --filter=@livre-moi/web --filter=@livre-moi/admin",
+    "dev:web": "turbo run dev --filter=@livre-moi/web",
+    "dev:admin": "turbo run dev --filter=@livre-moi/admin",
+    "dev:mobile": "turbo run start --filter=@livre-moi/mobile",
+    "build": "turbo run build",
+    "build:web": "turbo run build --filter=@livre-moi/web",
+    "build:admin": "turbo run build --filter=@livre-moi/admin",
+    "lint": "turbo run lint",
+    "start": "turbo run start --filter=@livre-moi/web"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/leaflet": "^1.9.22",
-    "@types/lodash": "^4.17.25",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.3",
-    "tailwindcss": "^4",
+    "turbo": "^2.5.8",
     "typescript": "^5"
-  }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "npm@10.9.2"
 }
