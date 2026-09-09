@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Calculator } from "lucide-react";
+import { Calculator } from "lucide-react";
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 
 export function HeroSection() {
@@ -27,7 +28,7 @@ export function HeroSection() {
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/recherche?type=PARCEL" className="btn-brand">
                 Trouver un trajet
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5" size={20} animateOnHover />
               </Link>
               <Link href="#estimation" className="btn-brand-secondary">
                 <Calculator className="h-5 w-5 shrink-0" />

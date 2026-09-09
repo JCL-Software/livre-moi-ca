@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { Clock3, MapPinned, Package, Star, Users } from "lucide-react";
+import { MapPinned, Package } from "lucide-react";
+import { Clock3 } from "@/components/animate-ui/icons/clock-3";
+import { Star } from "@/components/animate-ui/icons/star";
+import { Users } from "@/components/animate-ui/icons/users";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { SearchTripResult } from "@/lib/types";
@@ -21,7 +24,7 @@ export function TripCard({ trip }: { trip: SearchTripResult }) {
         <CardContent className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <Clock3 className="h-4 w-4 text-orange-500" />
+              <Clock3 className="h-4 w-4 text-orange-500" size={16} animateOnHover />
               {formatTime(trip.departure_time)}
               <span>· {trip.estimated_duration_min} min · {Number(trip.distance_km)} km</span>
             </div>
@@ -31,7 +34,7 @@ export function TripCard({ trip }: { trip: SearchTripResult }) {
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <span className="font-medium">{trip.driver_name || "Conducteur"}</span>
               <span className="inline-flex items-center gap-1 text-muted-foreground">
-                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" size={14} animateOnHover />
                 {Number(trip.driver_rating).toFixed(1)}
               </span>
               {trip.vehicle_model && (
@@ -54,7 +57,7 @@ export function TripCard({ trip }: { trip: SearchTripResult }) {
             <p className="text-xs text-muted-foreground">par place</p>
             <div className="flex gap-2">
               <Badge variant="secondary">
-                <Users className="h-3 w-3" />
+                <Users className="h-3 w-3" size={12} animateOnHover />
                 {trip.available_seats} places
               </Badge>
               {trip.accepts_parcels && (

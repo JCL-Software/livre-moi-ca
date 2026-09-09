@@ -1,16 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { signInWithGoogle, signInWithPassword } from "@/lib/actions/auth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Suspense } from "react";
+import { AuthInput } from "@/components/ui/auth-input";
+import {
+  AuthDivider,
+  AuthFooterLink,
+  AuthFormShell,
+  AuthGoogleButton,
+  AuthLabel,
+  AuthSubmitButton,
+  LabelInputContainer,
+} from "@/components/auth/auth-form";
 
 function LoginForm() {
   const router = useRouter();
@@ -34,62 +37,58 @@ function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md border-[#E8E8E8] shadow-none">
-      <CardHeader>
-        <p className="text-sm font-medium text-neutral-500">
-          Compte
-        </p>
-        <CardTitle className="text-2xl font-bold tracking-tight">Connexion</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <form className="space-y-3" onSubmit={onSubmit}>
-          <div className="space-y-1.5">
-            <Label htmlFor="email">Courriel</Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password">Mot de passe</Label>
-            <Input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-          <Button className="w-full" disabled={loading}>
-            {loading ? "Connexion…" : "Se connecter"}
-          </Button>
-        </form>
-        <Separator />
-        <form action={async () => signInWithGoogle(next)}>
-          <Button type="submit" variant="outline" className="w-full">
-            Continuer avec Google
-          </Button>
-        </form>
-        <p className="text-center text-sm text-muted-foreground">
-          Pas encore de compte?{" "}
-          <Link href="/inscription" className="text-foreground underline">
-            Créer un compte
-          </Link>
-        </p>
-      </CardContent>
-    </Card>
+    <AuthFormShell
+      title="Connexion"
+      subtitle="Accédez à votre compte Livre-moi.ca pour suivre vos colis ou publier un trajet."
+    >
+      <form className="my-8 flex flex-col gap-4" onSubmit={onSubmit}>
+        <LabelInputContainer>
+          <AuthLabel htmlFor="email">Courriel</AuthLabel>
+          <AuthInput
+            id="email"
+            placeholder="jean@exemple.com"
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer>
+          <AuthLabel htmlFor="password">Mot de passe</AuthLabel>
+          <AuthInput
+            id="password"
+            placeholder="••••••••"
+            type="password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </LabelInputContainer>
+
+        <AuthSubmitButton disabled={loading}>
+          {loading ? "Connexion…" : "Se connecter →"}
+        </AuthSubmitButton>
+      </form>
+
+      <AuthDivider />
+
+      <div className="flex flex-col gap-4">
+        <AuthGoogleButton action={async () => signInWithGoogle(next)} />
+
+        <AuthFooterLink
+          prompt="Pas encore de compte ?"
+          href="/inscription"
+          label="Créer un compte"
+        />
+      </div>
+    </AuthFormShell>
   );
 }
 
 export default function LoginPage() {
   return (
-    <div className="flex justify-center bg-[#F6F6F6] px-4 py-16 dark:bg-background">
-      <Suspense>
-        <LoginForm />
-      </Suspense>
-    </div>
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

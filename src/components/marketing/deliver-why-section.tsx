@@ -1,10 +1,12 @@
-import { HandCoins, MapPin, ShieldCheck } from "lucide-react";
+import { MapPin } from "@/components/animate-ui/icons/map-pin";
+import { HandCoinsIcon } from "@/components/ui/hand-coins";
+import { ShieldCheckIcon } from "@/components/ui/shield-check";
 import { GradientFeatureCard } from "@/components/marketing/gradient-feature-card";
 import { SectionHeader } from "@/components/marketing/section-header";
 
 const REASONS = [
   {
-    icon: HandCoins,
+    icon: HandCoinsIcon,
     title: "Gagnez un revenu complémentaire",
     text: "Soyez rémunéré en utilisant l'espace disponible dans votre coffre ou sur la banquette arrière.",
     accent: "from-orange-600/90 to-amber-700/90",
@@ -16,7 +18,7 @@ const REASONS = [
     accent: "from-[#1E3A5F]/95 to-[#1a4a7a]/95",
   },
   {
-    icon: ShieldCheck,
+    icon: ShieldCheckIcon,
     title: "Livrez en toute confiance",
     text: "Profils vérifiés, paiement sécurisé et code OTP à la livraison pour chaque échange.",
     accent: "from-emerald-700/90 to-teal-800/90",

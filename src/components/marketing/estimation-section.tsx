@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check } from "@/components/animate-ui/icons/check";
 import { SearchForm } from "@/components/search/search-form";
 
 const BENEFITS = [
@@ -22,7 +22,7 @@ export function EstimationSection() {
               Trouvez un trajet
             </p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
-              Votre colis a besoin d&apos;un trajet?
+              Votre colis a besoin d&apos;un trajet ?
             </h2>
             <p className="mt-4 text-base leading-relaxed text-neutral-600 md:text-lg dark:text-neutral-400">
               Indiquez simplement où votre colis doit partir, où il doit arriver
@@ -37,7 +37,7 @@ export function EstimationSection() {
                   className="flex items-center gap-3 text-sm font-medium text-neutral-700 md:text-base dark:text-neutral-300"
                 >
                   <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black">
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    <Check className="h-3.5 w-3.5" size={14} animateOnHover />
                   </span>
                   {item}
                 </li>

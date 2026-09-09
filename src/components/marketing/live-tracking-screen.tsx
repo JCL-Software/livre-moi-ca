@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MessageCircle, Navigation } from "lucide-react";
+import { Navigation } from "lucide-react";
+import { MessageCircle } from "@/components/animate-ui/icons/message-circle";
 import { LiveTrackingMapDynamic } from "@/components/marketing/live-tracking-map-dynamic";
 import {
   LIVE_TRACKING_ROUTES,
@@ -39,7 +40,7 @@ export function LiveTrackingScreen() {
           En route
         </div>
         <div className="flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-700">
-          <MessageCircle className="h-3 w-3 text-orange-500" />
+          <MessageCircle className="h-3 w-3 text-orange-500" size={12} animateOnHover />
           Chat
         </div>
         <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">

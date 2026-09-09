@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Package } from "lucide-react";
+import { Package } from "lucide-react";
 import { motion } from "motion/react";
-import { AnimateIcon } from "@/components/ui/animate-icon";
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 
 export function CtaSection() {
   return (
@@ -16,7 +16,7 @@ export function CtaSection() {
           transition={{ duration: 0.5 }}
           className="text-[clamp(1.4rem,0.9rem+2.2vw,2.5rem)] font-bold tracking-tight text-white max-md:leading-tight"
         >
-          Votre colis est prêt à prendre la route?
+          Votre colis est prêt à prendre la route ?
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -43,9 +43,11 @@ export function CtaSection() {
             className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 text-base font-medium text-black transition-colors hover:bg-neutral-200"
           >
             Envoyer un colis
-            <AnimateIcon>
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-            </AnimateIcon>
+            <ArrowRight
+              className="h-5 w-5 transition-transform group-hover:translate-x-0.5"
+              size={20}
+              animateOnHover
+            />
           </Link>
           <Link href="#estimation" className="btn-brand-ghost">
             Estimer le coût d&apos;un colis

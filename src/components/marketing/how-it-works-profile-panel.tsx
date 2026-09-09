@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
+import { Check } from "@/components/animate-ui/icons/check";
 import { cn } from "@/lib/utils";
 
 export type HowItWorksProfile = {
@@ -39,7 +40,7 @@ export function HowItWorksProfilePanel({
           {items.map((item) => (
             <li key={item} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 md:text-base">
               <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black">
-                <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                <Check className="h-3.5 w-3.5" size={14} animateOnHover />
               </span>
               {item}
             </li>
@@ -50,7 +51,7 @@ export function HowItWorksProfilePanel({
           className="btn-brand mt-8 px-5 py-3 text-sm"
         >
           {ctaLabel}
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight size={16} className="h-4 w-4" animateOnHover />
         </Link>
       </div>
       <div

@@ -1,6 +1,9 @@
 "use client";
 
-import { Car, CreditCard, MapPin, Users } from "lucide-react";
+import { Car } from "lucide-react";
+import { MapPin } from "@/components/animate-ui/icons/map-pin";
+import { Users } from "@/components/animate-ui/icons/users";
+import { CreditCardIcon } from "@/components/ui/credit-card";
 import { SectionHeader } from "@/components/marketing/section-header";
 import { StepsGrid } from "@/components/marketing/steps-grid";
 
@@ -25,7 +28,7 @@ const STEPS = [
   },
   {
     step: 4,
-    icon: CreditCard,
+    icon: CreditCardIcon,
     title: "Encaissez automatiquement",
     text: "Votre participation aux frais d'essence est virée directement sur votre compte une fois le voyage terminé.",
   },

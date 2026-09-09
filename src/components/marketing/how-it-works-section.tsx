@@ -8,7 +8,7 @@ import {
 import { SectionHeader } from "@/components/marketing/section-header";
 
 const PARTICULIER_EXPEDITEUR: HowItWorksProfile = {
-  heading: "Vous avez un colis à faire parvenir?",
+  heading: "Vous avez un colis à faire parvenir ?",
   intro:
     "Un achat Marketplace, une pièce urgente, des clés oubliées ou un objet à envoyer à un proche : publiez votre demande et trouvez un conducteur qui se dirige déjà vers votre destination.",
   imageSrc: "/brand/axio-colis.png",
@@ -25,7 +25,7 @@ const PARTICULIER_EXPEDITEUR: HowItWorksProfile = {
 };
 
 const PARTICULIER_CONDUCTEUR: HowItWorksProfile = {
-  heading: "Vous prenez déjà la route?",
+  heading: "Vous prenez déjà la route ?",
   intro:
     "Transformez l'espace disponible dans votre véhicule en occasion de rendre service et de réduire le coût de votre trajet.",
   imageSrc: "/brand/axio-covoiturage.png",
@@ -42,7 +42,7 @@ const PARTICULIER_CONDUCTEUR: HowItWorksProfile = {
 };
 
 const COMMERCE_EXPEDITEUR: HowItWorksProfile = {
-  heading: "Vos clients sont dans une autre ville?",
+  heading: "Vos clients sont dans une autre ville ?",
   intro:
     "Livre-moi.ca aide les petits commerces et les vendeurs indépendants à faire parvenir leurs produits sans devoir créer leur propre réseau de livraison.",
   imageSrc: "/brand/axio-commerce.png",
@@ -60,9 +60,9 @@ const COMMERCE_EXPEDITEUR: HowItWorksProfile = {
 };
 
 const CONDUCTEUR_REGULIER: HowItWorksProfile = {
-  heading: "Vous faites souvent le même trajet?",
+  heading: "Vous faites souvent le même trajet ?",
   intro:
-    "Vous faites régulièrement le même trajet pour le travail, les études ou vos activités personnelles? Profitez de l'espace disponible dans votre véhicule pour transporter des colis et générer un revenu supplémentaire.",
+    "Vous faites régulièrement le même trajet pour le travail, les études ou vos activités personnelles ? Profitez de l'espace disponible dans votre véhicule pour transporter des colis et générer un revenu supplémentaire.",
   imageSrc: "/brand/axio-conducteur-voiture.png",
   imageAlt: "Conducteur régulier Livre-moi.ca consultant l'application depuis sa voiture",
   imageFit: "cover",
@@ -82,7 +82,7 @@ export function HowItWorksSection() {
     <section id="fonctionnement" className="section-plain scroll-mt-20 py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
       <SectionHeader
-        badge="Pour qui?"
+        badge="Pour qui ?"
         title="Livre-moi.ca s'adapte à tous les profils"
         subtitle="Une façon simple, humaine et concrète de faire voyager un colis sur un trajet déjà prévu."
       />

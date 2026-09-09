@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Menu, Package } from "lucide-react";
+import { Package } from "lucide-react";
+import { Menu } from "@/components/animate-ui/icons/menu";
 import { createClient } from "@/lib/supabase/server";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { ServiceModeToggle } from "@/components/layout/service-mode-toggle";
@@ -48,7 +49,7 @@ export async function Header() {
               <Link href="/profil" className={navLinkClass}>
                 Profil
               </Link>
-              <ThemeToggle className="rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white aria-expanded:bg-white/10 aria-expanded:text-white dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10 dark:hover:text-white" />
+              <ThemeToggle className="focus-visible:ring-offset-black" />
               <form action={signOut}>
                 <Button
                   type="submit"
@@ -62,7 +63,6 @@ export async function Header() {
             </>
           ) : (
             <div className="ml-2 flex items-center gap-2">
-              <ThemeToggle className="rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white aria-expanded:bg-white/10 aria-expanded:text-white dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10 dark:hover:text-white" />
               <Button
                 asChild
                 variant="ghost"
@@ -78,12 +78,13 @@ export async function Header() {
               >
                 <Link href="/inscription">Créer un compte</Link>
               </Button>
+              <ThemeToggle className="focus-visible:ring-offset-black" />
             </div>
           )}
         </nav>
 
         <div className="ml-auto flex items-center gap-1 md:hidden">
-          <ThemeToggle className="rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white aria-expanded:bg-white/10 aria-expanded:text-white dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:bg-white/10 dark:hover:text-white" />
+          <ThemeToggle className="focus-visible:ring-offset-black" />
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -92,7 +93,7 @@ export async function Header() {
                 aria-label="Menu"
                 className="rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5" size={20} animateOnHover />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-72 bg-white">

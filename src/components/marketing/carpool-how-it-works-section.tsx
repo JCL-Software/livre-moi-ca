@@ -1,99 +1,74 @@
 "use client";
 
-import {
-  CalendarCheck,
-  Car,
-  CreditCard,
-  MapPin,
-  Search,
-  Users,
-} from "lucide-react";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
+import {
+  HowItWorksProfilePanel,
+  type HowItWorksProfile,
+} from "@/components/marketing/how-it-works-profile-panel";
 import { SectionHeader } from "@/components/marketing/section-header";
-import { StepsGrid } from "@/components/marketing/steps-grid";
 
-const PASSENGER_STEPS = [
-  {
-    step: 1,
-    icon: Search,
-    title: "Trouvez votre trajet",
-    text: "Indiquez votre ville de départ et votre destination (ex. Rouyn-Noranda ➔ Montréal, Val-d'Or ➔ Amos) et choisissez la date qui vous convient.",
-  },
-  {
-    step: 2,
-    icon: CalendarCheck,
-    title: "Réservez en ligne",
-    text: "Consultez le profil du conducteur, le nombre de places restantes, la politique de bagages et réservez votre siège en toute sécurité.",
-  },
-  {
-    step: 3,
-    icon: MapPin,
-    title: "Rejoignez le point de rendez-vous",
-    text: "Retrouvez le conducteur au lieu convenu (Tim Hortons, dépanneur, sortie d'autoroute) et installez-vous confortablement.",
-  },
-  {
-    step: 4,
-    icon: Users,
-    title: "Voyagez en toute tranquillité",
-    text: "Profitez du trajet, partagez une bonne discussion (ou du silence si vous préférez !) et confirmez l'arrivée pour finaliser le voyage.",
-  },
-];
+const PASSENGER: HowItWorksProfile = {
+  heading: "Je cherche une place",
+  intro:
+    "Trouvez un trajet déjà prévu entre les villes du Québec et de l'Ontario, consultez les conditions, puis réservez votre siège en toute clarté.",
+  imageSrc: "/brand/axio-covoiturage.png",
+  imageAlt: "Passager Livre-moi.ca recherchant un covoiturage",
+  items: [
+    "Recherchez un trajet selon départ, destination et date",
+    "Consultez le profil, les avis et les conditions",
+    "Réservez votre place dans l'application",
+    "Rejoignez le point de rencontre convenu",
+    "Confirmez votre arrivée pour clôturer le trajet",
+  ],
+  ctaLabel: "Trouver une place",
+  ctaHref: "/recherche?type=PASSENGER",
+};
 
-const DRIVER_STEPS = [
-  {
-    step: 1,
-    icon: Car,
-    title: "Publiez votre itinéraire",
-    text: "Renseignez votre point de départ, vos arrêts possibles sur la 117, votre heure de départ et le prix par siège.",
-  },
-  {
-    step: 2,
-    icon: Users,
-    title: "Validez les demandes",
-    text: "Recevez les réservations de passagers avec des profils vérifiés et des avis de la communauté.",
-  },
-  {
-    step: 3,
-    icon: MapPin,
-    title: "Roulez en bonne compagnie",
-    text: "Accueillez vos passagers, faites vos pauses habituelles (ex. Le Domaine, Grand-Remous) et partagez la route.",
-  },
-  {
-    step: 4,
-    icon: CreditCard,
-    title: "Encaissez automatiquement vos gains",
-    text: "Votre participation aux frais d'essence est virée directement sur votre compte une fois le voyage terminé.",
-  },
-];
+const DRIVER: HowItWorksProfile = {
+  heading: "Je propose un trajet",
+  intro:
+    "Publiez un déplacement que vous aviez déjà prévu, indiquez vos places libres et partagez les frais avec des passagers de votre région.",
+  imageSrc: "/brand/axio-conducteur-voiture.png",
+  imageAlt: "Conducteur Livre-moi.ca prêt à partager son trajet",
+  imageFit: "cover",
+  items: [
+    "Publiez un trajet déjà prévu",
+    "Indiquez les places et l'espace bagages disponibles",
+    "Consultez les demandes de passagers",
+    "Confirmez les places et le point de rencontre",
+    "Effectuez le trajet et partagez les frais via l'application",
+  ],
+  ctaLabel: "Proposer un trajet",
+  ctaHref: "/trajets/nouveau",
+};
 
 export function CarpoolHowItWorksSection() {
   return (
     <section className="section-plain py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
-      <SectionHeader
-        badge="Comment ça marche"
-        title="Comment voyager avec Livre-moi.ca ?"
-        subtitle="En quelques clics, trouvez votre place ou complétez votre véhicule."
-        inlineBadge
-      />
+        <SectionHeader
+          title="Comment ça fonctionne"
+          subtitle="Deux parcours distincts : trouver une place ou partager les sièges d'un trajet déjà prévu."
+        />
 
-      <AnimatedTabs
-        tabs={[
-          {
-            title: "Je cherche une place (Passager)",
-            value: "passenger",
-            content: <StepsGrid steps={PASSENGER_STEPS} />,
-          },
-          {
-            title: "Je prends le volant (Conducteur)",
-            value: "driver",
-            content: <StepsGrid steps={DRIVER_STEPS} />,
-          },
-        ]}
-        containerClassName="mx-auto justify-center gap-1.5 rounded-lg bg-[#F6F6F6] p-1.5 dark:bg-neutral-900"
-        tabClassName="rounded-md px-5 py-2.5 text-sm font-medium sm:text-base"
-        layoutId="how-it-works-covoiturage-tab"
-      />
+        <AnimatedTabs
+          tabs={[
+            {
+              title: "Je cherche une place",
+              value: "passenger",
+              content: <HowItWorksProfilePanel {...PASSENGER} />,
+            },
+            {
+              title: "Je propose un trajet",
+              value: "driver",
+              content: <HowItWorksProfilePanel {...DRIVER} />,
+            },
+          ]}
+          containerClassName="mx-auto grid w-full max-w-xl grid-cols-2 justify-center gap-1.5 overflow-visible rounded-lg bg-white p-1.5 ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/10"
+          tabClassName="w-full rounded-md px-3 py-2.5 text-center text-sm font-medium sm:text-[15px]"
+          activeTabClassName="rounded-md"
+          layoutId="how-it-works-covoiturage-tab"
+        />
       </div>
     </section>
   );

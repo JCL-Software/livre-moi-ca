@@ -29,7 +29,7 @@ export function DeliveryConfirmScreen() {
       </p>
 
       <div className="mt-auto rounded-xl bg-emerald-50 px-3 py-2 text-center text-[11px] font-bold text-emerald-700">
-        QR scanné — colis reçu
+        QR scanné — Colis reçu
       </div>
     </div>
   );

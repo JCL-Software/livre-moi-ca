@@ -1,6 +1,9 @@
 "use client";
 
-import { Camera, MapPin, Package, Route } from "lucide-react";
+import { Package } from "lucide-react";
+import { MapPin } from "@/components/animate-ui/icons/map-pin";
+import { Route } from "@/components/animate-ui/icons/route";
+import CameraIcon from "@/components/ui/camera-icon";
 import { SectionHeader } from "@/components/marketing/section-header";
 import { StepsGrid } from "@/components/marketing/steps-grid";
 
@@ -25,7 +28,7 @@ const STEPS = [
   },
   {
     step: 4,
-    icon: Camera,
+    icon: CameraIcon,
     title: "Livrez et encaissez",
     text: "Remettez le colis au destinataire, validez avec le code OTP et recevez votre paiement.",
   },

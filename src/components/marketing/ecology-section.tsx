@@ -1,6 +1,14 @@
-import type { LucideIcon } from "lucide-react";
-import { Car, Leaf, Package, Route, Users } from "lucide-react";
+import { Car, Package } from "lucide-react";
+import { Route } from "@/components/animate-ui/icons/route";
+import { Users } from "@/components/animate-ui/icons/users";
+import { LeafIcon } from "@/components/ui/leaf";
 import { APP_NAME } from "@/lib/constants";
+
+type AppIcon = React.ComponentType<{
+  className?: string;
+  size?: number;
+  animateOnHover?: boolean;
+}>;
 
 type EcologyVariant = "colis" | "covoiturage";
 
@@ -11,7 +19,7 @@ const CONTENT: Record<
     title: string;
     subtitle: string;
     description?: string;
-    points: { icon: LucideIcon; title: string; description: string }[];
+    points: { icon: AppIcon; title: string; description: string }[];
   }
 > = {
   colis: {
@@ -33,7 +41,7 @@ const CONTENT: Record<
           "Faites circuler vos achats, vos effets personnels ou vos pièces importantes entre les villes.",
       },
       {
-        icon: Leaf,
+        icon: LeafIcon,
         title: "Une option plus responsable",
         description:
           "Optimiser les trajets existants permet de limiter les déplacements consacrés uniquement à la livraison.",
@@ -76,7 +84,7 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
       <div className="relative grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-6">
         <div>
           <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-2.5 py-0.5 text-[11px] font-semibold text-black dark:border-white/15 dark:bg-black dark:text-white">
-            <Leaf className="h-3 w-3" />
+            <LeafIcon className="h-3 w-3" size={12} />
             {badge}
           </div>
 
@@ -84,7 +92,7 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
             <h2 className="text-2xl font-semibold tracking-tight text-black dark:text-white md:text-3xl">
               {title}
             </h2>
-            <Leaf className="h-5 w-5 shrink-0 text-black dark:text-white md:h-6 md:w-6" />
+            <LeafIcon className="h-5 w-5 shrink-0 text-black dark:text-white md:h-6 md:w-6" size={20} />
           </div>
 
           <p className="mt-2.5 max-w-md text-sm leading-6 text-slate-700 dark:text-slate-300 md:text-[15px]">
@@ -104,7 +112,7 @@ export function EcologySection({ variant = "colis" }: { variant?: EcologyVariant
               className="rounded-lg border border-white bg-white p-3.5 shadow-sm dark:border-neutral-700 dark:bg-black md:p-4"
             >
               <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#F3F3F3] text-black dark:bg-white/10 dark:text-white">
-                <point.icon className="h-4 w-4" />
+                <point.icon className="h-4 w-4" size={16} animateOnHover />
               </div>
               <h3 className="text-xs font-extrabold text-slate-950 dark:text-slate-50 md:text-sm">
                 {point.title}

@@ -41,11 +41,7 @@ export default async function SearchPage({
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-10">
       <div className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-wider text-primary">Recherche</p>
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Rechercher un trajet</h1>
-        <p className="text-muted-foreground">
-          Matching spatial : départ à 25 km, arrivée à 30 km, arrêts du corridor inclus.
-        </p>
       </div>
       <SearchForm compact defaultType={defaultType} />
 

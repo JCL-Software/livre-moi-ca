@@ -1,13 +1,21 @@
 "use client";
 
-import { ArrowRight, Building2, Mail, ShoppingBag, Wrench } from "lucide-react";
+import { Building2, Mail, ShoppingBag } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import { WrenchIcon } from "@/components/ui/wrench";
 import { SectionHeader } from "@/components/marketing/section-header";
 import { cn } from "@/lib/utils";
+
+type AppIcon = React.ComponentType<{
+  className?: string;
+  size?: number;
+  animateOnHover?: boolean;
+}>;
 
 const LINE_COLORS = ["#000000", "#5e5e5e", "#1a1a1a", "#c6c6c6", "#9b9b9b"];
 
@@ -30,7 +38,13 @@ function RoutePreview() {
   );
 }
 
-const USE_CASES = [
+const USE_CASES: {
+  icon: AppIcon;
+  title: string;
+  description: string;
+  header?: ReactNode;
+  className: string;
+}[] = [
   {
     icon: ShoppingBag,
     title: "Marketplace et achats entre particuliers",
@@ -40,7 +54,7 @@ const USE_CASES = [
     className: "md:col-span-2",
   },
   {
-    icon: Wrench,
+    icon: WrenchIcon,
     title: "Pièces et objets urgents",
     description: "Faites parvenir rapidement une pièce, un outil ou du matériel dont vous avez besoin.",
     className: "md:col-span-1",
@@ -132,7 +146,11 @@ export function UseCasesSection() {
                   header={useCase.header}
                   icon={
                     <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
-                      <Icon className="h-5 w-5 transition duration-200 group-hover/bento:-translate-y-0.5" />
+                      <Icon
+                        className="h-5 w-5 transition duration-200 group-hover/bento:-translate-y-0.5"
+                        size={20}
+                        animateOnHover
+                      />
                     </span>
                   }
                   title={useCase.title}
@@ -141,7 +159,7 @@ export function UseCasesSection() {
                       <span>{useCase.description}</span>
                       <span className="mt-3 flex items-center gap-1 text-sm font-semibold text-black opacity-0 transition duration-200 group-hover/bento:translate-x-0.5 group-hover/bento:opacity-100 dark:text-white">
                         Publier un colis
-                        <ArrowRight className="h-3.5 w-3.5" />
+                        <ArrowRight className="h-3.5 w-3.5" size={14} animateOnHover />
                       </span>
                     </>
                   }

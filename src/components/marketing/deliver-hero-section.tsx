@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 
 export function DeliverHeroSection() {
@@ -24,7 +24,7 @@ export function DeliverHeroSection() {
 
           <Link href="/trajets/nouveau" className="btn-brand">
             Publier mon trajet
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-5 w-5" size={20} animateOnHover />
           </Link>
         </div>
 

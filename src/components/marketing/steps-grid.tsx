@@ -1,9 +1,12 @@
-import type { LucideIcon } from "lucide-react";
-import { AnimateIcon } from "@/components/ui/animate-icon";
+type AppIcon = React.ComponentType<{
+  className?: string;
+  size?: number;
+  animateOnHover?: boolean;
+}>;
 
 export type StepItem = {
   step: number;
-  icon: LucideIcon;
+  icon: AppIcon;
   title: string;
   text: string;
 };
@@ -20,11 +23,9 @@ export function StepsGrid({ steps }: { steps: StepItem[] }) {
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black text-sm font-medium text-white dark:bg-white dark:text-black">
               {step}
             </span>
-            <AnimateIcon animateOnView>
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
-                <Icon className="h-5 w-5" />
-              </span>
-            </AnimateIcon>
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
+              <Icon className="h-5 w-5" size={20} animateOnHover />
+            </span>
           </div>
           <h3 className="text-lg font-semibold text-black dark:text-white">
             {title}

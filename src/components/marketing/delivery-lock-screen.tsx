@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Camera, Flashlight, Lock } from "lucide-react";
+import { Flashlight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { Lock } from "@/components/animate-ui/icons/lock";
+import CameraIcon from "@/components/ui/camera-icon";
 
 type DeliveryLockScreenProps = {
   accepted?: boolean;
@@ -19,7 +21,7 @@ export function DeliveryLockScreen({ accepted = false }: DeliveryLockScreenProps
         transition={{ duration: 0.5, ease: "easeInOut" }}
         className="relative overflow-hidden text-center"
       >
-        <Lock className="mx-auto mb-2 h-3.5 w-3.5 text-white/70" aria-hidden="true" />
+        <Lock className="mx-auto mb-2 h-3.5 w-3.5 text-white/70" size={14} animateOnHover aria-hidden="true" />
         <p className="font-space text-[46px] font-extrabold leading-none tracking-tight">
           19:42
         </p>
@@ -127,7 +129,7 @@ export function DeliveryLockScreen({ accepted = false }: DeliveryLockScreenProps
                 <Flashlight className="h-4 w-4 text-white/80" aria-hidden="true" />
               </span>
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
-                <Camera className="h-4 w-4 text-white/80" aria-hidden="true" />
+                <CameraIcon className="h-4 w-4 text-white/80" size={16} aria-hidden="true" />
               </span>
             </motion.div>
           )}

@@ -1,15 +1,22 @@
-import {
-  MessageCircle,
-  ShieldCheck,
-  Star,
-  Wallet,
-} from "lucide-react";
-import { AnimateIcon } from "@/components/ui/animate-icon";
+import { Wallet } from "lucide-react";
+import { MessageCircle } from "@/components/animate-ui/icons/message-circle";
+import { Star } from "@/components/animate-ui/icons/star";
+import { ShieldCheckIcon } from "@/components/ui/shield-check";
 import { SectionHeader } from "@/components/marketing/section-header";
 
-const SAFETY_POINTS = [
+type AppIcon = React.ComponentType<{
+  className?: string;
+  size?: number;
+  animateOnHover?: boolean;
+}>;
+
+const SAFETY_POINTS: {
+  icon: AppIcon;
+  title: string;
+  text: string;
+}[] = [
   {
-    icon: ShieldCheck,
+    icon: ShieldCheckIcon,
     title: "Profils vérifiés",
     text: "Vérification de l'identité, du numéro de téléphone et avis communautaires pour savoir avec qui vous partagez la route.",
   },
@@ -45,11 +52,9 @@ export function CarpoolOfferSafetySection() {
               key={title}
               className="feature-card rounded-lg border border-neutral-200 bg-card p-6 shadow-sm dark:border-white/10 dark:bg-card"
             >
-              <AnimateIcon animateOnView className="mb-4">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
-                  <Icon className="h-5 w-5" />
-                </span>
-              </AnimateIcon>
+              <span className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
+                <Icon className="h-5 w-5" size={20} animateOnHover />
+              </span>
               <h3 className="text-lg font-semibold text-black dark:text-white">
                 {title}
               </h3>

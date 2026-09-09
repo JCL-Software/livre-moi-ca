@@ -95,8 +95,17 @@ export function CarpoolOfferFaqSection() {
   return (
     <section className="section-muted py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="grid items-start gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-16">
-          <div className="order-2 md:order-1">
+        <div className="grid items-start gap-10 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
+          <div className="md:sticky md:top-28">
+            <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white md:text-4xl lg:text-5xl">
+              Questions fréquentes
+            </h2>
+            <p className="mt-3 text-neutral-600 dark:text-neutral-400">
+              Avant de proposer vos places.
+            </p>
+          </div>
+
+          <div>
             {FAQ_ITEMS.map((item, index) => (
               <FaqItem
                 key={item.question}
@@ -108,15 +117,6 @@ export function CarpoolOfferFaqSection() {
                 }
               />
             ))}
-          </div>
-
-          <div className="order-1 md:sticky md:top-28 md:order-2 md:text-right">
-            <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white md:text-4xl lg:text-5xl">
-              Questions fréquentes
-            </h2>
-            <p className="mt-3 text-neutral-600 dark:text-neutral-400">
-              Avant de proposer vos places.
-            </p>
           </div>
         </div>
       </div>

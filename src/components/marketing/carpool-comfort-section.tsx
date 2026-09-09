@@ -1,15 +1,19 @@
-import {
-  CreditCard,
-  Dog,
-  Music,
-  ShieldCheck,
-  Snowflake,
-  UserCheck,
-} from "lucide-react";
-import { AnimateIcon } from "@/components/ui/animate-icon";
+import { Dog, Music, Snowflake, UserCheck } from "lucide-react";
+import { CreditCardIcon } from "@/components/ui/credit-card";
+import { ShieldCheckIcon } from "@/components/ui/shield-check";
 import { SectionHeader } from "@/components/marketing/section-header";
 
-const COMFORT_POINTS = [
+type AppIcon = React.ComponentType<{
+  className?: string;
+  size?: number;
+  animateOnHover?: boolean;
+}>;
+
+const COMFORT_POINTS: {
+  icon: AppIcon;
+  title: string;
+  text: string;
+}[] = [
   {
     icon: UserCheck,
     title: "Profils vérifiés à 100 %",
@@ -26,15 +30,15 @@ const COMFORT_POINTS = [
     text: "Des conducteurs habitués aux conditions routières de nos hivers témiscabitibiens.",
   },
   {
-    icon: CreditCard,
+    icon: CreditCardIcon,
     title: "Paiement sans manipulation d'argent comptant",
     text: "Tout se règle de manière fluide et sécurisée via l'application.",
   },
 ];
 
-const PREFERENCE_TAGS = [
+const PREFERENCE_TAGS: { icon: AppIcon; label: string }[] = [
   { icon: Dog, label: "Animaux acceptés ou non" },
-  { icon: ShieldCheck, label: "Véhicule non-fumeur" },
+  { icon: ShieldCheckIcon, label: "Véhicule non-fumeur" },
   { icon: Music, label: "Jaser ou voyage calme" },
 ];
 
@@ -54,7 +58,7 @@ export function CarpoolComfortSection() {
               key={label}
               className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 dark:border-white/10 dark:bg-neutral-900 dark:text-neutral-300"
             >
-              <Icon className="h-4 w-4 text-black dark:text-white" />
+              <Icon className="h-4 w-4 text-black dark:text-white" size={16} animateOnHover />
               {label}
             </span>
           ))}
@@ -66,11 +70,9 @@ export function CarpoolComfortSection() {
               key={title}
               className="feature-card rounded-lg border border-neutral-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-neutral-900"
             >
-              <AnimateIcon animateOnView className="mb-4">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
-                  <Icon className="h-5 w-5" />
-                </span>
-              </AnimateIcon>
+              <span className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
+                <Icon className="h-5 w-5" size={20} animateOnHover />
+              </span>
               <h3 className="text-lg font-semibold text-black dark:text-white">
                 {title}
               </h3>

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 
 export function CarpoolOfferCtaSection() {
   return (
@@ -28,7 +28,7 @@ export function CarpoolOfferCtaSection() {
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 text-base font-medium text-black transition-colors hover:bg-neutral-200"
           >
             Proposer des places libres
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-5 w-5" size={20} animateOnHover />
           </Link>
         </motion.div>
       </div>

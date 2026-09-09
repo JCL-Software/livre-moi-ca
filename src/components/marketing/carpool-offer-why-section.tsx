@@ -1,10 +1,12 @@
-import { HandCoins, MapPin, Users } from "lucide-react";
+import { MapPin } from "@/components/animate-ui/icons/map-pin";
+import { Users } from "@/components/animate-ui/icons/users";
+import { HandCoinsIcon } from "@/components/ui/hand-coins";
 import { GradientFeatureCard } from "@/components/marketing/gradient-feature-card";
 import { SectionHeader } from "@/components/marketing/section-header";
 
 const REASONS = [
   {
-    icon: HandCoins,
+    icon: HandCoinsIcon,
     title: "Partagez les frais d'essence",
     text: "Les passagers contribuent à vos dépenses de route — Un moyen simple de rentabiliser chaque déplacement.",
     accent: "from-orange-600/90 to-amber-700/90",

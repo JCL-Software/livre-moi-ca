@@ -5,32 +5,81 @@ import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-const FAQ_ITEMS = [
+type FaqGroup = {
+  title: string;
+  items: { question: string; answer: string }[];
+};
+
+const FAQ_GROUPS: FaqGroup[] = [
   {
-    question:
-      "Comment se passe la traversée du Parc de La Vérendrye avec les zones hors réseau ?",
-    answer:
-      "Les détails du trajet et les arrêts (ex. halte du Domaine ou Grand-Remous) sont convenus avant le départ. Une fois engagé sur la route, le plan est clair pour tout le monde même sans couverture cellulaire.",
+    title: "Sécurité et confiance",
+    items: [
+      {
+        question: "Comment les conducteurs sont-ils vérifiés ?",
+        answer:
+          "Avant de proposer des places, chaque conducteur doit compléter les étapes requises : création du profil, confirmation d’identité et informations du véhicule. Cela ne supprime pas tous les risques, mais fournit des informations vérifiées pour mieux choisir.",
+      },
+      {
+        question: "Quelles informations puis-je consulter avant de réserver ?",
+        answer:
+          "Photo, avis, véhicule, nombre de places, espace bagages, préférences (animaux, non-fumeur, ambiance), point de rencontre et heure de départ sont visibles sur l’annonce.",
+      },
+      {
+        question: "Que faire si je ne me sens pas à l’aise ?",
+        answer:
+          "Vous pouvez annuler selon les conditions de réservation, utiliser la messagerie pour clarifier la situation, ou contacter le support. Ne montez jamais dans un véhicule si vous ne vous sentez pas en sécurité.",
+      },
+      {
+        question: "Comment fonctionne la messagerie ?",
+        answer:
+          "Les échanges liés au trajet restent dans l’application. Cela garde un historique clair et évite de partager des coordonnées personnelles trop tôt.",
+      },
+    ],
   },
   {
-    question: "Combien de bagages puis-je apporter ?",
-    answer:
-      "Chaque annonce de conducteur précise le gabarit de bagage autorisé (petit sac à dos, valise cabine ou grand sac). Si vous avez des équipements encombrants (sac de hockey, équipement de ski), vérifiez avec le conducteur avant de réserver.",
+    title: "Réservation",
+    items: [
+      {
+        question: "Quand le paiement est-il effectué ?",
+        answer:
+          "Le paiement est géré dans l’application au moment de la réservation. Il n’y a pas d’échange d’argent comptant entre passager et conducteur.",
+      },
+      {
+        question: "Que se passe-t-il si le conducteur annule ?",
+        answer:
+          "Vous êtes informé dans l’application. Selon le cas, la réservation peut être remboursée ou vous pouvez chercher un autre trajet disponible.",
+      },
+      {
+        question: "Puis-je modifier ou annuler ma réservation ?",
+        answer:
+          "Oui, selon les délais et conditions affichés au moment de la réservation. Les modifications importantes (horaire, bagages) se font idéalement via la messagerie avant le départ.",
+      },
+    ],
   },
   {
-    question: "Que se passe-t-il si un passager ou un conducteur est en retard ?",
-    answer:
-      "Une tolérance de 10 à 15 minutes est appliquée. Grâce à notre messagerie, vous pouvez facilement prévenir l'autre partie. En cas d'absence injustifiée (no-show), notre politique d'annulation protège le conducteur.",
-  },
-  {
-    question: "Puis-je voyager avec mon animal de compagnie ?",
-    answer:
-      "Les conducteurs indiquent directement sur leur profil s'ils acceptent les animaux (généralement en cage de transport ou attachés). Filtrez simplement vos recherches selon ce critère.",
-  },
-  {
-    question: "Est-ce légal au Québec de faire payer pour un covoiturage ?",
-    answer:
-      "Oui, tout à fait. La loi québécoise autorise le partage des frais de déplacement (essence, entretien, péages). Le covoiturage n'est pas un service de taxi commercial, mais une contribution aux coûts réels du trajet.",
+    title: "Organisation du trajet",
+    items: [
+      {
+        question: "Où se trouve le point de rencontre ?",
+        answer:
+          "Il est convenu et affiché dans la réservation — Souvent un lieu public pratique (stationnement, commerce, sortie d’autoroute). Confirmez-le avant le départ.",
+      },
+      {
+        question: "Combien de bagages puis-je apporter ?",
+        answer:
+          "Chaque annonce précise l’espace disponible. Si vous avez un équipement encombrant, vérifiez avec le conducteur avant de réserver.",
+      },
+      {
+        question: "Puis-je voyager avec un animal ?",
+        answer:
+          "Uniquement si le conducteur l’indique sur son annonce. Respectez les conditions précisées (cage, laisse, etc.).",
+      },
+      {
+        question: "Que se passe-t-il dans les zones sans réseau ?",
+        answer:
+          "Les détails du trajet, les arrêts et le point de rencontre sont confirmés avant le départ. Une fois en route, le plan reste clair même sans couverture cellulaire.",
+      },
+    ],
   },
 ];
 
@@ -91,33 +140,43 @@ function FaqItem({
 }
 
 export function CarpoolFaqSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openKey, setOpenKey] = useState<string | null>(null);
 
   return (
-    <section className="section-plain py-16 md:py-20">
+    <section className="section-muted py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="grid items-start gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-16">
-          <div className="order-2 md:order-1">
-            {FAQ_ITEMS.map((item, index) => (
-              <FaqItem
-                key={item.question}
-                question={item.question}
-                answer={item.answer}
-                open={openIndex === index}
-                onToggle={() =>
-                  setOpenIndex((current) => (current === index ? null : index))
-                }
-              />
-            ))}
-          </div>
-
-          <div className="order-1 md:sticky md:top-28 md:order-2 md:text-right">
+        <div className="grid items-start gap-10 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
+          <div className="md:sticky md:top-28">
             <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white md:text-4xl lg:text-5xl">
               Questions fréquentes
             </h2>
             <p className="mt-3 text-neutral-600 dark:text-neutral-400">
-              Tout ce qu&apos;il faut savoir avant de covoiturer.
+              Sécurité, réservation et organisation du trajet
             </p>
+          </div>
+
+          <div className="space-y-10">
+            {FAQ_GROUPS.map((group) => (
+              <div key={group.title}>
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-500">
+                  {group.title}
+                </h3>
+                {group.items.map((item) => {
+                  const key = `${group.title}-${item.question}`;
+                  return (
+                    <FaqItem
+                      key={key}
+                      question={item.question}
+                      answer={item.answer}
+                      open={openKey === key}
+                      onToggle={() =>
+                        setOpenKey((current) => (current === key ? null : key))
+                      }
+                    />
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
