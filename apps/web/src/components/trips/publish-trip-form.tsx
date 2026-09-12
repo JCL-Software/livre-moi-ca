@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { AddressAutocomplete } from "@/components/search/address-autocomplete";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -87,8 +88,8 @@ export function PublishTripForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2 text-sm">
+    <>
+      <nav aria-label="Étapes de publication" className="mb-6 flex gap-2 text-sm">
         {steps.map((label, index) => (
           <button
             key={label}
@@ -99,146 +100,155 @@ export function PublishTripForm() {
             {index + 1}. {label}
           </button>
         ))}
-      </div>
+      </nav>
 
-      {step === 0 && (
-        <div className="grid gap-4">
-          <AddressAutocomplete id="pub-origin" label="Départ" value={origin} onChange={setOrigin} />
-          <AddressAutocomplete
-            id="pub-dest"
-            label="Arrivée"
-            value={destination}
-            onChange={setDestination}
-          />
-          <div className="space-y-1.5">
-            <Label htmlFor="when">Date et heure de départ</Label>
-            <Input
-              id="when"
-              type="datetime-local"
-              value={departureTime}
-              onChange={(event) => setDepartureTime(event.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="stops">Arrêts intermédiaires (optionnel, séparés par des virgules)</Label>
-            <Input
-              id="stops"
-              placeholder="Louvicourt, Mont-Laurier, Maniwaki"
-              value={stopsText}
-              onChange={(event) => setStopsText(event.target.value)}
-            />
-          </div>
-        </div>
-      )}
-
-      {step === 1 && (
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="seats">Places passagers</Label>
-            <Input
-              id="seats"
-              type="number"
-              min={0}
-              max={8}
-              value={totalSeats}
-              onChange={(event) => setTotalSeats(Number(event.target.value))}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="price">Prix par place ($ CAD)</Label>
-            <Input
-              id="price"
-              type="number"
-              min={0}
-              step="0.5"
-              value={pricePerSeat}
-              onChange={(event) => setPricePerSeat(Number(event.target.value))}
-            />
-          </div>
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox checked={smoking} onCheckedChange={(value) => setSmoking(Boolean(value))} />
-            Fumeur accepté
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox checked={pets} onCheckedChange={(value) => setPets(Boolean(value))} />
-            Animaux acceptés
-          </label>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="grid gap-4">
-          <div className="flex items-center justify-between rounded-lg border p-3">
-            <div>
-              <p className="font-medium">Accepter des colis</p>
-              <p className="text-sm text-muted-foreground">
-                Cotransportage sur le même trajet, validé par code OTP.
-              </p>
-            </div>
-            <Switch checked={acceptsParcels} onCheckedChange={setAcceptsParcels} />
-          </div>
-          {acceptsParcels && (
-            <>
-              <div className="space-y-1.5">
-                <Label>Taille maximale</Label>
-                <Select
-                  value={maxParcelSize}
-                  onValueChange={(value) => setMaxParcelSize(value as ParcelSize)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(PARCEL_LABELS).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+      <Card className="border-border/80 shadow-lg shadow-primary/5">
+        <CardHeader>
+          <CardTitle>Détails du trajet</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            {step === 0 && (
+              <div className="grid gap-4">
+                <AddressAutocomplete id="pub-origin" label="Départ" value={origin} onChange={setOrigin} />
+                <AddressAutocomplete
+                  id="pub-dest"
+                  label="Arrivée"
+                  value={destination}
+                  onChange={setDestination}
+                />
+                <div className="space-y-1.5">
+                  <Label htmlFor="when">Date et heure de départ</Label>
+                  <Input
+                    id="when"
+                    type="datetime-local"
+                    value={departureTime}
+                    onChange={(event) => setDepartureTime(event.target.value)}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="stops">Arrêts intermédiaires (optionnel, séparés par des virgules)</Label>
+                  <Input
+                    id="stops"
+                    placeholder="Louvicourt, Mont-Laurier, Maniwaki"
+                    value={stopsText}
+                    onChange={(event) => setStopsText(event.target.value)}
+                  />
+                </div>
               </div>
+            )}
+
+            {step === 1 && (
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">
-                  <Label htmlFor="parcel-base">Prix de base colis ($)</Label>
+                  <Label htmlFor="seats">Places passagers</Label>
                   <Input
-                    id="parcel-base"
+                    id="seats"
                     type="number"
                     min={0}
-                    value={parcelBasePrice}
-                    onChange={(event) => setParcelBasePrice(Number(event.target.value))}
+                    max={8}
+                    value={totalSeats}
+                    onChange={(event) => setTotalSeats(Number(event.target.value))}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="parcel-kg">Supplément / kg ($)</Label>
+                  <Label htmlFor="price">Prix par place ($ CAD)</Label>
                   <Input
-                    id="parcel-kg"
+                    id="price"
                     type="number"
                     min={0}
-                    step="0.1"
-                    value={parcelPricePerKg}
-                    onChange={(event) => setParcelPricePerKg(Number(event.target.value))}
+                    step="0.5"
+                    value={pricePerSeat}
+                    onChange={(event) => setPricePerSeat(Number(event.target.value))}
                   />
                 </div>
+                <label className="flex items-center gap-2 text-sm">
+                  <Checkbox checked={smoking} onCheckedChange={(value) => setSmoking(Boolean(value))} />
+                  Fumeur accepté
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <Checkbox checked={pets} onCheckedChange={(value) => setPets(Boolean(value))} />
+                  Animaux acceptés
+                </label>
               </div>
-            </>
-          )}
-        </div>
-      )}
+            )}
 
-      <div className="flex justify-between">
-        <Button type="button" variant="outline" disabled={step === 0} onClick={() => setStep(step - 1)}>
-          Retour
-        </Button>
-        {step < 2 ? (
-          <Button type="button" onClick={() => setStep(step + 1)}>
-            Continuer
-          </Button>
-        ) : (
-          <Button type="button" onClick={onSubmit} disabled={loading}>
-            {loading ? "Publication…" : "Publier le trajet"}
-          </Button>
-        )}
-      </div>
-    </div>
+            {step === 2 && (
+              <div className="grid gap-4">
+                <div className="flex items-center justify-between rounded-lg border p-3">
+                  <div>
+                    <p className="font-medium">Accepter des colis</p>
+                    <p className="text-sm text-muted-foreground">
+                      Cotransportage sur le même trajet
+                    </p>
+                  </div>
+                  <Switch checked={acceptsParcels} onCheckedChange={setAcceptsParcels} />
+                </div>
+                {acceptsParcels && (
+                  <>
+                    <div className="space-y-1.5">
+                      <Label>Taille maximale</Label>
+                      <Select
+                        value={maxParcelSize}
+                        onValueChange={(value) => setMaxParcelSize(value as ParcelSize)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(PARCEL_LABELS).map(([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="parcel-base">Prix de base colis ($)</Label>
+                        <Input
+                          id="parcel-base"
+                          type="number"
+                          min={0}
+                          value={parcelBasePrice}
+                          onChange={(event) => setParcelBasePrice(Number(event.target.value))}
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="parcel-kg">Supplément / kg ($)</Label>
+                        <Input
+                          id="parcel-kg"
+                          type="number"
+                          min={0}
+                          step="0.1"
+                          value={parcelPricePerKg}
+                          onChange={(event) => setParcelPricePerKg(Number(event.target.value))}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            <div className="flex justify-between">
+              <Button type="button" variant="outline" disabled={step === 0} onClick={() => setStep(step - 1)}>
+                Retour
+              </Button>
+              {step < 2 ? (
+                <Button type="button" onClick={() => setStep(step + 1)}>
+                  Continuer
+                </Button>
+              ) : (
+                <Button type="button" onClick={onSubmit} disabled={loading}>
+                  {loading ? "Publication…" : "Publier le trajet"}
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </>
   );
 }

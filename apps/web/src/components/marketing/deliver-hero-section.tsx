@@ -22,10 +22,18 @@ export function DeliverHeroSection() {
             </HeroSubtitle>
           </div>
 
-          <Link href="/trajets/nouveau" className="btn-brand">
-            Publier mon trajet
-            <ArrowRight className="h-5 w-5" size={20} animateOnHover />
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/trajets/nouveau" className="btn-brand">
+              Publier mon trajet
+              <ArrowRight className="h-5 w-5" size={20} animateOnHover />
+            </Link>
+            <Link
+              href="/colis"
+              className="inline-flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-black underline-offset-4 hover:underline dark:text-white"
+            >
+              Voir les colis disponibles
+            </Link>
+          </div>
         </div>
 
         <div className="fade-in-right relative flex justify-center md:justify-end">

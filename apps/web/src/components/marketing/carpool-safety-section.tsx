@@ -37,7 +37,7 @@ const CARDS: {
   {
     title: "Confirmation du trajet",
     description:
-      "Les deux parties disposent d'une réservation, d'un historique et d'un canal de communication centralisé.",
+      "Tout est regroupé dans l’application : réservation, messages et historique du trajet.",
     icon: ClipboardCheck,
   },
 ];
@@ -79,7 +79,7 @@ export function CarpoolSafetySection() {
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           title="Voyagez plus sereinement grâce à des informations claires"
-          subtitle="La confiance commence avant le départ. Chaque conducteur qui propose un trajet doit compléter les étapes de vérification requises avant de pouvoir accueillir des passagers. Des informations vérifiées pour prendre une décision éclairée."
+          subtitle="La confiance commence avant le départ. Chaque conducteur qui propose un trajet doit compléter les étapes de vérification requises avant de pouvoir accueillir des passagers. Des informations claires pour choisir en toute confiance."
         />
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

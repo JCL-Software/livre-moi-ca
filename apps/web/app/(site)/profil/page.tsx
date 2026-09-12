@@ -32,6 +32,8 @@ export default async function ProfilePage() {
           avatar_url: profile?.avatar_url ?? "",
           rating_avg: Number(profile?.rating_avg ?? 5),
           rating_count: profile?.rating_count ?? 0,
+          accepts_parcels: Boolean(profile?.accepts_parcels),
+          identity_verified: Boolean(profile?.identity_verified),
         }}
       />
     </div>

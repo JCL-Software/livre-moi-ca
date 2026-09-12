@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Calculator } from "lucide-react";
 import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
+import { Button as MovingBorderButton } from "@/components/ui/moving-border";
 
 export function HeroSection() {
   return (
@@ -25,18 +26,31 @@ export function HeroSection() {
           </div>
 
           <div className="space-y-3">
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/recherche?type=PARCEL" className="btn-brand">
                 Trouver un trajet
                 <ArrowRight className="h-5 w-5" size={20} animateOnHover />
               </Link>
-              <Link href="#estimation" className="btn-brand-secondary">
-                <Calculator className="h-5 w-5 shrink-0" />
-                Estimer le coût d&apos;un colis
-              </Link>
+              <MovingBorderButton
+                as="a"
+                href="/calculateur"
+                borderRadius="0.5rem"
+                duration={5000}
+                containerClassName="h-[52px] w-full p-[1px] text-base sm:w-auto"
+                borderClassName="h-16 w-16 bg-[radial-gradient(#000000_40%,transparent_60%)] opacity-50"
+                className="border-neutral-200 bg-white px-6 text-base font-medium text-black hover:bg-neutral-50 dark:border-white/15 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-900"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Calculator className="h-5 w-5 shrink-0" />
+                  Estimer le coût d&apos;un colis
+                </span>
+              </MovingBorderButton>
             </div>
             <p className="text-sm text-neutral-500">
-              Des trajets réels entre des personnes d&apos;ici.
+              Livre-moi.ca met en relation les personnes qui souhaitent faire
+              transporter
+              <br />
+              un colis avec des conducteurs qui prennent déjà la route.
             </p>
           </div>
         </div>

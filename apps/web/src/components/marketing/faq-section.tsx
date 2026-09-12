@@ -5,36 +5,56 @@ import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-const FAQ_ITEMS = [
+type FaqGroup = {
+  title: string;
+  items: { question: string; answer: string }[];
+};
+
+const FAQ_GROUPS: FaqGroup[] = [
   {
-    question: "Comment se passe le point de rencontre pour récupérer le colis ?",
-    answer:
-      "L'expéditeur et le conducteur choisissent ensemble un endroit public, accessible et pratique. Il peut s'agir d'un stationnement, d'une station-service, d'un commerce ou d'un autre lieu sécuritaire.",
+    title: "Organisation du transport",
+    items: [
+      {
+        question: "Comment se passe le point de rencontre pour récupérer le colis ?",
+        answer:
+          "L'expéditeur et le conducteur choisissent ensemble un endroit public, accessible et pratique. Il peut s'agir d'un stationnement, d'une station-service, d'un commerce ou d'un autre lieu sécuritaire.",
+      },
+      {
+        question: "Comment choisir le bon format de colis ?",
+        answer:
+          "Choisissez le format selon l'espace réellement occupé par votre colis. En cas de doute, sélectionnez le format supérieur et ajoutez les dimensions ou une photo dans votre demande.",
+      },
+      {
+        question: "Puis-je envoyer un colis sans accompagner le trajet ?",
+        answer:
+          "Oui. Le colis peut voyager avec un conducteur qui effectue déjà le trajet, sans que vous soyez présent dans le véhicule.",
+      },
+    ],
   },
   {
-    question: "Comment choisir le bon format de colis ?",
-    answer:
-      "Choisissez le format selon l'espace réellement occupé par votre colis. En cas de doute, sélectionnez le format supérieur et ajoutez les dimensions ou une photo dans votre demande.",
+    title: "Livraison",
+    items: [
+      {
+        question: "Comment la livraison est-elle confirmée ?",
+        answer:
+          "Le destinataire remet un code de confirmation au conducteur lors de la réception. Cette étape permet de confirmer que le colis est arrivé à destination.",
+      },
+    ],
   },
   {
-    question: "Puis-je envoyer un colis sans accompagner le trajet ?",
-    answer:
-      "Oui. Le colis peut voyager avec un conducteur qui effectue déjà le trajet, sans que vous soyez présent dans le véhicule.",
-  },
-  {
-    question: "Comment la livraison est-elle confirmée ?",
-    answer:
-      "Le destinataire remet un code de confirmation au conducteur lors de la réception. Cette étape permet de confirmer que le colis est arrivé à destination.",
-  },
-  {
-    question: "Que puis-je faire livrer ?",
-    answer:
-      "Vous pouvez envoyer des documents, des vêtements, des achats Marketplace, des pièces, des outils et plusieurs objets du quotidien. Le colis doit être légal, sécuritaire, correctement emballé et compatible avec l'espace disponible.",
-  },
-  {
-    question: "Quels articles sont interdits ?",
-    answer:
-      "Les matières dangereuses, les armes, les produits illégaux, les articles mal emballés et les denrées périssables qui ne peuvent pas être transportées de façon sécuritaire ne sont pas acceptés.",
+    title: "Types de colis",
+    items: [
+      {
+        question: "Que puis-je faire livrer ?",
+        answer:
+          "Vous pouvez envoyer des documents, des vêtements, des achats Marketplace, des pièces, des outils et plusieurs objets du quotidien. Le colis doit être légal, sécuritaire, correctement emballé et compatible avec l'espace disponible.",
+      },
+      {
+        question: "Quels articles sont interdits ?",
+        answer:
+          "Les matières dangereuses, les armes, les produits illégaux, les articles mal emballés et les denrées périssables qui ne peuvent pas être transportées de façon sécuritaire ne sont pas acceptés.",
+      },
+    ],
   },
 ];
 
@@ -95,7 +115,7 @@ function FaqItem({
 }
 
 export function FaqSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openKey, setOpenKey] = useState<string | null>(null);
 
   return (
     <section className="section-plain py-16 md:py-20">
@@ -105,19 +125,32 @@ export function FaqSection() {
             <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white md:text-4xl lg:text-5xl">
               Questions fréquentes
             </h2>
+            <p className="mt-3 text-neutral-600 dark:text-neutral-400">
+              Organisation, livraison et types de colis
+            </p>
           </div>
 
-          <div>
-            {FAQ_ITEMS.map((item, index) => (
-              <FaqItem
-                key={item.question}
-                question={item.question}
-                answer={item.answer}
-                open={openIndex === index}
-                onToggle={() =>
-                  setOpenIndex((current) => (current === index ? null : index))
-                }
-              />
+          <div className="space-y-10">
+            {FAQ_GROUPS.map((group) => (
+              <div key={group.title}>
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-500">
+                  {group.title}
+                </h3>
+                {group.items.map((item) => {
+                  const key = `${group.title}-${item.question}`;
+                  return (
+                    <FaqItem
+                      key={key}
+                      question={item.question}
+                      answer={item.answer}
+                      open={openKey === key}
+                      onToggle={() =>
+                        setOpenKey((current) => (current === key ? null : key))
+                      }
+                    />
+                  );
+                })}
+              </div>
             ))}
           </div>
         </div>

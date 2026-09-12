@@ -6,6 +6,9 @@ import { Route } from "@/components/animate-ui/icons/route";
 import CameraIcon from "@/components/ui/camera-icon";
 import { SectionHeader } from "@/components/marketing/section-header";
 import { StepsGrid } from "@/components/marketing/steps-grid";
+import { withoutHoverProp } from "@/components/marketing/without-hover-prop";
+
+const PackageIcon = withoutHoverProp(Package);
 
 const STEPS = [
   {
@@ -16,7 +19,7 @@ const STEPS = [
   },
   {
     step: 2,
-    icon: Package,
+    icon: PackageIcon,
     title: "Recevez des demandes",
     text: "Les expéditeurs de la région vous contactent directement pour des envois compatibles avec votre itinéraire.",
   },

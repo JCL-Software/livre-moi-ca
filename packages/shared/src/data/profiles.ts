@@ -17,6 +17,7 @@ export async function updateProfileRecord(
       vehicle_plate: input.vehiclePlate || null,
       vehicle_color: input.vehicleColor || null,
       avatar_url: input.avatarUrl || null,
+      accepts_parcels: input.acceptsParcels,
     })
     .eq("id", userId);
 

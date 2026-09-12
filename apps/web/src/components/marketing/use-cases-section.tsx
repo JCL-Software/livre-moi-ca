@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useState, type ComponentType, type ReactNode, type SVGProps } from "react";
 import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
-import { BackgroundLines } from "@/components/ui/background-lines";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { WrenchIcon } from "@/components/ui/wrench";
 import { SectionHeader } from "@/components/marketing/section-header";
@@ -28,8 +27,6 @@ function withoutHoverProp(
 const ShoppingBagIcon = withoutHoverProp(ShoppingBag);
 const MailIcon = withoutHoverProp(Mail);
 const Building2Icon = withoutHoverProp(Building2);
-
-const LINE_COLORS = ["#000000", "#5e5e5e", "#1a1a1a", "#c6c6c6", "#9b9b9b"];
 
 function RoutePreview() {
   return (
@@ -124,16 +121,8 @@ export function UseCasesSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="section-muted relative overflow-hidden py-16 md:py-20">
-      <BackgroundLines
-        className="pointer-events-none absolute inset-0 h-full min-h-full w-full bg-transparent md:h-full"
-        svgOptions={{ duration: 16 }}
-        colors={LINE_COLORS}
-      >
-        <div className="absolute inset-0 bg-[#F6F6F6]/88 dark:bg-neutral-950/88" />
-      </BackgroundLines>
-
-      <div className="relative z-10 mx-auto max-w-6xl px-4">
+    <section className="section-muted py-16 md:py-20">
+      <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           badge="Cas d'usage"
           title="Des situations bien réelles"

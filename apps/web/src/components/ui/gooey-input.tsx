@@ -25,7 +25,7 @@ function GooeyFilter({
   return (
     <svg className="absolute hidden h-0 w-0" aria-hidden>
       <defs>
-        <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
+        <filter id={filterId} x="-8%" y="-40%" width="116%" height="180%">
           <feGaussianBlur in="SourceGraphic" stdDeviation={blur} result="blur" />
           <feColorMatrix
             in="blur"
@@ -192,12 +192,13 @@ export function GooeyInput({
   );
 
   useEffect(() => {
-    if (isExpanded) {
+    const wasExpanded = prevExpandedRef.current;
+    if (isExpanded && !wasExpanded) {
       inputRef.current?.focus();
-      if (!prevExpandedRef.current && typewriterText) {
+      if (typewriterText) {
         setTypewriterKey((key) => key + 1);
       }
-    } else if (prevExpandedRef.current) {
+    } else if (!isExpanded && wasExpanded) {
       setPlayPinPath(false);
       if (clearOnCollapse) {
         setSearchText("");
@@ -274,20 +275,20 @@ export function GooeyInput({
   return (
     <div
       className={cn(
-        "relative flex w-full items-center justify-start",
+        "relative isolate flex w-full items-center justify-start",
         className,
         classNames?.root,
       )}
     >
-      <GooeyFilter filterId={filterId} blur={gooeyBlur} />
+      {isForm ? null : <GooeyFilter filterId={filterId} blur={gooeyBlur} />}
 
       <div
         className={cn(
-          "relative flex w-full items-center justify-center",
+          "relative flex w-full items-center justify-center overflow-hidden",
           heightClass,
           classNames?.filterWrap,
         )}
-        style={{ filter: `url(#${filterId})` }}
+        style={isForm ? undefined : { filter: `url(#${filterId})` }}
       >
         <motion.div
           className={cn(
@@ -300,13 +301,14 @@ export function GooeyInput({
           animate={isExpanded ? "expanded" : "collapsed"}
           transition={transition}
         >
-          <button
-            type="button"
-            disabled={disabled}
+          <div
+            role="presentation"
             onClick={handleExpand}
             onPointerDown={handleFieldPointerDown}
             className={cn(
-              "flex w-full cursor-pointer items-center justify-center gap-2 px-3 text-sm font-medium outline-none transition-[color,box-shadow] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
+              "flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden px-3 text-sm font-medium outline-none transition-[color,box-shadow]",
+              "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
+              disabled && "pointer-events-none opacity-50",
               heightClass,
               radiusClass,
               surfaceClass,
@@ -340,7 +342,7 @@ export function GooeyInput({
                 placeholder={showTypewriter ? "" : placeholder}
                 aria-label={placeholder}
                 className={cn(
-                  "h-full w-full min-w-0 bg-transparent text-sm outline-none",
+                  "h-full w-full min-w-0 truncate bg-transparent text-sm outline-none",
                   isForm
                     ? cn(
                         "text-black dark:text-white",
@@ -369,7 +371,7 @@ export function GooeyInput({
                 </div>
               ) : null}
             </div>
-          </button>
+          </div>
         </motion.div>
 
         <motion.div

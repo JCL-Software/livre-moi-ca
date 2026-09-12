@@ -1,14 +1,66 @@
 import { getOrsApiKey } from "../env";
 import type { RouteGeoJson, RouteResult } from "../types";
 
+export type RoutePreference = "fastest" | "shortest";
+
+type RouteOptions = {
+  preference?: RoutePreference;
+};
+
 function toLineString(coords: [number, number][]): RouteGeoJson {
   return { type: "LineString", coordinates: coords };
+}
+
+function pickShortest<T extends { distance: number; duration: number }>(
+  routes: T[],
+): T | undefined {
+  if (routes.length === 0) return undefined;
+  return routes.reduce((best, route) => {
+    if (route.distance < best.distance) return route;
+    if (route.distance === best.distance && route.duration < best.duration) {
+      return route;
+    }
+    return best;
+  });
+}
+
+function pickFastest<T extends { distance: number; duration: number }>(
+  routes: T[],
+): T | undefined {
+  if (routes.length === 0) return undefined;
+  return routes.reduce((best, route) => {
+    if (route.duration < best.duration) return route;
+    if (route.duration === best.duration && route.distance < best.distance) {
+      return route;
+    }
+    return best;
+  });
+}
+
+function fromOsrmRoute(route: {
+  distance: number;
+  duration: number;
+  geometry: RouteGeoJson;
+}): RouteResult {
+  return {
+    distanceKm: Number((route.distance / 1000).toFixed(2)),
+    durationMin: Math.round(route.duration / 60),
+    geojson: route.geometry,
+  };
+}
+
+function isSameRoute(a: RouteResult, b: RouteResult) {
+  return (
+    Math.abs(a.distanceKm - b.distanceKm) < 0.4 &&
+    Math.abs(a.durationMin - b.durationMin) < 2
+  );
 }
 
 async function routeWithOrs(
   origin: { lat: number; lng: number },
   dest: { lat: number; lng: number },
   apiKey: string,
+  preference: RoutePreference,
 ): Promise<RouteResult> {
   const response = await fetch(
     "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
@@ -23,6 +75,7 @@ async function routeWithOrs(
           [origin.lng, origin.lat],
           [dest.lng, dest.lat],
         ],
+        preference: preference === "shortest" ? "shortest" : "recommended",
       }),
     },
   );
@@ -37,7 +90,14 @@ async function routeWithOrs(
       geometry: RouteGeoJson;
     }>;
   };
-  const feature = data.features?.[0];
+  const features = (data.features ?? []).map((item) => ({
+    distance: item.properties?.summary?.distance ?? Number.POSITIVE_INFINITY,
+    duration: item.properties?.summary?.duration ?? Number.POSITIVE_INFINITY,
+    item,
+  }));
+  const picked =
+    preference === "shortest" ? pickShortest(features) : pickFastest(features);
+  const feature = picked?.item ?? data.features?.[0];
   const summary = feature?.properties?.summary;
   if (!feature || !summary) throw new Error("ORS indisponible");
   return {
@@ -47,11 +107,13 @@ async function routeWithOrs(
   };
 }
 
-async function routeWithOsrm(
+async function fetchOsrmRoutes(
   origin: { lat: number; lng: number },
   dest: { lat: number; lng: number },
-): Promise<RouteResult> {
-  const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${dest.lng},${dest.lat}?overview=full&geometries=geojson`;
+  alternatives: boolean,
+) {
+  const extra = alternatives ? "&alternatives=true" : "";
+  const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${dest.lng},${dest.lat}?overview=full&geometries=geojson${extra}`;
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -65,14 +127,27 @@ async function routeWithOsrm(
       geometry: RouteGeoJson;
     }>;
   };
-  const route = data.routes?.[0];
-  if (!route) throw new Error("Aucun itinéraire trouvé");
+  return data.routes ?? [];
+}
 
-  return {
-    distanceKm: Number((route.distance / 1000).toFixed(2)),
-    durationMin: Math.round(route.duration / 60),
-    geojson: route.geometry,
-  };
+async function routeWithOsrm(
+  origin: { lat: number; lng: number },
+  dest: { lat: number; lng: number },
+  preference: RoutePreference,
+): Promise<RouteResult> {
+  let routes: Awaited<ReturnType<typeof fetchOsrmRoutes>> = [];
+  try {
+    routes = await fetchOsrmRoutes(origin, dest, preference === "shortest");
+  } catch {
+    if (preference !== "shortest") throw new Error("OSRM indisponible");
+    routes = await fetchOsrmRoutes(origin, dest, false);
+  }
+
+  const picked =
+    preference === "shortest" ? pickShortest(routes) : pickFastest(routes);
+  if (!picked) throw new Error("Aucun itinéraire trouvé");
+
+  return fromOsrmRoute(picked);
 }
 
 export function haversineFallback(
@@ -101,20 +176,71 @@ export function haversineFallback(
 export async function getRoute(
   origin: { lat: number; lng: number },
   dest: { lat: number; lng: number },
+  options?: RouteOptions,
 ): Promise<RouteResult> {
+  const preference = options?.preference ?? "fastest";
   const orsKey = getOrsApiKey();
 
   if (orsKey) {
     try {
-      return await routeWithOrs(origin, dest, orsKey);
+      return await routeWithOrs(origin, dest, orsKey, preference);
     } catch {
       // repli OSRM
     }
   }
 
   try {
-    return await routeWithOsrm(origin, dest);
+    return await routeWithOsrm(origin, dest, preference);
   } catch {
     return haversineFallback(origin, dest);
+  }
+}
+
+export type RoutePair = {
+  shortest: RouteResult;
+  fastest: RouteResult;
+  distinct: boolean;
+};
+
+export async function getShortestAndFastestRoutes(
+  origin: { lat: number; lng: number },
+  dest: { lat: number; lng: number },
+): Promise<RoutePair> {
+  const orsKey = getOrsApiKey();
+
+  if (orsKey) {
+    try {
+      const [shortest, fastest] = await Promise.all([
+        routeWithOrs(origin, dest, orsKey, "shortest"),
+        routeWithOrs(origin, dest, orsKey, "fastest"),
+      ]);
+      return {
+        shortest,
+        fastest,
+        distinct: !isSameRoute(shortest, fastest),
+      };
+    } catch {
+      // repli OSRM
+    }
+  }
+
+  try {
+    let routes = await fetchOsrmRoutes(origin, dest, true);
+    if (routes.length === 0) {
+      routes = await fetchOsrmRoutes(origin, dest, false);
+    }
+    const shortestOsrm = pickShortest(routes);
+    const fastestOsrm = pickFastest(routes);
+    if (!shortestOsrm || !fastestOsrm) throw new Error("Aucun itinéraire trouvé");
+    const shortest = fromOsrmRoute(shortestOsrm);
+    const fastest = fromOsrmRoute(fastestOsrm);
+    return {
+      shortest,
+      fastest,
+      distinct: !isSameRoute(shortest, fastest),
+    };
+  } catch {
+    const fallback = haversineFallback(origin, dest);
+    return { shortest: fallback, fastest: fallback, distinct: false };
   }
 }

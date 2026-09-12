@@ -29,6 +29,13 @@ export const BOOKING_STATUS_LABELS: Record<string, string> = {
   REJECTED: "Refusée",
 };
 
+export const PARCEL_LISTING_STATUS_LABELS: Record<string, string> = {
+  OPEN: "Ouverte",
+  MATCHED: "Jumelée",
+  CANCELLED: "Annulée",
+  EXPIRED: "Expirée",
+};
+
 export const TRIP_STATUS_LABELS: Record<string, string> = {
   SCHEDULED: "Planifié",
   ACTIVE: "En cours",

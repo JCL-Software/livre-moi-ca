@@ -74,6 +74,25 @@ export const createBookingSchema = z
     }
   });
 
+export const publishParcelSchema = z.object({
+  originName: z.string().min(2).max(200),
+  originLat: z.number().min(-90).max(90),
+  originLng: z.number().min(-180).max(180),
+  destinationName: z.string().min(2).max(200),
+  destLat: z.number().min(-90).max(90),
+  destLng: z.number().min(-180).max(180),
+  parcelSize: parcelSizeSchema,
+  weightKg: z.number().min(0.5).max(30),
+  isFragile: z.boolean(),
+  title: z.string().max(120).optional(),
+  description: z.string().max(1000).optional(),
+  estimatedPrice: z.number().min(0).max(2000).optional(),
+  distanceKm: z.number().min(0).max(5000).optional(),
+  desiredDate: z.string().min(8).optional(),
+  recipientName: z.string().max(120).optional(),
+  recipientPhone: z.string().max(30).optional(),
+});
+
 export const publishTripSchema = z.object({
   originName: z.string().min(2).max(200),
   originLat: z.number().min(-90).max(90),
@@ -101,6 +120,7 @@ export const updateProfileSchema = z.object({
   vehiclePlate: z.string().max(20).optional(),
   vehicleColor: z.string().max(40).optional(),
   avatarUrl: z.string().url().optional(),
+  acceptsParcels: z.boolean(),
 });
 
 export const signInSchema = z.object({

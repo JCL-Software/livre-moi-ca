@@ -4,4 +4,10 @@ export {
   getRouteCityNames,
   type PopularRoute,
 } from "./corridor";
-export { getRoute, haversineFallback } from "./routing";
+export {
+  getRoute,
+  getShortestAndFastestRoutes,
+  haversineFallback,
+  type RoutePair,
+  type RoutePreference,
+} from "./routing";

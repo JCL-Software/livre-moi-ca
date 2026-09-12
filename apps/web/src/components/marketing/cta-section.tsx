@@ -49,7 +49,7 @@ export function CtaSection() {
               animateOnHover
             />
           </Link>
-          <Link href="#estimation" className="btn-brand-ghost">
+          <Link href="/calculateur" className="btn-brand-ghost">
             Estimer le coût d&apos;un colis
           </Link>
           <Link href="/livrer" className="btn-brand-ghost">

@@ -266,7 +266,8 @@ function AnimateIcon({
             // noop
           }
         }
-        if (!persistOnAnimateEnd) {
+        // Skip controls.start on first mount: Motion is not committed yet (React 19).
+        if (!persistOnAnimateEnd && isAnimateInProgressRef.current) {
           if (cancelledRef.current || gen !== runGenRef.current) {
             await startAnim('initial');
             return;

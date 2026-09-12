@@ -3,6 +3,9 @@ import { MessageCircle } from "@/components/animate-ui/icons/message-circle";
 import { Star } from "@/components/animate-ui/icons/star";
 import { ShieldCheckIcon } from "@/components/ui/shield-check";
 import { SectionHeader } from "@/components/marketing/section-header";
+import { withoutHoverProp } from "@/components/marketing/without-hover-prop";
+
+const WalletIcon = withoutHoverProp(Wallet);
 
 type AppIcon = React.ComponentType<{
   className?: string;
@@ -21,7 +24,7 @@ const SAFETY_POINTS: {
     text: "Vérification de l'identité, du numéro de téléphone et avis communautaires pour savoir avec qui vous partagez la route.",
   },
   {
-    icon: Wallet,
+    icon: WalletIcon,
     title: "Paiement sécurisé",
     text: "Les contributions des passagers sont gérées par la plateforme et versées après le trajet.",
   },

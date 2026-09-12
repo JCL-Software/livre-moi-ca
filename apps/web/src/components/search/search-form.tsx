@@ -134,6 +134,7 @@ export function SearchForm({
 
   const isPassenger = type === "PASSENGER";
   const isNavy = appearance === "navy";
+  const useGooeyPlaces = isNavy || isPassenger;
   const fieldLabelClass = isNavy ? "text-sm font-medium text-black dark:text-white" : undefined;
 
   return (
@@ -189,8 +190,8 @@ export function SearchForm({
           value={origin}
           onChange={setOrigin}
           labelClassName={fieldLabelClass}
-          inputClassName={isNavy ? navyFieldClass : undefined}
-          variant={isPassenger && !isNavy ? "gooey" : "default"}
+          inputClassName={isNavy && !useGooeyPlaces ? navyFieldClass : undefined}
+          variant={useGooeyPlaces ? "gooey" : "default"}
         />
       </div>
       <div
@@ -214,12 +215,12 @@ export function SearchForm({
           value={destination}
           onChange={setDestination}
           labelClassName={fieldLabelClass}
-          inputClassName={isNavy ? navyFieldClass : undefined}
-          variant={isPassenger && !isNavy ? "gooey" : "default"}
+          inputClassName={isNavy && !useGooeyPlaces ? navyFieldClass : undefined}
+          variant={useGooeyPlaces ? "gooey" : "default"}
         />
       </div>
       <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
-        {!(isPassenger && !isNavy) ? (
+        {!useGooeyPlaces || isNavy ? (
           <Label htmlFor="date" className={fieldLabelClass}>
             Date souhaitée
           </Label>

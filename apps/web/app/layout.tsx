@@ -41,7 +41,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${inter.variable} ${inter.className} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+      <body
+        className="flex min-h-full flex-col bg-background font-sans text-foreground"
+        suppressHydrationWarning
+      >
         <Providers>
           <RegisterServiceWorker />
           {children}

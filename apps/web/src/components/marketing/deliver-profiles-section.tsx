@@ -2,6 +2,10 @@ import { Briefcase, Car } from "lucide-react";
 import { Users } from "@/components/animate-ui/icons/users";
 import { GraduationCapIcon } from "@/components/ui/graduation-cap";
 import { SectionHeader } from "@/components/marketing/section-header";
+import { withoutHoverProp } from "@/components/marketing/without-hover-prop";
+
+const BriefcaseIcon = withoutHoverProp(Briefcase);
+const CarIcon = withoutHoverProp(Car);
 
 type AppIcon = React.ComponentType<{
   className?: string;
@@ -11,8 +15,8 @@ type AppIcon = React.ComponentType<{
 
 const PROFILES: { icon: AppIcon; label: string }[] = [
   { icon: GraduationCapIcon, label: "Étudiant" },
-  { icon: Briefcase, label: "Travailleur régional" },
-  { icon: Car, label: "Conducteur fréquent" },
+  { icon: BriefcaseIcon, label: "Travailleur régional" },
+  { icon: CarIcon, label: "Conducteur fréquent" },
   { icon: Users, label: "Covoitureur occasionnel" },
 ];
 

@@ -44,15 +44,15 @@ export function CarpoolHeroSection() {
               <MovingBorderButton
                 as={Link}
                 href="/covoiturage/proposer"
-                borderRadius="0.75rem"
+                borderRadius="0.5rem"
                 duration={5000}
-                containerClassName="h-12 w-full p-[1px] sm:w-auto"
+                containerClassName="h-[52px] w-full p-[1px] text-base sm:w-auto"
                 borderClassName="h-16 w-16 bg-[radial-gradient(#000000_40%,transparent_60%)] opacity-50"
-                className="border-neutral-200 bg-white px-5 text-sm font-semibold text-black hover:bg-neutral-50 dark:border-white/15 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-900"
+                className="border-neutral-200 bg-white px-6 text-base font-medium text-black hover:bg-neutral-50 dark:border-white/15 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-900"
               >
                 <span className="inline-flex items-center gap-2">
                   Proposer un trajet
-                  <ArrowRight size={16} className="h-4 w-4" animateOnHover />
+                  <ArrowRight className="h-5 w-5" size={20} animateOnHover />
                 </span>
               </MovingBorderButton>
             </div>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { seedDemoTrips } from "@/lib/actions/trips";
 import { BookingActions } from "@/components/dashboard/booking-actions";
@@ -5,7 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BOOKING_STATUS_LABELS, TRIP_STATUS_LABELS } from "@/lib/constants";
+import {
+  BOOKING_STATUS_LABELS,
+  PARCEL_LISTING_STATUS_LABELS,
+  TRIP_STATUS_LABELS,
+} from "@/lib/constants";
 import type { BookingStatus } from "@/lib/types";
 
 export default async function DashboardPage() {
@@ -14,7 +19,8 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: myTrips }, { data: myBookings }, { data: secrets }] = await Promise.all([
+  const [{ data: myTrips }, { data: myBookings }, { data: secrets }, { data: myParcels }] =
+    await Promise.all([
     supabase
       .from("trips")
       .select("*, bookings(*)")
@@ -26,6 +32,11 @@ export default async function DashboardPage() {
       .eq("user_id", user!.id)
       .order("created_at", { ascending: false }),
     supabase.from("booking_secrets").select("booking_id, otp_code").eq("sender_id", user!.id),
+    supabase
+      .from("parcel_listings")
+      .select("id, title, origin_name, destination_name, status, estimated_price, created_at")
+      .eq("user_id", user!.id)
+      .order("created_at", { ascending: false }),
   ]);
 
   const otpByBooking = new Map((secrets ?? []).map((row) => [row.booking_id, row.otp_code]));
@@ -48,6 +59,7 @@ export default async function DashboardPage() {
       <Tabs defaultValue="voyages">
         <TabsList>
           <TabsTrigger value="voyages">Mes voyages</TabsTrigger>
+          <TabsTrigger value="colis">Mes colis</TabsTrigger>
           <TabsTrigger value="trajets">Mes trajets (conducteur)</TabsTrigger>
         </TabsList>
 
@@ -88,6 +100,47 @@ export default async function DashboardPage() {
               </Card>
             );
           })}
+        </TabsContent>
+
+        <TabsContent value="colis" className="space-y-3 pt-4">
+          {(myParcels ?? []).length === 0 && (
+            <Card>
+              <CardContent className="p-6 text-muted-foreground">
+                Aucun colis publié pour le moment.{" "}
+                <Link href="/colis/nouveau" className="underline">
+                  Publier un colis
+                </Link>
+              </CardContent>
+            </Card>
+          )}
+          {(myParcels ?? []).map((listing) => (
+            <Card key={listing.id}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                <CardTitle className="text-base">
+                  <Link href={`/colis/${listing.id}`} className="hover:underline">
+                    {listing.title}
+                  </Link>
+                </CardTitle>
+                <Badge variant="secondary">
+                  {PARCEL_LISTING_STATUS_LABELS[listing.status] ?? listing.status}
+                </Badge>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                <p>
+                  {listing.origin_name.split(",")[0]} → {listing.destination_name.split(",")[0]}
+                  {listing.estimated_price != null
+                    ? ` · ${Number(listing.estimated_price).toFixed(2)} $`
+                    : ""}
+                </p>
+                <Link
+                  href={`/colis/${listing.id}/edit`}
+                  className="text-sm font-medium text-black underline-offset-4 hover:underline dark:text-white"
+                >
+                  Éditer
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
         </TabsContent>
 
         <TabsContent value="trajets" className="space-y-3 pt-4">

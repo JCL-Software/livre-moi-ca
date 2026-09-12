@@ -2,6 +2,12 @@ import { Dog, Music, Snowflake, UserCheck } from "lucide-react";
 import { CreditCardIcon } from "@/components/ui/credit-card";
 import { ShieldCheckIcon } from "@/components/ui/shield-check";
 import { SectionHeader } from "@/components/marketing/section-header";
+import { withoutHoverProp } from "@/components/marketing/without-hover-prop";
+
+const UserCheckIcon = withoutHoverProp(UserCheck);
+const MusicIcon = withoutHoverProp(Music);
+const SnowflakeIcon = withoutHoverProp(Snowflake);
+const DogIcon = withoutHoverProp(Dog);
 
 type AppIcon = React.ComponentType<{
   className?: string;
@@ -15,17 +21,17 @@ const COMFORT_POINTS: {
   text: string;
 }[] = [
   {
-    icon: UserCheck,
+    icon: UserCheckIcon,
     title: "Profils vérifiés à 100 %",
     text: "Téléphone, identité et avis laissés après chaque trajet pour voyager l'esprit tranquille.",
   },
   {
-    icon: Music,
+    icon: MusicIcon,
     title: "Préférences de voyage personnalisées",
     text: "Animaux acceptés ou non, véhicule non-fumeur, envie de jaser ou voyage calme, ambiance musicale ou silence — Tout est indiqué sur chaque annonce.",
   },
   {
-    icon: Snowflake,
+    icon: SnowflakeIcon,
     title: "Conduite hivernale prudente",
     text: "Des conducteurs habitués aux conditions routières de nos hivers témiscabitibiens.",
   },
@@ -37,9 +43,9 @@ const COMFORT_POINTS: {
 ];
 
 const PREFERENCE_TAGS: { icon: AppIcon; label: string }[] = [
-  { icon: Dog, label: "Animaux acceptés ou non" },
+  { icon: DogIcon, label: "Animaux acceptés ou non" },
   { icon: ShieldCheckIcon, label: "Véhicule non-fumeur" },
-  { icon: Music, label: "Jaser ou voyage calme" },
+  { icon: MusicIcon, label: "Jaser ou voyage calme" },
 ];
 
 export function CarpoolComfortSection() {

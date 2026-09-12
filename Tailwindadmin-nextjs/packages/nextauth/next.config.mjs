@@ -2,16 +2,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const packageDir = path.dirname(fileURLToPath(import.meta.url));
+const monorepoRoot = path.resolve(packageDir, "../../..");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   transpilePackages: ["@livre-moi/shared"],
   images: { unoptimized: true },
-  // Évite que Next remonte à la racine du monorepo (autre lockfile / proxy.ts)
-  outputFileTracingRoot: packageDir,
+  // `next` est hissé à la racine du monorepo : Turbopack doit la voir.
+  outputFileTracingRoot: monorepoRoot,
   turbopack: {
-    root: packageDir,
+    root: monorepoRoot,
   },
 };
 

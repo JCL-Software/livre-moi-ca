@@ -33,12 +33,20 @@ export function AddressAutocomplete({
   const [query, setQuery] = useState(value?.name ?? "");
   const [results, setResults] = useState<GeoPoint[]>([]);
   const [open, setOpen] = useState(false);
+  const selectedName = value?.name ?? "";
+  const isSelectedQuery = Boolean(selectedName) && query === selectedName;
 
   useEffect(() => {
     setQuery(value?.name ?? "");
   }, [value?.name]);
 
   useEffect(() => {
+    if (isSelectedQuery) {
+      setResults([]);
+      setOpen(false);
+      return;
+    }
+
     const handle = setTimeout(async () => {
       if (query.trim().length < 2) {
         setResults([]);
@@ -49,7 +57,7 @@ export function AddressAutocomplete({
     }, 280);
 
     return () => clearTimeout(handle);
-  }, [query]);
+  }, [query, isSelectedQuery]);
 
   useEffect(() => {
     if (!open) return;
@@ -80,25 +88,35 @@ export function AddressAutocomplete({
     setOpen(next.trim().length >= 2);
   }
 
+  function handleSelect(place: GeoPoint) {
+    onChange(place);
+    setQuery(place.name);
+    setResults([]);
+    setOpen(false);
+  }
+
+  function handleFocus() {
+    if (isSelectedQuery) return;
+    if (query.trim().length >= 2 && results.length > 0) {
+      setOpen(true);
+    }
+  }
+
   const suggestions =
     open && results.length > 0 ? (
       <ul
         className={cn(
-          "absolute z-20 max-h-56 w-full overflow-auto rounded-lg border bg-popover p-1 shadow-md",
-          variant === "gooey" ? "top-full mt-2 left-0 min-w-[220px]" : "mt-1",
+          "max-h-56 w-full overflow-auto rounded-lg border border-neutral-200 bg-white p-1 shadow-md dark:border-white/10 dark:bg-neutral-950",
+          variant === "gooey" ? "relative z-50 mt-2" : "absolute z-50 mt-1",
         )}
       >
-        {results.map((place) => (
-          <li key={`${place.name}-${place.lat}`}>
+        {results.map((place, index) => (
+          <li key={`${place.name}-${place.lat}-${place.lng}-${index}`}>
             <button
               type="button"
               className="flex w-full rounded-md px-3 py-2 text-left text-sm hover:bg-accent"
               onMouseDown={(event) => event.preventDefault()}
-              onClick={() => {
-                onChange(place);
-                setQuery(place.name);
-                setOpen(false);
-              }}
+              onClick={() => handleSelect(place)}
             >
               {place.name}
             </button>
@@ -109,7 +127,15 @@ export function AddressAutocomplete({
 
   if (variant === "gooey") {
     return (
-      <div ref={containerRef} className="relative w-full min-w-0">
+      <div
+        ref={containerRef}
+        className={cn("relative w-full min-w-0 space-y-1.5", open && "z-50")}
+      >
+        {label ? (
+          <label htmlFor={id} className={cn("text-sm font-medium", labelClassName)}>
+            {label}
+          </label>
+        ) : null}
         <GooeyInput
           id={id}
           icon="map-pin"
@@ -118,11 +144,7 @@ export function AddressAutocomplete({
           typewriterText="Commencer à écrire"
           value={query}
           onValueChange={handleQueryChange}
-          onFocus={() => {
-            if (query.trim().length >= 2 && results.length > 0) {
-              setOpen(true);
-            }
-          }}
+          onFocus={handleFocus}
           clearOnCollapse={false}
           collapsedWidth="100%"
           expandedWidth="100%"
@@ -135,7 +157,10 @@ export function AddressAutocomplete({
   }
 
   return (
-    <div ref={containerRef} className="relative space-y-1.5">
+    <div
+      ref={containerRef}
+      className={cn("relative space-y-1.5", open && "z-50")}
+    >
       {label ? (
         <label htmlFor={id} className={cn("text-sm font-medium", labelClassName)}>
           {label}
@@ -154,11 +179,7 @@ export function AddressAutocomplete({
           placeholder={placeholder}
           aria-label={label || placeholder || id}
           className={cn("pl-9", inputClassName)}
-          onFocus={() => {
-            if (query.trim().length >= 2 && results.length > 0) {
-              setOpen(true);
-            }
-          }}
+          onFocus={handleFocus}
           onChange={(event) => handleQueryChange(event.target.value)}
         />
       </div>

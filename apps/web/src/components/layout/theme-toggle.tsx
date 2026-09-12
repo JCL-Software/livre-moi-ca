@@ -30,22 +30,29 @@ export function ThemeToggle({ className }: { className?: string }) {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
-    void thumbControls.start(THUMB_NUDGE);
-  }, [mounted, thumbControls]);
-
-  const isDark = mounted ? resolvedTheme === "dark" : false;
+  const isDark = resolvedTheme === "dark";
 
   function playThumbAnimation() {
     void thumbControls.start(THUMB_NUDGE);
+  }
+
+  if (!mounted) {
+    return (
+      <span
+        aria-hidden
+        className={cn(
+          "relative flex h-5 w-8 shrink-0 items-center rounded-full border border-transparent px-px",
+          className,
+        )}
+        style={{ backgroundColor: LIGHT_TRACK }}
+      />
+    );
   }
 
   return (
     <Switch
       checked={isDark}
       onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
-      disabled={!mounted}
       aria-label="Changer le thème"
       style={{ backgroundColor: isDark ? DARK_TRACK : LIGHT_TRACK }}
       onMouseEnter={playThumbAnimation}

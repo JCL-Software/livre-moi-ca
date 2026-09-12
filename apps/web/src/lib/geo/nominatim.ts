@@ -14,6 +14,18 @@ function normalizeQuery(query: string) {
   return query.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+function uniquePlaces(places: GeoPoint[]): GeoPoint[] {
+  const seen = new Set<string>();
+  const unique: GeoPoint[] = [];
+  for (const place of places) {
+    const key = `${place.name}|${place.lat.toFixed(5)}|${place.lng.toFixed(5)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(place);
+  }
+  return unique;
+}
+
 export async function searchPlaces(query: string): Promise<GeoPoint[]> {
   const q = normalizeQuery(query);
   if (q.length < 2) return [];
@@ -28,11 +40,13 @@ export async function searchPlaces(query: string): Promise<GeoPoint[]> {
     .limit(6);
 
   if (cached && cached.length > 0) {
-    return cached.map((row) => ({
-      name: row.display_name,
-      lat: row.latitude,
-      lng: row.longitude,
-    }));
+    return uniquePlaces(
+      cached.map((row) => ({
+        name: row.display_name,
+        lat: row.latitude,
+        lng: row.longitude,
+      })),
+    );
   }
 
   const params = new URLSearchParams({
@@ -74,5 +88,5 @@ export async function searchPlaces(query: string): Promise<GeoPoint[]> {
     });
   }
 
-  return places;
+  return uniquePlaces(places);
 }

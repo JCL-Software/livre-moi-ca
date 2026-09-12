@@ -24,6 +24,8 @@ type Props = {
     avatar_url: string;
     rating_avg: number;
     rating_count: number;
+    accepts_parcels: boolean;
+    identity_verified: boolean;
   };
 };
 
@@ -59,6 +61,7 @@ export function ProfileForm({ email, profile }: Props) {
       vehiclePlate: form.vehicle_plate,
       vehicleColor: form.vehicle_color,
       avatarUrl: form.avatar_url,
+      acceptsParcels: form.accepts_parcels,
     });
     setLoading(false);
     if (!result.ok) toast.error(result.error);
@@ -117,6 +120,33 @@ export function ProfileForm({ email, profile }: Props) {
               checked={form.is_driver}
               onCheckedChange={(value) => setForm({ ...form, is_driver: value })}
             />
+          </div>
+          <div className="flex items-center justify-between rounded-lg border p-3">
+            <div>
+              <p className="font-medium">Accepter des colis</p>
+              <p className="text-sm text-muted-foreground">
+                Publier un colis n&apos;empêche pas d&apos;en transporter
+                d&apos;autres. Activez cette option pour proposer un transport.
+              </p>
+            </div>
+            <Switch
+              checked={form.accepts_parcels}
+              onCheckedChange={(value) =>
+                setForm({
+                  ...form,
+                  accepts_parcels: value,
+                  is_driver: value ? true : form.is_driver,
+                })
+              }
+            />
+          </div>
+          <div className="rounded-lg border p-3">
+            <p className="font-medium">Vérification d&apos;identité</p>
+            <p className="text-sm text-muted-foreground">
+              {form.identity_verified
+                ? "Identité vérifiée. Vous pouvez proposer un transport si « Accepter des colis » est activé."
+                : "Requise pour proposer un transport de colis, en plus de l'option « Accepter des colis »."}
+            </p>
           </div>
           {form.is_driver && (
             <div className="grid gap-4 md:grid-cols-3">
