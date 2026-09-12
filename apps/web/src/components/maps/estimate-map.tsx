@@ -790,8 +790,9 @@ function FitView({
     extend(alternateRoute);
 
     if (bounds) {
+      const fitted = bounds;
       runOnLiveMap(map, () => {
-        map.fitBounds(bounds, { padding: [48, 48] });
+        map.fitBounds(fitted, { padding: [48, 48] });
       });
       return;
     }
