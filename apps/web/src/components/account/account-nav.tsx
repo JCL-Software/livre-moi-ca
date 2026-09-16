@@ -1,8 +1,15 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, KIND, SHAPE, SIZE } from "baseui/button";
 import { Navigation } from "baseui/side-navigation";
 import { UberAvatar, UberCard, UberTag } from "@/components/baseweb/uber-ui";
+import {
+  ACCOUNT_CARPOOL_PATH,
+  ACCOUNT_CARPOOL_TABS,
+  accountCarpoolHref,
+  isAccountCarpoolPath,
+} from "@/lib/account-covoiturage";
 import {
   ACCOUNT_PARCELS_PATH,
   ACCOUNT_PARCELS_TABS,
@@ -18,8 +25,14 @@ type NavItem = {
 
 const ACTIVITY: NavItem[] = [
   { href: "/compte", label: "Aperçu", exact: true },
-  { href: "/compte/voyages", label: "Voyages" },
-  { href: "/compte/trajets", label: "Trajets" },
+  {
+    href: ACCOUNT_CARPOOL_PATH,
+    label: "Covoiturage",
+    children: [
+      { href: ACCOUNT_CARPOOL_TABS.voyages.href, label: ACCOUNT_CARPOOL_TABS.voyages.navLabel },
+      { href: ACCOUNT_CARPOOL_TABS.trajets.href, label: ACCOUNT_CARPOOL_TABS.trajets.navLabel },
+    ],
+  },
   {
     href: ACCOUNT_PARCELS_PATH,
     label: "Colis",
@@ -87,12 +100,21 @@ export function AccountNav({
   const searchParams = useSearchParams();
   const router = useRouter();
   const onParcels = isActive(pathname, ACCOUNT_PARCELS_PATH);
+  const onCarpool = isAccountCarpoolPath(pathname);
   const allItems = flattenNav([...ACTIVITY, ...ACCOUNT]);
   const activeItemId = onParcels
     ? accountParcelHref(searchParams.get("onglet"))
-    : (allItems.find((item) => isActive(pathname, item.href, item.exact))?.href ?? "/compte");
+    : onCarpool
+      ? accountCarpoolHref(searchParams.get("onglet"))
+      : (allItems.find((item) => isActive(pathname, item.href, item.exact))?.href ?? "/compte");
   const mobileItems = ACTIVITY.flatMap((item) => {
-    if (item.children && onParcels) return [item, ...item.children];
+    if (
+      item.children &&
+      ((onParcels && item.href === ACCOUNT_PARCELS_PATH) ||
+        (onCarpool && item.href === ACCOUNT_CARPOOL_PATH))
+    ) {
+      return [item, ...item.children];
+    }
     return [item];
   }).concat(ACCOUNT);
 
@@ -103,23 +125,23 @@ export function AccountNav({
           {mobileItems.map((item) => {
             const active = item.href.includes("?")
               ? item.href === activeItemId
-              : isActive(pathname, item.href, item.exact) &&
-                !(item.href === ACCOUNT_PARCELS_PATH && item.children && onParcels);
+              : item.href === activeItemId ||
+                (isActive(pathname, item.href, item.exact) &&
+                  !(item.href === ACCOUNT_PARCELS_PATH && item.children && onParcels) &&
+                  !(item.href === ACCOUNT_CARPOOL_PATH && item.children && onCarpool));
             const badge = item.href === "/compte/notifications" ? unread : 0;
             return (
-              <button
-                key={item.href}
-                type="button"
-                onClick={() => router.push(item.href)}
-                className={
-                  active
-                    ? "shrink-0 rounded-full bg-black px-3 py-1.5 text-sm font-medium text-white"
-                    : "shrink-0 rounded-full bg-[#EEEEEE] px-3 py-1.5 text-sm font-medium text-black"
-                }
-              >
-                {item.label}
-                {badge > 0 ? ` ${badge > 9 ? "9+" : badge}` : ""}
-              </button>
+              <span key={`${item.label}:${item.href}`} className="shrink-0">
+                <Button
+                  kind={active ? KIND.primary : KIND.secondary}
+                  shape={SHAPE.pill}
+                  size={SIZE.compact}
+                  onClick={() => router.push(item.href)}
+                >
+                  {item.label}
+                  {badge > 0 ? ` ${badge > 9 ? "9+" : badge}` : ""}
+                </Button>
+              </span>
             );
           })}
         </div>

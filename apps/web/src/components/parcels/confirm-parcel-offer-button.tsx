@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { confirmParcelOffer } from "@/lib/actions/messaging";
 import { formatPrixCad } from "@livre-moi/shared/pricing";
@@ -22,10 +23,11 @@ export function ConfirmParcelOfferButton({
   const blocked = disabled || price == null;
 
   return (
-    <button
-      type="button"
-      className="btn-brand h-9 px-3 py-0 text-sm disabled:opacity-50"
+    <Button
+      kind={KIND.primary}
+      size={SIZE.compact}
       disabled={loading || blocked}
+      isLoading={loading}
       onClick={async () => {
         if (blocked) return;
         setLoading(true);
@@ -39,11 +41,7 @@ export function ConfirmParcelOfferButton({
         router.refresh();
       }}
     >
-      {loading
-        ? "Confirmation…"
-        : price == null
-          ? "Accepter ce tarif"
-          : `Accepter ${formatPrixCad(price)}`}
-    </button>
+      {price == null ? "Accepter ce tarif" : `Accepter ${formatPrixCad(price)}`}
+    </Button>
   );
 }

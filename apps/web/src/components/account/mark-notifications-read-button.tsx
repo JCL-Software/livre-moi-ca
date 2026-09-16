@@ -1,13 +1,14 @@
 "use client";
 
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { markAllNotificationsRead } from "@/lib/actions/messaging";
 
 export function MarkNotificationsReadButton() {
   return (
-    <button
-      type="button"
-      className="btn-brand-secondary h-10 px-4 py-0 text-sm"
+    <Button
+      kind={KIND.secondary}
+      size={SIZE.compact}
       onClick={async () => {
         const result = await markAllNotificationsRead();
         if (!result.ok) toast.error(result.error);
@@ -15,6 +16,6 @@ export function MarkNotificationsReadButton() {
       }}
     >
       Tout marquer comme lu
-    </button>
+    </Button>
   );
 }

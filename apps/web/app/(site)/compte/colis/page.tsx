@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { AccountCategoryEmpty } from "@/components/account/account-category";
 import {
   AccountDriverParcelCard,
@@ -6,6 +5,7 @@ import {
 } from "@/components/account/account-parcel-cards";
 import { AccountPageHeader } from "@/components/account/account-page-header";
 import { AccountParcelsTabs } from "@/components/account/account-parcels-tabs";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 import { requireAccount } from "@/lib/account";
 import { accountParcelTab } from "@/lib/account-parcels";
 import type { ParcelTransportOffer } from "@/lib/types";
@@ -54,13 +54,13 @@ export default async function AccountParcelsPage({
         title="Mes colis"
         actions={
           tab === "annonces" ? (
-            <Link href="/colis/nouveau" className="btn-brand text-sm">
+            <UberButtonLink href="/colis/nouveau" kind={KIND.primary} size={SIZE.compact}>
               Publier un colis
-            </Link>
+            </UberButtonLink>
           ) : (
-            <Link href="/colis" className="btn-brand-secondary text-sm">
+            <UberButtonLink href="/colis" kind={KIND.secondary} size={SIZE.compact}>
               Colis disponibles
-            </Link>
+            </UberButtonLink>
           )
         }
       />
@@ -75,9 +75,9 @@ export default async function AccountParcelsPage({
               title="Aucun colis publié"
               description="Publiez une annonce : elle sera visible par tous les utilisateurs."
               action={
-                <Link href="/colis/nouveau" className="btn-brand-secondary text-sm">
+                <UberButtonLink href="/colis/nouveau" kind={KIND.secondary} size={SIZE.compact}>
                   Publier un colis
-                </Link>
+                </UberButtonLink>
               }
             />
           ) : (
@@ -98,9 +98,9 @@ export default async function AccountParcelsPage({
               title="Aucun colis à transporter"
               description="Quand vous proposez de transporter un colis, il apparaît ici — avec l’expéditeur et le suivi du jumelage."
               action={
-                <Link href="/colis" className="btn-brand-secondary text-sm">
+                <UberButtonLink href="/colis" kind={KIND.secondary} size={SIZE.compact}>
                   Voir les colis disponibles
-                </Link>
+                </UberButtonLink>
               }
             />
           ) : (

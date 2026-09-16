@@ -37,7 +37,7 @@ export function AccountNotificationCard({ item }: { item: AppNotification }) {
               <p className="mt-1 mb-0 text-sm leading-relaxed text-[#545454]">
                 {item.body}
               </p>
-              <p className="mt-2 text-xs text-neutral-400">
+              <p className="mt-2 text-xs text-[#545454]">
                 {formatDateTime(item.created_at)}
               </p>
             </div>

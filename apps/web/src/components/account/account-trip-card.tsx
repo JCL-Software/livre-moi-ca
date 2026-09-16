@@ -1,11 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Car, Package, Users } from "lucide-react";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 import {
   AccountIconTile,
   AccountPriceBlock,
   AccountStatusPill,
 } from "@/components/account/account-ui";
-import { UberCard } from "@/components/baseweb/uber-ui";
+import { UberCard, UberIconTile } from "@/components/baseweb/uber-ui";
 import { CancelTripButton } from "@/components/account/cancel-trip-button";
 import { BookingActions } from "@/components/dashboard/booking-actions";
 import { formatDateTime, shortPlace } from "@/lib/account-format";
@@ -81,7 +84,7 @@ export function AccountTripCard({
             <p className="text-sm font-medium text-[#545454]">
               {formatDateTime(trip.departure_time)}
             </p>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-[#545454]">
               {trip.available_seats != null
                 ? `${trip.available_seats} place${trip.available_seats > 1 ? "s" : ""} libre${trip.available_seats > 1 ? "s" : ""}`
                 : null}
@@ -99,13 +102,10 @@ export function AccountTripCard({
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        <Link
-          href={`/trajets/${trip.id}`}
-          className="btn-brand-secondary h-10 gap-1.5 px-4 py-0 text-sm"
-        >
+        <UberButtonLink href={`/trajets/${trip.id}`} kind={KIND.secondary} size={SIZE.compact}>
           Voir le trajet
           <ArrowRight className="h-4 w-4" aria-hidden />
-        </Link>
+        </UberButtonLink>
         {status === "SCHEDULED" ? <CancelTripButton tripId={trip.id} /> : null}
       </div>
 
@@ -117,19 +117,16 @@ export function AccountTripCard({
         ) : (
           <ul className="space-y-2">
             {bookings.map((booking) => (
-              <li
-                key={booking.id}
-                className="rounded-lg bg-[#EEEEEE] p-4"
-              >
+              <li key={booking.id} className="rounded-lg bg-[#EEEEEE] p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex min-w-0 items-start gap-3">
-                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-black">
+                    <UberIconTile size={36}>
                       {booking.booking_type === "PARCEL" ? (
                         <Package className="h-4 w-4" aria-hidden />
                       ) : (
                         <Users className="h-4 w-4" aria-hidden />
                       )}
-                    </span>
+                    </UberIconTile>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="m-0 font-medium text-black">
@@ -142,7 +139,7 @@ export function AccountTripCard({
                         </AccountStatusPill>
                       </div>
                       {booking.recipient_name ? (
-                        <p className="mt-0.5 text-sm text-neutral-500">
+                        <p className="mt-0.5 text-sm text-[#545454]">
                           Pour {booking.recipient_name}
                         </p>
                       ) : null}

@@ -17,10 +17,13 @@ export default async function AccountVehiclePage() {
         mode="vehicle"
         profile={toProfileFormValues(profile)}
       />
-      <p className="mt-4 text-sm text-neutral-500">
+      <p className="mt-4 text-sm text-[#545454]">
         Pour proposer un transport de colis, l&apos;identité doit aussi être vérifiée.{" "}
-        <Link href="/compte/identite" className="underline underline-offset-4">
-          Gérer la vérification.
+        <Link
+          href="/compte/identite"
+          className="font-medium text-black underline-offset-4 hover:underline"
+        >
+          Gérer la vérification
         </Link>
       </p>
     </div>

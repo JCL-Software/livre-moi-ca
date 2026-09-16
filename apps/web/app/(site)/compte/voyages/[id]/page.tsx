@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AccountPageHeader } from "@/components/account/account-page-header";
 import { UberAvatar, UberCard, UberTag } from "@/components/baseweb/uber-ui";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 import { requireAccount } from "@/lib/account";
 import {
   formatDateTime,
@@ -149,18 +149,18 @@ export default async function AccountVoyageDetailPage({
           </dl>
         </UberCard>
 
-        <div className="flex flex-wrap gap-3 text-sm">
+        <div className="flex flex-wrap gap-2">
           {trip?.id ? (
-            <Link href={`/trajets/${trip.id}`} className="underline underline-offset-4">
+            <UberButtonLink href={`/trajets/${trip.id}`} kind={KIND.secondary} size={SIZE.compact}>
               Voir le trajet
-            </Link>
+            </UberButtonLink>
           ) : null}
-          <Link href="/compte/voyages" className="underline underline-offset-4">
-            ← Toutes les demandes
-          </Link>
-          <Link href="/compte/avis" className="underline underline-offset-4">
+          <UberButtonLink href="/compte/voyages" kind={KIND.tertiary} size={SIZE.compact}>
+            Toutes les demandes
+          </UberButtonLink>
+          <UberButtonLink href="/compte/avis" kind={KIND.tertiary} size={SIZE.compact}>
             Laisser un avis
-          </Link>
+          </UberButtonLink>
         </div>
       </div>
     </div>

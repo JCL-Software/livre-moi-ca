@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { requestPasswordReset, signOut, updateEmail, updatePassword } from "@/lib/actions/auth";
 import {
@@ -79,13 +80,15 @@ export function SecurityForms({ email }: { email: string }) {
               onChange={(event) => setNextEmail(event.target.value)}
             />
           </div>
-          <button
+          <Button
             type="submit"
-            className="btn-brand h-12 px-5 disabled:opacity-50"
+            kind={KIND.primary}
+            size={SIZE.large}
             disabled={emailLoading || nextEmail === email}
+            isLoading={emailLoading}
           >
-            {emailLoading ? "Envoi…" : "Mettre à jour le courriel"}
-          </button>
+            Mettre à jour le courriel
+          </Button>
         </form>
       </UberCard>
 
@@ -120,17 +123,25 @@ export function SecurityForms({ email }: { email: string }) {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            <button type="submit" className="btn-brand h-12 px-5 disabled:opacity-50" disabled={passwordLoading}>
-              {passwordLoading ? "Enregistrement…" : "Changer le mot de passe"}
-            </button>
-            <button
+            <Button
+              type="submit"
+              kind={KIND.primary}
+              size={SIZE.large}
+              disabled={passwordLoading}
+              isLoading={passwordLoading}
+            >
+              Changer le mot de passe
+            </Button>
+            <Button
               type="button"
-              className="btn-brand-secondary h-12 px-5 disabled:opacity-50"
+              kind={KIND.secondary}
+              size={SIZE.large}
               disabled={resetLoading}
+              isLoading={resetLoading}
               onClick={() => void onResetLink()}
             >
-              {resetLoading ? "Envoi…" : "Recevoir un lien par courriel"}
-            </button>
+              Recevoir un lien par courriel
+            </Button>
           </div>
         </form>
       </UberCard>
@@ -141,9 +152,9 @@ export function SecurityForms({ email }: { email: string }) {
           <p className="mt-1 mb-4 text-sm text-[#545454]">
             Déconnectez-vous de cet appareil. Vos demandes et messages restent enregistrés.
           </p>
-          <button type="submit" className="btn-brand-secondary h-12 px-5">
+          <Button type="submit" kind={KIND.secondary} size={SIZE.large}>
             Se déconnecter
-          </button>
+          </Button>
         </form>
       </UberCard>
     </div>

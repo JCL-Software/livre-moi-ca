@@ -872,7 +872,7 @@ export async function confirmParcelOfferRecord(
   await client.from("messages").insert({
     conversation_id: conversationId,
     sender_id: ownerId,
-    content: `Tarif accepté : ${formatPrixCad(split.prixClient)}. Le transporteur est retenu.`,
+    content: `Parfait, je vous retiens pour transporter mon colis au tarif de ${formatPrixCad(split.prixClient)}. On peut organiser la prise en charge quand vous voulez.`,
   });
 
   const { data: otherOffers } = await client

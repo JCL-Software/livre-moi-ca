@@ -1,39 +1,39 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
-  ACCOUNT_PARCELS_TABS,
-  type AccountParcelTab,
-} from "@/lib/account-parcels";
+  ACCOUNT_CARPOOL_TABS,
+  type AccountCarpoolTab,
+} from "@/lib/account-covoiturage";
 import { UberTag } from "@/components/baseweb/uber-ui";
 import { cn } from "@/lib/utils";
 
-export function AccountParcelsTabs({
+export function AccountCarpoolTabs({
   tab,
-  publishedCount,
-  transportCount,
-  published,
-  transport,
+  voyagesCount,
+  trajetsCount,
+  voyages,
+  trajets,
 }: {
-  tab: AccountParcelTab;
-  publishedCount: number;
-  transportCount: number;
-  published: ReactNode;
-  transport: ReactNode;
+  tab: AccountCarpoolTab;
+  voyagesCount: number;
+  trajetsCount: number;
+  voyages: ReactNode;
+  trajets: ReactNode;
 }) {
   const counts = {
-    annonces: publishedCount,
-    transporter: transportCount,
+    voyages: voyagesCount,
+    trajets: trajetsCount,
   } as const;
-  const active = ACCOUNT_PARCELS_TABS[tab];
+  const active = ACCOUNT_CARPOOL_TABS[tab];
 
   return (
     <div className="mt-6">
       <div
         role="tablist"
-        aria-label="Catégories de colis"
+        aria-label="Catégories covoiturage"
         className="flex flex-wrap gap-1 border-b border-[#EEEEEE]"
       >
-        {[ACCOUNT_PARCELS_TABS.annonces, ACCOUNT_PARCELS_TABS.transporter].map((item) => {
+        {[ACCOUNT_CARPOOL_TABS.voyages, ACCOUNT_CARPOOL_TABS.trajets].map((item) => {
           const selected = item.id === tab;
           return (
             <Link
@@ -59,7 +59,7 @@ export function AccountParcelsTabs({
       <p className="mt-4 mb-4 text-[13px] leading-5 text-[#545454]">{active.description}</p>
 
       <div role="tabpanel" aria-label={active.tabLabel}>
-        {tab === "annonces" ? published : transport}
+        {tab === "voyages" ? voyages : trajets}
       </div>
     </div>
   );

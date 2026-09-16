@@ -6,7 +6,6 @@ import { ParcelFormatsSection } from "@/components/marketing/parcel-formats-sect
 import { TrustSection } from "@/components/marketing/trust-section";
 import { FaqSection } from "@/components/marketing/faq-section";
 import { CtaSection } from "@/components/marketing/cta-section";
-import { EstimationSection } from "@/components/marketing/estimation-section";
 
 export default function HomePage() {
   return (
@@ -18,7 +17,6 @@ export default function HomePage() {
       <ParcelFormatsSection />
       <TrustSection />
       <FaqSection />
-      <EstimationSection />
       <CtaSection />
     </div>
   );

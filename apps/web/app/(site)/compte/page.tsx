@@ -2,11 +2,12 @@ import Link from "next/link";
 import { AccountEmpty } from "@/components/account/account-empty";
 import { AccountPageHeader } from "@/components/account/account-page-header";
 import { AccountStatCard } from "@/components/account/account-stat-card";
+import { UberCard, UberCardLink, UberTag } from "@/components/baseweb/uber-ui";
 import { requireAccount } from "@/lib/account";
 import { formatDateTime, shortPlace } from "@/lib/account-format";
-import { UberCard, UberTag } from "@/components/baseweb/uber-ui";
 import { BOOKING_STATUS_LABELS } from "@/lib/constants";
 import { countUnreadNotifications, listUserConversations } from "@livre-moi/shared/data";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 
 export default async function AccountHomePage() {
   const { supabase, user, profile } = await requireAccount();
@@ -130,7 +131,10 @@ export default async function AccountHomePage() {
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Dernières demandes</h2>
-            <Link href="/compte/voyages" className="text-sm text-neutral-500 underline-offset-4 hover:underline">
+            <Link
+              href="/compte/voyages"
+              className="text-sm font-medium text-[#545454] underline-offset-4 hover:text-black hover:underline"
+            >
               Voir tout
             </Link>
           </div>
@@ -139,9 +143,9 @@ export default async function AccountHomePage() {
               title="Aucune demande"
               description="Réservez une place ou publiez un colis pour commencer."
               action={
-                <Link href="/recherche" className="text-sm font-medium underline underline-offset-4">
+                <UberButtonLink href="/recherche" kind={KIND.secondary} size={SIZE.compact}>
                   Rechercher
-                </Link>
+                </UberButtonLink>
               }
             />
           ) : (
@@ -150,8 +154,7 @@ export default async function AccountHomePage() {
                 const trip = Array.isArray(booking.trips) ? booking.trips[0] : booking.trips;
                 return (
                   <li key={booking.id}>
-                    <Link href={`/compte/voyages/${booking.id}`} className="block no-underline">
-                      <UberCard>
+                    <UberCardLink href={`/compte/voyages/${booking.id}`}>
                       <div className="flex items-start justify-between gap-3">
                         <p className="m-0 text-sm font-medium">
                           {shortPlace(trip?.origin_name)} → {shortPlace(trip?.destination_name)}
@@ -164,8 +167,7 @@ export default async function AccountHomePage() {
                           : "Place passager"}{" "}
                         · {formatDateTime(booking.created_at)}
                       </p>
-                      </UberCard>
-                    </Link>
+                    </UberCardLink>
                   </li>
                 );
               })}
@@ -176,7 +178,10 @@ export default async function AccountHomePage() {
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Messages récents</h2>
-            <Link href="/compte/messages" className="text-sm text-neutral-500 underline-offset-4 hover:underline">
+            <Link
+              href="/compte/messages"
+              className="text-sm font-medium text-[#545454] underline-offset-4 hover:text-black hover:underline"
+            >
               Voir tout
             </Link>
           </div>
@@ -185,26 +190,24 @@ export default async function AccountHomePage() {
               title="Aucune conversation"
               description="Les propositions de transport apparaissent ici."
               action={
-                <Link href="/colis" className="text-sm font-medium underline underline-offset-4">
+                <UberButtonLink href="/colis" kind={KIND.secondary} size={SIZE.compact}>
                   Voir les colis
-                </Link>
+                </UberButtonLink>
               }
             />
           ) : (
             <ul className="space-y-3">
               {recentConversations.map((item) => (
                 <li key={item.id}>
-                  <Link href={`/compte/messages/${item.id}`} className="block no-underline">
-                    <UberCard>
-                      <p className="m-0 text-sm font-medium text-black">
-                        {item.listing_title ?? "Conversation"}
-                      </p>
-                      <p className="mt-1 mb-0 truncate text-xs text-[#545454]">
-                        {item.counterpart_name}
-                        {item.last_message ? ` · ${item.last_message}` : ""}
-                      </p>
-                    </UberCard>
-                  </Link>
+                  <UberCardLink href={`/compte/messages/${item.id}`}>
+                    <p className="m-0 text-sm font-medium text-black">
+                      {item.listing_title ?? "Conversation"}
+                    </p>
+                    <p className="mt-1 mb-0 truncate text-xs text-[#545454]">
+                      {item.counterpart_name}
+                      {item.last_message ? ` · ${item.last_message}` : ""}
+                    </p>
+                  </UberCardLink>
                 </li>
               ))}
             </ul>

@@ -41,9 +41,9 @@ export function AccountConversationCard({ item }: { item: ConversationPreview })
                   {item.listing_route}
                 </p>
               ) : null}
-              <p className="text-sm text-neutral-500">Avec {item.counterpart_name}</p>
+              <p className="text-sm text-[#545454]">Avec {item.counterpart_name}</p>
               {item.last_message ? (
-                <p className="line-clamp-1 text-sm text-neutral-500">{item.last_message}</p>
+                <p className="line-clamp-1 text-sm text-[#545454]">{item.last_message}</p>
               ) : null}
             </div>
           </div>
@@ -52,7 +52,7 @@ export function AccountConversationCard({ item }: { item: ConversationPreview })
               amount={item.proposed_price}
               label={chosen ? "Prix convenu" : "Tarif"}
             />
-            <p className="flex items-center gap-1 text-xs text-neutral-400">
+            <p className="flex items-center gap-1 text-xs text-[#545454]">
               {formatDateTime(item.last_message_at ?? item.created_at)}
               <ChevronRight className="h-3.5 w-3.5" aria-hidden />
             </p>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { MessageCircle, UserRound } from "lucide-react";
 import {
@@ -5,6 +7,7 @@ import {
   AccountStatusPill,
   memberProfileHref,
 } from "@/components/account/account-ui";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 import { UberAvatar, UberCard } from "@/components/baseweb/uber-ui";
 import { ConfirmParcelOfferButton } from "@/components/parcels/confirm-parcel-offer-button";
 import type { ParcelListingStatus, ParcelTransportOffer } from "@/lib/types";
@@ -58,7 +61,7 @@ export function ParcelOffersList({
             ? "Tarif proposé"
             : "Prix affiché";
         const status = chosen
-          ? { tone: "solid" as const, label: "Transporteur retenu" }
+          ? { tone: "success" as const, label: "Transporteur retenu" }
           : listingStatus === "MATCHED"
             ? { tone: "muted" as const, label: "Non retenu" }
             : open && negotiated
@@ -133,33 +136,32 @@ export function ParcelOffersList({
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-2">
               {offer.counterpartId ? (
-                <Link
+                <UberButtonLink
                   href={memberProfileHref(offer.counterpartId)}
-                  className={
-                    chosen
-                      ? "btn-brand h-10 gap-1.5 px-4 py-0 text-sm"
-                      : "btn-brand-secondary h-10 gap-1.5 px-4 py-0 text-sm"
-                  }
+                  kind={chosen ? KIND.primary : KIND.secondary}
+                  size={SIZE.compact}
                 >
                   <UserRound className="h-4 w-4" aria-hidden />
                   Voir le profil
-                </Link>
+                </UberButtonLink>
               ) : null}
-              <Link
+              <UberButtonLink
                 href={`/compte/messages/${offer.conversationId}`}
-                className="btn-brand-secondary h-10 gap-1.5 px-4 py-0 text-sm"
+                kind={KIND.secondary}
+                size={SIZE.compact}
               >
                 <MessageCircle className="h-4 w-4" aria-hidden />
                 Ouvrir le tchat
-              </Link>
+              </UberButtonLink>
               {canConfirm && open ? (
                 <>
-                  <Link
+                  <UberButtonLink
                     href={`/compte/messages/${offer.conversationId}?onglet=tarif`}
-                    className="inline-flex h-10 items-center rounded-lg px-4 text-sm font-medium text-[#545454] transition-colors hover:bg-[#F6F6F6] hover:text-black"
+                    kind={KIND.tertiary}
+                    size={SIZE.compact}
                   >
                     Proposer un tarif
-                  </Link>
+                  </UberButtonLink>
                   <ConfirmParcelOfferButton
                     listingId={offer.listingId}
                     conversationId={offer.conversationId}

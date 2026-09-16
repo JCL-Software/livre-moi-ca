@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { submitReview } from "@/lib/actions/profile";
 import { ACCOUNT_AREA, AccountFieldLabel } from "@/components/account/account-ui";
@@ -69,9 +70,15 @@ export function ReviewForm({
           rows={3}
         />
       </div>
-      <button type="submit" className="btn-brand h-12 px-5 disabled:opacity-50" disabled={loading}>
-        {loading ? "Publication…" : "Publier l’avis"}
-      </button>
+      <Button
+        type="submit"
+        kind={KIND.primary}
+        size={SIZE.large}
+        disabled={loading}
+        isLoading={loading}
+      >
+        Publier l’avis
+      </Button>
     </form>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { updateProfile } from "@/lib/actions/profile";
 import { createClient } from "@/lib/supabase/client";
@@ -231,9 +232,15 @@ export function ProfileForm({ email, profile, mode = "identity" }: Props) {
               )}
             </>
           )}
-          <button type="submit" className="btn-brand h-14 px-6 disabled:opacity-50" disabled={loading}>
-            {loading ? "Enregistrement…" : "Enregistrer"}
-          </button>
+          <Button
+            type="submit"
+            kind={KIND.primary}
+            size={SIZE.large}
+            disabled={loading}
+            isLoading={loading}
+          >
+            Enregistrer
+          </Button>
       </form>
     </UberCard>
   );

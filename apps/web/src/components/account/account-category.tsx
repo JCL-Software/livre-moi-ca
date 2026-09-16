@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AccountEmpty } from "@/components/account/account-empty";
 import { AccountIconTile } from "@/components/account/account-ui";
 import { UberCard, UberTag } from "@/components/baseweb/uber-ui";
 
@@ -41,11 +42,5 @@ export function AccountCategoryEmpty({
   description: string;
   action?: ReactNode;
 }) {
-  return (
-    <div className="rounded-lg bg-[#F6F6F6] px-4 py-6 text-center">
-      <p className="m-0 font-medium text-black">{title}</p>
-      <p className="mt-1 mb-0 text-sm text-[#545454]">{description}</p>
-      {action ? <div className="mt-4 flex justify-center">{action}</div> : null}
-    </div>
-  );
+  return <AccountEmpty title={title} description={description} action={action} />;
 }

@@ -92,6 +92,66 @@ export default async function AccountConversationPage({
     ? await getParcelDeliveryDetails(supabase, listing.id)
     : null;
 
+  const currentPrice =
+    listing?.agreed_price != null
+      ? Number(listing.agreed_price)
+      : conversation.proposed_price != null
+        ? Number(conversation.proposed_price)
+        : (suggested ?? null);
+  const proposedByInitiator =
+    conversation.proposed_by === conversation.initiator_id;
+  const ownerCanMatch =
+    Boolean(listingOpen && isOwner && proposedByInitiator && currentPrice != null) &&
+    listing?.agreed_price == null;
+  const driverCanAcceptCounter =
+    Boolean(
+      listingOpen &&
+        isDriver &&
+        !proposedByInitiator &&
+        conversation.proposed_price != null,
+    ) && listing?.agreed_price == null;
+  const canConfirmDisplayed =
+    Boolean(listingOpen && !priceAcknowledged && isDriver && proposedByInitiator) &&
+    listing?.agreed_price == null;
+
+  let tarifAction: {
+    listingId: string;
+    conversationId: string;
+    price: number;
+    mode: "match" | "counter" | "confirm";
+    hint: string;
+  } | null = null;
+
+  if (listing && currentPrice != null && listing.agreed_price == null) {
+    if (ownerCanMatch) {
+      tarifAction = {
+        listingId: listing.id,
+        conversationId: conversation.id,
+        price: currentPrice,
+        mode: "match",
+        hint: counterpartAcknowledged
+          ? "Le voyageur a accepté ce tarif. Confirmez pour retenir le transporteur."
+          : "Acceptez ce tarif pour retenir le transporteur.",
+      };
+    } else if (driverCanAcceptCounter) {
+      tarifAction = {
+        listingId: listing.id,
+        conversationId: conversation.id,
+        price: currentPrice,
+        mode: "counter",
+        hint: "L’expéditeur propose ce tarif. Acceptez-le pour continuer.",
+      };
+    } else if (canConfirmDisplayed) {
+      tarifAction = {
+        listingId: listing.id,
+        conversationId: conversation.id,
+        price: currentPrice,
+        mode: "confirm",
+        hint: "Acceptez le tarif affiché pour que l’expéditeur puisse vous retenir.",
+      };
+    }
+  }
+
   return (
     <div className="flex min-h-[70vh] flex-col gap-5">
       <ConversationHeader
@@ -146,6 +206,8 @@ export default async function AccountConversationPage({
           messages={messages.data}
           userId={user.id}
           people={people}
+          tarifAction={tarifTab ? null : tarifAction}
+          tarifHref={showTarifNav ? tarifHref : null}
         />
       )}
     </div>

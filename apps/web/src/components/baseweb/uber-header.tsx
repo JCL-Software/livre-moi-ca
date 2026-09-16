@@ -17,9 +17,9 @@ import { signOut } from "@/lib/actions/auth";
 
 const links = [
   { href: "/", label: "Colis" },
-  { href: "/colis", label: "Marketplace" },
-  { href: "/colis/nouveau", label: "Publier un colis" },
   { href: "/covoiturage", label: "Covoiturage" },
+  { href: "/colis/nouveau", label: "Publier un colis" },
+  { href: "/colis", label: "Marketplace" },
   { href: "/recherche", label: "Rechercher" },
   { href: "/trajets/nouveau", label: "Conduire" },
 ];

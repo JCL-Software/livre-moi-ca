@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, MessageCircle, Package, Pencil } from "lucide-react";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 import {
   AccountIconTile,
   AccountPriceBlock,
@@ -73,7 +76,7 @@ export function AccountOwnerParcelCard({
               {shortPlace(listing.origin_name)} → {shortPlace(listing.destination_name)}
             </p>
             {offers.length > 0 ? (
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-[#545454]">
                 {offers.length} proposition{offers.length > 1 ? "s" : ""}
               </p>
             ) : null}
@@ -83,20 +86,14 @@ export function AccountOwnerParcelCard({
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        <Link
-          href={`/colis/${listing.id}`}
-          className="btn-brand-secondary h-10 gap-1.5 px-4 py-0 text-sm"
-        >
+        <UberButtonLink href={`/colis/${listing.id}`} kind={KIND.secondary} size={SIZE.compact}>
           Voir l&apos;annonce
           <ArrowRight className="h-4 w-4" aria-hidden />
-        </Link>
-        <Link
-          href={`/colis/${listing.id}/edit`}
-          className="inline-flex h-10 items-center gap-1.5 rounded-lg px-4 text-sm font-medium text-[#545454] transition-colors hover:bg-[#F6F6F6] hover:text-black"
-        >
+        </UberButtonLink>
+        <UberButtonLink href={`/colis/${listing.id}/edit`} kind={KIND.tertiary} size={SIZE.compact}>
           <Pencil className="h-4 w-4" aria-hidden />
           Éditer
-        </Link>
+        </UberButtonLink>
       </div>
 
       <div className="mt-4">
@@ -123,7 +120,7 @@ export function AccountDriverParcelCard({ offer }: { offer: ParcelTransportOffer
       ? "Tarif proposé"
       : "Prix affiché";
   const status = chosen
-    ? { tone: "solid" as const, label: "Retenu" }
+    ? { tone: "success" as const, label: "Retenu" }
     : listingMatched
       ? { tone: "muted" as const, label: "Non retenu" }
       : { tone: "soft" as const, label: "Proposition envoyée" };
@@ -148,7 +145,7 @@ export function AccountDriverParcelCard({ offer }: { offer: ParcelTransportOffer
             <p className="text-sm font-medium text-[#545454]">
               {offer.listingRoute}
             </p>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-[#545454]">
               {offer.counterpartId ? (
                 <>
                   Avec{" "}
@@ -169,28 +166,31 @@ export function AccountDriverParcelCard({ offer }: { offer: ParcelTransportOffer
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        <Link
+        <UberButtonLink
           href={`/compte/messages/${offer.conversationId}`}
-          className="btn-brand h-10 gap-1.5 px-4 py-0 text-sm"
+          kind={KIND.primary}
+          size={SIZE.compact}
         >
           <MessageCircle className="h-4 w-4" aria-hidden />
           Ouvrir le tchat
-        </Link>
+        </UberButtonLink>
         {listingOpen ? (
-          <Link
+          <UberButtonLink
             href={`/compte/messages/${offer.conversationId}?onglet=tarif`}
-            className="btn-brand-secondary h-10 px-4 py-0 text-sm"
+            kind={KIND.secondary}
+            size={SIZE.compact}
           >
             Proposer un tarif
-          </Link>
+          </UberButtonLink>
         ) : null}
-        <Link
+        <UberButtonLink
           href={`/colis/${offer.listingId}`}
-          className="inline-flex h-10 items-center gap-1.5 rounded-lg px-4 text-sm font-medium text-[#545454] transition-colors hover:bg-[#F6F6F6] hover:text-black"
+          kind={KIND.tertiary}
+          size={SIZE.compact}
         >
           Voir l&apos;annonce
           <ArrowRight className="h-4 w-4" aria-hidden />
-        </Link>
+        </UberButtonLink>
       </div>
     </UberCard>
   );

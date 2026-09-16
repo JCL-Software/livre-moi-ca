@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { ACCOUNT_FIELD, AccountFieldLabel } from "@/components/account/account-ui";
 import { UberCard } from "@/components/baseweb/uber-ui";
@@ -35,13 +36,9 @@ export function OtpDialog({ bookingId }: { bookingId: string }) {
 
   return (
     <>
-      <button
-        type="button"
-        className="btn-brand h-9 px-3 py-0 text-sm"
-        onClick={() => setOpen(true)}
-      >
+      <Button kind={KIND.primary} size={SIZE.compact} onClick={() => setOpen(true)}>
         Valider OTP
-      </button>
+      </Button>
       {open ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
@@ -49,42 +46,45 @@ export function OtpDialog({ bookingId }: { bookingId: string }) {
         >
           <div className="w-full max-w-md" onClick={(event) => event.stopPropagation()}>
             <UberCard>
-            <p className="uber-home-kicker m-0">Preuve de livraison</p>
-            <h2 className="uber-section-title mt-2 mb-0">Code destinataire</h2>
-            <p className="mt-2 mb-0 text-sm leading-relaxed text-[#545454]">
-              Demandez le code à 6 chiffres au destinataire, puis saisissez-le pour
-              clôturer la livraison.
-            </p>
-            <div className="mt-5">
-              <AccountFieldLabel htmlFor="otp">Code OTP</AccountFieldLabel>
-              <input
-                id="otp"
-                inputMode="numeric"
-                maxLength={6}
-                value={code}
-                onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))}
-                placeholder="000000"
-                className={ACCOUNT_FIELD}
-                autoFocus
-              />
-            </div>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                className="btn-brand-secondary h-14 flex-1"
-                onClick={() => setOpen(false)}
-              >
-                Annuler
-              </button>
-              <button
-                type="button"
-                className="btn-brand h-14 flex-1 disabled:opacity-60"
-                onClick={onVerify}
-                disabled={loading || code.length < 4}
-              >
-                {loading ? "Vérification…" : "Confirmer"}
-              </button>
-            </div>
+              <p className="uber-home-kicker m-0">Preuve de livraison</p>
+              <h2 className="uber-section-title mt-2 mb-0">Code destinataire</h2>
+              <p className="mt-2 mb-0 text-sm leading-relaxed text-[#545454]">
+                Demandez le code à 6 chiffres au destinataire, puis saisissez-le pour
+                clôturer la livraison.
+              </p>
+              <div className="mt-5">
+                <AccountFieldLabel htmlFor="otp">Code OTP</AccountFieldLabel>
+                <input
+                  id="otp"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={code}
+                  onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))}
+                  placeholder="000000"
+                  className={ACCOUNT_FIELD}
+                  autoFocus
+                />
+              </div>
+              <div className="mt-4 flex gap-2">
+                <Button
+                  kind={KIND.secondary}
+                  size={SIZE.large}
+                  overrides={{ BaseButton: { style: { flex: 1 } } }}
+                  onClick={() => setOpen(false)}
+                >
+                  Annuler
+                </Button>
+                <Button
+                  kind={KIND.primary}
+                  size={SIZE.large}
+                  overrides={{ BaseButton: { style: { flex: 1 } } }}
+                  onClick={onVerify}
+                  disabled={loading || code.length < 4}
+                  isLoading={loading}
+                >
+                  Confirmer
+                </Button>
+              </div>
             </UberCard>
           </div>
         </div>

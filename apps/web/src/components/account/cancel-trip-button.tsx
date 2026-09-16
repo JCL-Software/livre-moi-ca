@@ -1,13 +1,14 @@
 "use client";
 
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { cancelTrip } from "@/lib/actions/trips";
 
 export function CancelTripButton({ tripId }: { tripId: string }) {
   return (
-    <button
-      type="button"
-      className="inline-flex h-10 items-center rounded-lg px-4 text-sm font-medium text-[#545454] transition-colors hover:bg-[#F6F6F6] hover:text-black"
+    <Button
+      kind={KIND.tertiary}
+      size={SIZE.compact}
       onClick={async () => {
         const result = await cancelTrip(tripId);
         if (!result.ok) toast.error(result.error);
@@ -15,6 +16,6 @@ export function CancelTripButton({ tripId }: { tripId: string }) {
       }}
     >
       Annuler le trajet
-    </button>
+    </Button>
   );
 }

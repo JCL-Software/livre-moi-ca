@@ -1,8 +1,10 @@
-import Link from "next/link";
+import { AccountEmpty } from "@/components/account/account-empty";
 import { AccountPageHeader } from "@/components/account/account-page-header";
+import { AccountStatusPill } from "@/components/account/account-ui";
 import { UberCard } from "@/components/baseweb/uber-ui";
 import { requireAccount } from "@/lib/account";
 import { formatMoney, PAYMENT_STATUS_LABELS } from "@/lib/account-format";
+import { UberButtonLink, KIND, SIZE } from "@/components/baseweb/uber-button-link";
 
 export default async function AccountPaymentsPage() {
   const { supabase, user } = await requireAccount();
@@ -29,12 +31,15 @@ export default async function AccountPaymentsPage() {
       </UberCard>
 
       {(bookings ?? []).length === 0 ? (
-        <p className="text-sm text-[#545454]">
-          Aucune demande avec un montant.{" "}
-          <Link href="/recherche" className="underline underline-offset-4">
-            Rechercher un trajet
-          </Link>
-        </p>
+        <AccountEmpty
+          title="Aucun paiement"
+          description="Les montants liés à vos réservations apparaîtront ici."
+          action={
+            <UberButtonLink href="/recherche" kind={KIND.secondary} size={SIZE.compact}>
+              Rechercher un trajet
+            </UberButtonLink>
+          }
+        />
       ) : (
         <ul className="m-0 space-y-3 p-0">
           {(bookings ?? []).map((booking) => (
@@ -47,9 +52,11 @@ export default async function AccountPaymentsPage() {
                         ? booking.parcel_title ?? "Colis"
                         : "Place passager"}
                     </p>
-                    <p className="mt-1 mb-0 text-[#545454]">
-                      {PAYMENT_STATUS_LABELS[booking.payment_status] ?? booking.payment_status}
-                    </p>
+                    <div className="mt-2">
+                      <AccountStatusPill tone="soft">
+                        {PAYMENT_STATUS_LABELS[booking.payment_status] ?? booking.payment_status}
+                      </AccountStatusPill>
+                    </div>
                   </div>
                   <p className="m-0 font-semibold text-black">{formatMoney(booking.total_price)}</p>
                 </div>
