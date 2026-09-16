@@ -4,11 +4,16 @@ import { MAP_PALETTE } from "@livre-moi/shared/geo";
 const SHIELD_BLUE_ID = "lm-shield-blue";
 const SHIELD_GREEN_ID = "lm-shield-green";
 
+type PaintProperty = Parameters<MapboxMap["setPaintProperty"]>[1];
+type PaintValue = Parameters<MapboxMap["setPaintProperty"]>[2];
+type LayoutProperty = Parameters<MapboxMap["setLayoutProperty"]>[1];
+type LayoutValue = Parameters<MapboxMap["setLayoutProperty"]>[2];
+
 function setPaint(
   map: MapboxMap,
   layerId: string,
-  property: string,
-  value: unknown,
+  property: PaintProperty,
+  value: PaintValue,
 ) {
   if (!map.getLayer(layerId)) return;
   try {
@@ -21,8 +26,8 @@ function setPaint(
 function setLayout(
   map: MapboxMap,
   layerId: string,
-  property: string,
-  value: unknown,
+  property: LayoutProperty,
+  value: LayoutValue,
 ) {
   if (!map.getLayer(layerId)) return;
   try {

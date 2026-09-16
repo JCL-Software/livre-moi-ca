@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, KIND, SHAPE, SIZE } from "baseui/button";
 import { Navigation } from "baseui/side-navigation";
@@ -67,7 +68,13 @@ function flattenNav(items: NavItem[]): NavItem[] {
   return items.flatMap((item) => (item.children ? [item, ...item.children] : [item]));
 }
 
-function toNavItems(items: NavItem[], unread: number) {
+type SideNavItem = {
+  title: ReactNode;
+  itemId: string;
+  subNav?: SideNavItem[];
+};
+
+function toNavItems(items: NavItem[], unread: number): SideNavItem[] {
   return items.map((item) => ({
     title:
       item.href === "/compte/notifications" && unread > 0 ? (
