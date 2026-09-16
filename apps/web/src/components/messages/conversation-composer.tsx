@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ACCOUNT_FIELD } from "@/components/account/account-ui";
 import { sendConversationMessage } from "@/lib/actions/messaging";
 
 export function ConversationComposer({
@@ -35,12 +36,12 @@ export function ConversationComposer({
         value={content}
         onChange={(event) => setContent(event.target.value)}
         placeholder="Votre message…"
-        className="h-12 flex-1 rounded-xl border border-[#E8E8E8] bg-white px-4 text-sm outline-none focus:border-black dark:border-white/10 dark:bg-neutral-800"
+        className={`${ACCOUNT_FIELD} h-14 flex-1`}
       />
       <button
         type="submit"
         disabled={loading || !content.trim()}
-        className="btn-brand shrink-0 px-5 disabled:opacity-50"
+        className="btn-brand h-14 shrink-0 px-5 py-0 disabled:opacity-50"
       >
         {loading ? "…" : "Envoyer"}
       </button>

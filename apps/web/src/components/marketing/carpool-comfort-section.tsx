@@ -22,7 +22,7 @@ const COMFORT_POINTS: {
 }[] = [
   {
     icon: UserCheckIcon,
-    title: "Profils vérifiés à 100 %",
+    title: "Profils vérifiés",
     text: "Téléphone, identité et avis laissés après chaque trajet pour voyager l'esprit tranquille.",
   },
   {
@@ -33,12 +33,12 @@ const COMFORT_POINTS: {
   {
     icon: SnowflakeIcon,
     title: "Conduite hivernale prudente",
-    text: "Des conducteurs habitués aux conditions routières de nos hivers témiscabitibiens.",
+    text: "Des conducteurs habitués aux conditions routières de nos hivers québécois et ontariens.",
   },
   {
     icon: CreditCardIcon,
-    title: "Paiement sans manipulation d'argent comptant",
-    text: "Tout se règle de manière fluide et sécurisée via l'application.",
+    title: "Tarif affiché avant le départ",
+    text: "Le paiement se fait en ligne. Pas d’échange d’argent comptant.",
   },
 ];
 
@@ -79,10 +79,10 @@ export function CarpoolComfortSection() {
               <span className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-800 dark:text-white">
                 <Icon className="h-5 w-5" size={20} animateOnHover />
               </span>
-              <h3 className="text-lg font-semibold text-black dark:text-white">
+              <h3 className="text-[15px] font-semibold leading-snug text-black dark:text-white">
                 {title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+              <p className="mt-1.5 text-[13px] leading-5 text-neutral-600 dark:text-neutral-400">
                 {text}
               </p>
             </div>

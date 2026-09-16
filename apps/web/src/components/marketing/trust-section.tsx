@@ -18,15 +18,7 @@ export function TrustSection({
         <SectionHeader
           badge="Dans l'application"
           title="Votre livraison, étape par étape"
-          subtitle={
-            <>
-              De la prise en charge à la remise finale, Livre-moi.ca vous permet de
-              suivre chaque étape directement dans l&apos;application.
-              <br />
-              Notifications, suivi en direct, photos et confirmation sécurisée : tout
-              est prévu pour que votre colis arrive à destination en toute confiance.
-            </>
-          }
+          subtitle="De la prise en charge à la remise finale, Livre-moi.ca vous permet de suivre chaque étape directement dans l'application."
         />
 
         <TrustJourney />

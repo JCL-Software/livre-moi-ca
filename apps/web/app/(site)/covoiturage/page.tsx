@@ -1,4 +1,4 @@
-import { CarpoolHeroSection } from "@/components/marketing/carpool-hero-section";
+import { UberHome } from "@/components/baseweb/uber-home";
 import { CarpoolTrustStrip } from "@/components/marketing/carpool-trust-strip";
 import { CarpoolSafetySection } from "@/components/marketing/carpool-safety-section";
 import { CarpoolKycSection } from "@/components/marketing/carpool-kyc-section";
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function CovoituragePage() {
   return (
     <div>
-      <CarpoolHeroSection />
+      <UberHome mode="passenger" />
       <CarpoolTrustStrip />
       <CarpoolSafetySection />
       <CarpoolKycSection />

@@ -8,17 +8,17 @@ export function DeliverHeroSection() {
     <section className="section-plain">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
         <div className="fade-in-left space-y-8">
-          <p className="text-sm font-medium text-neutral-500">
+          <p className="uber-home-kicker">
             Livrer avec Livre-moi.ca
           </p>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-black sm:text-5xl lg:text-6xl dark:text-white">
+            <h1 className="uber-home-title">
               Vous faites déjà le trajet ? Rentabilisez l&apos;espace dans votre véhicule.
             </h1>
             <HeroSubtitle>
-              Transportez des colis sur les déplacements que vous planifiez déjà. Aucun détour
-              inutile sur la route 117 ou entre nos villes.
+              Transportez des colis sur les déplacements que vous planifiez déjà, au Québec et
+              en Ontario. Aucun détour inutile.
             </HeroSubtitle>
           </div>
 

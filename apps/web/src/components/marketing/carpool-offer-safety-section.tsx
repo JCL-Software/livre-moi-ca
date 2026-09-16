@@ -25,8 +25,8 @@ const SAFETY_POINTS: {
   },
   {
     icon: WalletIcon,
-    title: "Paiement sécurisé",
-    text: "Les contributions des passagers sont gérées par la plateforme et versées après le trajet.",
+    title: "Tarif affiché avant le départ",
+    text: "Les contributions des passagers sont indiquées clairement. Le versement se fait en ligne.",
   },
   {
     icon: MessageCircle,

@@ -20,7 +20,7 @@ const REASONS = [
   {
     icon: ShieldCheckIcon,
     title: "Livrez en toute confiance",
-    text: "Profils vérifiés, paiement sécurisé et code OTP à la livraison pour chaque échange.",
+    text: "Profils vérifiés et code de remise à la livraison pour chaque échange. Le paiement se fait en ligne.",
     accent: "from-emerald-700/90 to-teal-800/90",
   },
 ];

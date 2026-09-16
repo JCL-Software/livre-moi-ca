@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateAccount } from "@/lib/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import {
   cancelTripRecord,
@@ -24,7 +25,7 @@ export async function publishTrip(
   const result = await publishTripRecord(supabase, user.id, input);
   if (result.ok) {
     revalidatePath("/");
-    revalidatePath("/tableau-de-bord");
+    revalidateAccount();
   }
   return result;
 }
@@ -37,7 +38,7 @@ export async function cancelTrip(tripId: string): Promise<ActionResult> {
   if (!user) return { ok: false, error: "Non authentifié." };
 
   const result = await cancelTripRecord(supabase, user.id, tripId);
-  if (result.ok) revalidatePath("/tableau-de-bord");
+  if (result.ok) revalidateAccount();
   return result;
 }
 

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { SiteBackLink, SitePage } from "@/components/layout/site-page";
+import { UberPageIntro } from "@/components/baseweb/uber-page-intro";
 import { PublishParcelForm } from "@/components/parcels/publish-parcel-form";
 import { createClient } from "@/lib/supabase/server";
 import { APP_NAME } from "@/lib/constants";
@@ -7,7 +9,7 @@ import type { ParcelSize } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Publier un colis",
-  description: `Publiez votre colis sur ${APP_NAME}. Les conducteurs voient votre annonce et vous proposent un trajet.`,
+  description: `Publiez votre colis sur ${APP_NAME}. L’annonce est visible par tous les utilisateurs, comme les trajets publiés.`,
 };
 
 type SearchParams = {
@@ -18,11 +20,13 @@ type SearchParams = {
   dlat?: string;
   dlng?: string;
   date?: string;
+  time?: string;
   size?: string;
   fragile?: string;
   weight?: string;
   price?: string;
   distance?: string;
+  step?: string;
 };
 
 const SIZES = new Set<ParcelSize>([
@@ -66,43 +70,53 @@ export default async function NewParcelPage({
   const size = params.size && SIZES.has(params.size as ParcelSize)
     ? (params.size as ParcelSize)
     : null;
+  const fromEstimator = Boolean(params.origin && params.dest);
 
   return (
-    <section className="section-muted">
-      <div className="mx-auto max-w-2xl px-4 py-8 md:py-10 lg:py-12">
-        <div className="space-y-7 rounded-3xl border border-[#E8E8E8] bg-white p-8 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-neutral-900 dark:shadow-black/40">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-black md:text-3xl dark:text-white">
-              Publier un colis
-            </h1>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-              Votre annonce est visible des conducteurs sur le même trajet. Les
-              champs de l&apos;estimateur sont déjà remplis.
-            </p>
-          </div>
-          <Suspense>
-            <PublishParcelForm
-              loggedIn={loggedIn}
-              defaults={{
-                origin:
-                  params.origin && originLat != null && originLng != null
-                    ? { name: params.origin, lat: originLat, lng: originLng }
-                    : null,
-                destination:
-                  params.dest && destLat != null && destLng != null
-                    ? { name: params.dest, lat: destLat, lng: destLng }
-                    : null,
-                size,
-                weight: weight ?? 1,
-                fragile: params.fragile === "1",
-                date: params.date ?? new Date().toISOString().slice(0, 10),
-                price,
-                distance,
-              }}
-            />
-          </Suspense>
-        </div>
+    <SitePage>
+      <SiteBackLink href="/compte/colis">Mes colis</SiteBackLink>
+      <UberPageIntro
+        kicker="Livraison collaborative"
+        title="Publier un colis"
+        subtitle={
+          fromEstimator ? (
+            <>
+              Votre annonce est publique et donc visible par tous les utilisateurs
+              <br />
+              Les champs de l’estimateur sont déjà remplis.
+            </>
+          ) : (
+            "Votre annonce est publique et donc visible par tous les utilisateurs."
+          )
+        }
+      />
+      <div className="mt-6">
+        <Suspense>
+          <PublishParcelForm
+            loggedIn={loggedIn}
+            defaults={{
+              origin:
+                params.origin && originLat != null && originLng != null
+                  ? { name: params.origin, lat: originLat, lng: originLng }
+                  : null,
+              destination:
+                params.dest && destLat != null && destLng != null
+                  ? { name: params.dest, lat: destLat, lng: destLng }
+                  : null,
+              size,
+              weight: weight ?? 1,
+              fragile: params.fragile === "1",
+              date: params.date
+                ? params.time
+                  ? `${params.date}T${params.time}`
+                  : params.date
+                : new Date().toISOString().slice(0, 10),
+              price,
+              distance,
+            }}
+          />
+        </Suspense>
       </div>
-    </section>
+    </SitePage>
   );
 }

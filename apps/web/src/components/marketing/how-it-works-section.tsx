@@ -10,32 +10,32 @@ import { SectionHeader } from "@/components/marketing/section-header";
 const PARTICULIER_EXPEDITEUR: HowItWorksProfile = {
   heading: "Vous avez un colis à faire parvenir ?",
   intro:
-    "Un achat Marketplace, une pièce urgente, des clés oubliées ou un objet à envoyer à un proche : publiez votre demande et trouvez un conducteur qui se dirige déjà vers votre destination.",
+    "Un achat Marketplace, une pièce urgente, des clés oubliées ou un objet à envoyer à un proche : publiez votre annonce. Elle est publique : les conducteurs vous proposent un tarif, puis vous choisissez.",
   imageSrc: "/brand/axio-colis.png",
   imageAlt: "Conducteur Livre-moi.ca prêt à transporter un colis",
   items: [
-    "Indiquez le lieu de départ et la destination",
-    "Choisissez le format du colis",
-    "Sélectionnez une date souhaitée",
-    "Discutez du point de rencontre",
+    "Publiez votre annonce (départ, destination, format)",
+    "Recevez les propositions des conducteurs",
+    "Choisissez l’offre qui vous convient",
+    "Organisez le point de rencontre",
     "Confirmez la livraison avec un code sécurisé",
   ],
   ctaLabel: "Publier un colis",
-  ctaHref: "/recherche?type=PARCEL",
+  ctaHref: "/colis/nouveau",
 };
 
 const PARTICULIER_CONDUCTEUR: HowItWorksProfile = {
   heading: "Vous prenez déjà la route ?",
   intro:
-    "Transformez l'espace disponible dans votre véhicule en occasion de rendre service et de réduire le coût de votre trajet.",
+    "Les annonces de colis sont publiques. Parcourez-les ou publiez votre trajet, proposez un tarif, et l’expéditeur vous choisit.",
   imageSrc: "/brand/axio-covoiturage.png",
   imageAlt: "Conducteur Livre-moi.ca prêt à prendre la route",
   items: [
-    "Publiez votre trajet",
-    "Indiquez l'espace disponible",
-    "Acceptez un colis qui correspond à votre route",
-    "Organisez la remise avec l'expéditeur",
-    "Recevez votre paiement après confirmation",
+    "Publiez votre trajet ou ouvrez les colis disponibles",
+    "Proposez un tarif sur les colis qui correspondent à votre route",
+    "L’expéditeur choisit l’offre qui lui convient",
+    "Organisez la remise avec l’expéditeur",
+    "Confirmez la livraison avec un code",
   ],
   ctaLabel: "Publier un trajet",
   ctaHref: "/trajets/nouveau",
@@ -56,13 +56,14 @@ const COMMERCE_EXPEDITEUR: HowItWorksProfile = {
     "Offrez une solution locale et flexible",
   ],
   ctaLabel: "Découvrir la solution pour les commerces",
-  ctaHref: "/recherche?type=PARCEL",
+  ctaHref: "/colis/nouveau",
 };
 
 const CONDUCTEUR_REGULIER: HowItWorksProfile = {
   heading: "Vous faites souvent le même trajet ?",
   intro:
     "Vous faites régulièrement le même trajet pour le travail, les études ou vos activités personnelles ? Profitez de l'espace disponible dans votre véhicule pour transporter des colis et générer un revenu supplémentaire.",
+  introClassName: "max-w-xl",
   imageSrc: "/brand/axio-conducteur-voiture.png",
   imageAlt: "Conducteur régulier Livre-moi.ca consultant l'application depuis sa voiture",
   imageFit: "cover",

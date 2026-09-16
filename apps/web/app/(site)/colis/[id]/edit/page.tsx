@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
+import { SiteBackLink, SitePage } from "@/components/layout/site-page";
+import { UberPageIntro } from "@/components/baseweb/uber-page-intro";
 import { PublishParcelForm } from "@/components/parcels/publish-parcel-form";
 import { createClient } from "@/lib/supabase/server";
+import { getParcelDeliveryDetails } from "@livre-moi/shared/data";
 import { APP_NAME } from "@/lib/constants";
 import type { ParcelListing, ParcelSize } from "@/lib/types";
 
@@ -29,7 +32,7 @@ export default async function EditParcelPage({
   const { data } = await supabase
     .from("parcel_listings")
     .select(
-      "id, user_id, title, description, origin_name, origin_lat, origin_lng, destination_name, dest_lat, dest_lng, parcel_size, weight_kg, is_fragile, estimated_price, distance_km, desired_date, recipient_name, recipient_phone, status",
+      "id, user_id, title, description, origin_name, origin_lat, origin_lng, destination_name, dest_lat, dest_lng, parcel_size, category, category_detail, weight_kg, is_fragile, estimated_price, distance_km, desired_date, photo_url, status",
     )
     .eq("id", id)
     .maybeSingle();
@@ -40,55 +43,60 @@ export default async function EditParcelPage({
     redirect(`/colis/${id}`);
   }
 
+  const details = await getParcelDeliveryDetails(supabase, listing.id);
+
   return (
-    <section className="section-muted">
-      <div className="mx-auto max-w-2xl px-4 py-8 md:py-10 lg:py-12">
-        <div className="space-y-7 rounded-3xl border border-[#E8E8E8] bg-white p-8 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-neutral-900 dark:shadow-black/40">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-black md:text-3xl dark:text-white">
-              Éditer mon colis
-            </h1>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-              Mettez à jour les détails de votre annonce. Les voyageurs verront
-              les changements immédiatement.
-            </p>
-          </div>
-          <Suspense>
-            <PublishParcelForm
-              listingId={listing.id}
-              loggedIn
-              defaults={{
-                origin: {
-                  name: listing.origin_name,
-                  lat: Number(listing.origin_lat),
-                  lng: Number(listing.origin_lng),
-                },
-                destination: {
-                  name: listing.destination_name,
-                  lat: Number(listing.dest_lat),
-                  lng: Number(listing.dest_lng),
-                },
-                size: listing.parcel_size as ParcelSize,
-                weight: Number(listing.weight_kg),
-                fragile: listing.is_fragile,
-                date:
-                  listing.desired_date ??
-                  new Date().toISOString().slice(0, 10),
-                price: listing.estimated_price
-                  ? Number(listing.estimated_price)
-                  : undefined,
-                distance: listing.distance_km
-                  ? Number(listing.distance_km)
-                  : undefined,
-                title: listing.title,
-                description: listing.description ?? "",
-                recipientName: listing.recipient_name ?? "",
-                recipientPhone: listing.recipient_phone ?? "",
-              }}
-            />
-          </Suspense>
-        </div>
+    <SitePage>
+      <SiteBackLink href="/compte/colis">Mes colis</SiteBackLink>
+      <UberPageIntro
+        kicker="Livraison collaborative"
+        title="Éditer mon colis"
+        subtitle="Mettez à jour les détails de votre annonce. Les changements sont visibles immédiatement par tous les utilisateurs."
+      />
+      <div className="mt-6">
+        <Suspense>
+          <PublishParcelForm
+            listingId={listing.id}
+            loggedIn
+            defaults={{
+              origin: {
+                name: listing.origin_name,
+                lat: Number(listing.origin_lat),
+                lng: Number(listing.origin_lng),
+              },
+              destination: {
+                name: listing.destination_name,
+                lat: Number(listing.dest_lat),
+                lng: Number(listing.dest_lng),
+              },
+              size: listing.parcel_size as ParcelSize,
+              category: listing.category ?? "PARCEL",
+              categoryDetail: listing.category_detail ?? "",
+              weight: Number(listing.weight_kg),
+              fragile: listing.is_fragile,
+              date:
+                listing.desired_date ??
+                new Date().toISOString().slice(0, 10),
+              price: listing.estimated_price
+                ? Number(listing.estimated_price)
+                : undefined,
+              distance: listing.distance_km
+                ? Number(listing.distance_km)
+                : undefined,
+              title: listing.title,
+              description: listing.description ?? "",
+              originUnit: details?.origin_unit ?? "",
+              destUnit: details?.dest_unit ?? "",
+              destAddress: details?.dest_address ?? "",
+              recipientFirstName: details?.recipient_first_name ?? "",
+              recipientLastName: details?.recipient_last_name ?? "",
+              recipientPhone: details?.recipient_phone ?? "",
+              meetingPoint: details?.meeting_point ?? "",
+              photoUrl: listing.photo_url ?? null,
+            }}
+          />
+        </Suspense>
       </div>
-    </section>
+    </SitePage>
   );
 }

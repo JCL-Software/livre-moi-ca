@@ -2,7 +2,14 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@livre-moi/shared/env";
 
-const PROTECTED_PREFIXES = ["/tableau-de-bord", "/profil", "/trajets/nouveau"];
+const PROTECTED_PREFIXES = [
+  "/compte",
+  "/tableau-de-bord",
+  "/profil",
+  "/trajets/nouveau",
+  "/messages",
+  "/notifications",
+];
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });

@@ -1,4 +1,4 @@
-import { HeroSection } from "@/components/marketing/hero-section";
+import { UberHome } from "@/components/baseweb/uber-home";
 import { EcologySection } from "@/components/marketing/ecology-section";
 import { HowItWorksSection } from "@/components/marketing/how-it-works-section";
 import { UseCasesSection } from "@/components/marketing/use-cases-section";
@@ -11,22 +11,14 @@ import { EstimationSection } from "@/components/marketing/estimation-section";
 export default function HomePage() {
   return (
     <div>
-      <HeroSection />
-
+      <UberHome mode="parcel" />
       <EcologySection />
-
       <HowItWorksSection />
-
       <UseCasesSection />
-
       <ParcelFormatsSection />
-
       <TrustSection />
-
       <FaqSection />
-
       <EstimationSection />
-
       <CtaSection />
     </div>
   );

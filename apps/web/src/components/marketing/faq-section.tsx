@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { UberFaq } from "@/components/baseweb/uber-faq";
 
 type FaqGroup = {
   title: string;
@@ -58,103 +55,12 @@ const FAQ_GROUPS: FaqGroup[] = [
   },
 ];
 
-function FaqItem({
-  question,
-  answer,
-  open,
-  onToggle,
-}: {
-  question: string;
-  answer: string;
-  open: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div className="border-b border-neutral-200 dark:border-neutral-800">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-start justify-between gap-4 py-5 text-left"
-        aria-expanded={open}
-      >
-        <span className="text-base font-medium text-neutral-800 dark:text-neutral-100 md:text-lg">
-          {question}
-        </span>
-        <span className="relative mt-0.5 h-5 w-5 shrink-0 text-neutral-500 dark:text-neutral-400">
-          <IconPlus
-            className={cn(
-              "absolute inset-0 h-5 w-5 transition duration-200",
-              open ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100",
-            )}
-          />
-          <IconMinus
-            className={cn(
-              "absolute inset-0 h-5 w-5 transition duration-200",
-              open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0",
-            )}
-          />
-        </span>
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <p className="pb-5 pr-10 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:text-base">
-              {answer}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export function FaqSection() {
-  const [openKey, setOpenKey] = useState<string | null>(null);
-
   return (
-    <section className="section-plain py-16 md:py-20">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="grid items-start gap-10 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
-          <div className="md:sticky md:top-28">
-            <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white md:text-4xl lg:text-5xl">
-              Questions fréquentes
-            </h2>
-            <p className="mt-3 text-neutral-600 dark:text-neutral-400">
-              Organisation, livraison et types de colis
-            </p>
-          </div>
-
-          <div className="space-y-10">
-            {FAQ_GROUPS.map((group) => (
-              <div key={group.title}>
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-500">
-                  {group.title}
-                </h3>
-                {group.items.map((item) => {
-                  const key = `${group.title}-${item.question}`;
-                  return (
-                    <FaqItem
-                      key={key}
-                      question={item.question}
-                      answer={item.answer}
-                      open={openKey === key}
-                      onToggle={() =>
-                        setOpenKey((current) => (current === key ? null : key))
-                      }
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+    <UberFaq
+      title="Questions fréquentes"
+      subtitle="Organisation, livraison et types de colis"
+      groups={FAQ_GROUPS}
+    />
   );
 }

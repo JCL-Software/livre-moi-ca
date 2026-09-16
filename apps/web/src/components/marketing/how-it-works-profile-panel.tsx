@@ -1,12 +1,15 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
-import { Check } from "@/components/animate-ui/icons/check";
+import Check from "baseui/icon/check";
+import { UberButtonLink } from "@/components/baseweb/uber-button-link";
+import { KIND } from "baseui/button";
 import { cn } from "@/lib/utils";
 
 export type HowItWorksProfile = {
   heading: string;
   intro: string;
+  introClassName?: string;
   imageSrc: string;
   imageAlt: string;
   imageFit?: "contain" | "cover";
@@ -18,6 +21,7 @@ export type HowItWorksProfile = {
 export function HowItWorksProfilePanel({
   heading,
   intro,
+  introClassName,
   imageSrc,
   imageAlt,
   imageFit = "contain",
@@ -30,29 +34,32 @@ export function HowItWorksProfilePanel({
   return (
     <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
       <div>
-        <h3 className="text-2xl font-bold tracking-tight text-black dark:text-white md:text-3xl">
+        <h3 className="uber-card-title">
           {heading}
         </h3>
-        <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 md:text-lg">
+        <p
+          className={cn(
+            "uber-section-lead mt-3",
+            introClassName ?? "max-w-lg",
+          )}
+        >
           {intro}
         </p>
-        <ul className="mt-6 space-y-3">
+        <ul className="mt-5 space-y-2.5">
           {items.map((item) => (
-            <li key={item} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300 md:text-base">
-              <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black">
-                <Check className="h-3.5 w-3.5" size={14} animateOnHover />
+            <li key={item} className="flex items-start gap-2.5 text-[16px] leading-6 text-[#545454]">
+              <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white">
+                <Check size={14} color="#fff" title="" />
               </span>
               {item}
             </li>
           ))}
         </ul>
-        <Link
-          href={ctaHref}
-          className="btn-brand mt-8 px-5 py-3 text-sm"
-        >
-          {ctaLabel}
-          <ArrowRight size={16} className="h-4 w-4" animateOnHover />
-        </Link>
+        <div className="mt-8">
+          <UberButtonLink href={ctaHref} kind={KIND.primary}>
+            {ctaLabel}
+          </UberButtonLink>
+        </div>
       </div>
       <div
         className={cn(

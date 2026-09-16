@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateAccount } from "@/lib/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import {
   listOpenParcelListings,
@@ -35,7 +36,7 @@ export async function publishParcel(
   const result = await publishParcelRecord(supabase, user.id, parsed.data);
   if (result.ok) {
     revalidatePath("/colis");
-    revalidatePath("/tableau-de-bord");
+    revalidateAccount();
     revalidatePath(`/colis/${result.data.id}`);
   }
   return result;
@@ -62,7 +63,7 @@ export async function updateParcel(
   const result = await updateParcelRecord(supabase, user.id, listingId, parsed.data);
   if (result.ok) {
     revalidatePath("/colis");
-    revalidatePath("/tableau-de-bord");
+    revalidateAccount();
     revalidatePath(`/colis/${listingId}`);
   }
   return result;

@@ -1,4 +1,4 @@
-import { CarpoolOfferHeroSection } from "@/components/marketing/carpool-offer-hero-section";
+import { UberHome } from "@/components/baseweb/uber-home";
 import { CarpoolOfferWhySection } from "@/components/marketing/carpool-offer-why-section";
 import { CarpoolOfferHowSection } from "@/components/marketing/carpool-offer-how-section";
 import { CarpoolOfferProfilesSection } from "@/components/marketing/carpool-offer-profiles-section";
@@ -10,13 +10,13 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Proposer des places",
-  description: `Partagez les places libres de votre véhicule avec ${APP_NAME}. Réduisez vos frais d'essence sur les trajets que vous faites déjà en Abitibi-Témiscamingue.`,
+  description: `Partagez les places libres de votre véhicule avec ${APP_NAME}. Réduisez vos frais d'essence sur les trajets que vous faites déjà, au Québec et en Ontario.`,
 };
 
 export default function CovoiturageProposerPage() {
   return (
     <div>
-      <CarpoolOfferHeroSection />
+      <UberHome mode="drive" intent="seats" />
       <CarpoolOfferWhySection />
       <CarpoolOfferHowSection />
       <CarpoolOfferProfilesSection />

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ParcelCard } from "@/components/parcels/parcel-card";
 import { ParcelMarketplaceFilters } from "@/components/parcels/parcel-marketplace-filters";
+import { UberButtonLink } from "@/components/baseweb/uber-button-link";
+import { UberEmpty } from "@/components/baseweb/uber-ui";
+import { UberPageIntro } from "@/components/baseweb/uber-page-intro";
 import { listParcels } from "@/lib/actions/parcels";
 import { createClient } from "@/lib/supabase/server";
 import { APP_NAME } from "@/lib/constants";
@@ -51,22 +54,15 @@ export default async function ParcelMarketplacePage({
   } = await supabase.auth.getUser();
 
   return (
-    <section className="section-muted py-16 md:py-20">
+    <section className="py-12 md:py-16">
       <div className="mx-auto max-w-6xl space-y-8 px-4">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-2">
-            <h1 className="text-[clamp(1.45rem,0.95rem+2.2vw,2.5rem)] font-semibold leading-tight tracking-tight text-balance text-black dark:text-white">
-              Colis disponibles
-            </h1>
-            <p className="max-w-2xl text-base leading-relaxed text-[#5E5E5E] md:text-lg dark:text-neutral-400">
-              Toutes les annonces publiées par les expéditeurs. Si votre trajet
-              passe près du départ et de l&apos;arrivée, proposez votre place.
-            </p>
-          </div>
-          <Link href="/colis/nouveau" className="btn-brand shrink-0">
-            Publier un colis
-          </Link>
-        </div>
+        <UberPageIntro
+          title="Colis disponibles"
+          subtitle="Toutes les annonces publiées sont visibles par tout le monde. Si votre trajet passe près du départ et de l’arrivée, proposez votre place."
+          action={
+            <UberButtonLink href="/colis/nouveau">Publier un colis</UberButtonLink>
+          }
+        />
 
         <ParcelMarketplaceFilters
           key={`${params.origin ?? ""}-${params.dest ?? ""}-${size ?? ""}`}
@@ -76,7 +72,7 @@ export default async function ParcelMarketplacePage({
         />
 
         <div className="space-y-4">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="uber-home-kicker">
             {listings.length === 0
               ? hasFilters
                 ? "Aucune annonce correspondante"
@@ -91,14 +87,23 @@ export default async function ParcelMarketplacePage({
           ) : null}
 
           {result.ok && listings.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-[#E8E8E8] bg-white p-10 text-center text-slate-600 dark:border-white/10 dark:bg-neutral-950 dark:text-slate-400">
-              {hasFilters
-                ? "Aucun colis ne correspond à ces filtres."
-                : "Aucun colis publié pour le moment."}{" "}
-              <Link href="/colis/nouveau" className="underline">
-                Publier un colis
-              </Link>
-            </div>
+            <UberEmpty
+              title={
+                hasFilters
+                  ? "Aucun colis ne correspond à ces filtres."
+                  : "Aucun colis publié pour le moment."
+              }
+              description={
+                hasFilters
+                  ? "Modifiez les filtres, ou publiez une annonce visible par tout le monde."
+                  : "Publiez une annonce : elle sera visible par tout le monde."
+              }
+              action={
+                <Link href="/colis/nouveau" className="btn-brand h-12 px-5">
+                  Publier un colis
+                </Link>
+              }
+            />
           ) : null}
 
           <div className="grid gap-5 md:grid-cols-2">

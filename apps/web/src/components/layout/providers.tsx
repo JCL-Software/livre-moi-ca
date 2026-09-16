@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "next-themes";
+import { BaseWebProvider } from "@/components/baseweb/provider";
 import { Toaster } from "@/components/ui/sonner";
 
 function ClientToaster() {
@@ -18,14 +18,9 @@ function ClientToaster() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <BaseWebProvider>
       {children}
       <ClientToaster />
-    </ThemeProvider>
+    </BaseWebProvider>
   );
 }

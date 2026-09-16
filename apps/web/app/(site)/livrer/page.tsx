@@ -1,4 +1,4 @@
-import { DeliverHeroSection } from "@/components/marketing/deliver-hero-section";
+import { UberHome } from "@/components/baseweb/uber-home";
 import { DeliverWhySection } from "@/components/marketing/deliver-why-section";
 import { DeliverHowSection } from "@/components/marketing/deliver-how-section";
 import { DeliverProfilesSection } from "@/components/marketing/deliver-profiles-section";
@@ -10,13 +10,13 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Livrer et gagner",
-  description: `Transportez des colis sur vos trajets existants avec ${APP_NAME}. Rentabilisez l'espace dans votre véhicule sans détour inutile en Abitibi-Témiscamingue.`,
+  description: `Transportez des colis sur vos trajets existants avec ${APP_NAME}. Rentabilisez l'espace dans votre véhicule sans détour inutile, au Québec et en Ontario.`,
 };
 
 export default function LivrerPage() {
   return (
     <div>
-      <DeliverHeroSection />
+      <UberHome mode="drive" />
       <DeliverWhySection />
       <DeliverHowSection />
       <DeliverProfilesSection />

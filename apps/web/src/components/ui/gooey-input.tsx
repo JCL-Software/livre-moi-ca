@@ -9,6 +9,7 @@ import {
   useCallback,
   type ChangeEvent,
   type ReactNode,
+  type Ref,
 } from "react";
 import { motion } from "motion/react";
 import { MapPin } from "@/components/animate-ui/icons/map-pin";
@@ -63,31 +64,36 @@ function MapPinIcon({
   layoutId,
   playAnim,
   animKey = 0,
+  size = 16,
 }: {
   layoutId: string;
   playAnim?: boolean;
   animKey?: number;
+  size?: number;
 }) {
   return (
     <motion.span
       layoutId={layoutId}
-      className="inline-flex size-4 shrink-0 items-center justify-center text-current"
+      className="inline-flex shrink-0 items-center justify-center text-current"
+      style={{ width: size, height: size }}
     >
       <MapPin
         key={playAnim ? `map-pin-${animKey}` : "map-pin-idle"}
-        size={16}
+        size={size}
         animate={playAnim ? "path" : false}
-        className="size-4"
+        className="size-full"
       />
     </motion.span>
   );
 }
 
-const transition = {
+export const GOOEY_INPUT_TRANSITION = {
   duration: 0.4,
   type: "spring" as const,
   bounce: 0.25,
 };
+
+const transition = GOOEY_INPUT_TRANSITION;
 
 const iconBubbleVariants = {
   collapsed: { scale: 0, opacity: 0 },
@@ -122,11 +128,13 @@ export interface GooeyInputProps {
   disabled?: boolean;
   clearOnCollapse?: boolean;
   icon?: "search" | "map-pin";
-  /** Visual tone. `form` matches white rounded-lg inputs. */
-  appearance?: "default" | "form";
+  /** Visual tone. `form` matches white rounded-lg inputs. `uber` keeps the 56px home fields. */
+  appearance?: "default" | "form" | "uber";
   /** Typewriter hint shown when expanded and empty (Aceternity). */
   typewriterText?: string;
+  endAction?: ReactNode;
   children?: ReactNode;
+  barRef?: Ref<HTMLDivElement>;
 }
 
 export function GooeyInput({
@@ -149,7 +157,9 @@ export function GooeyInput({
   icon = "search",
   appearance = "default",
   typewriterText,
+  endAction,
   children,
+  barRef,
 }: GooeyInputProps) {
   const reactId = useId();
   const safeId = reactId.replace(/:/g, "");
@@ -158,8 +168,10 @@ export function GooeyInput({
   const inputLayoutId = `gooey-input-field-${safeId}`;
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const prevExpandedRef = useRef(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const startsExpanded = Boolean(valueProp ?? defaultValue);
+  const prevExpandedRef = useRef(startsExpanded);
+  const [mounted, setMounted] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(startsExpanded);
   const [typewriterKey, setTypewriterKey] = useState(0);
   const [pinAnimKey, setPinAnimKey] = useState(0);
   const [playPinPath, setPlayPinPath] = useState(false);
@@ -167,8 +179,14 @@ export function GooeyInput({
 
   const isControlled = valueProp !== undefined;
   const searchText = isControlled ? valueProp : uncontrolledValue;
-  const isForm = appearance === "form";
+  const isUber = appearance === "uber";
+  const isForm = appearance === "form" || isUber;
   const isMapPin = icon === "map-pin";
+  const pinSize = isUber ? 20 : 16;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const setSearchText = useCallback(
     (next: string) => {
@@ -209,9 +227,9 @@ export function GooeyInput({
 
   useEffect(() => {
     if (searchText && !isExpanded) {
-      setIsExpanded(true);
+      setExpanded(true);
     }
-  }, [searchText, isExpanded]);
+  }, [searchText, isExpanded, setExpanded]);
 
   const buttonVariants = useMemo(
     () => ({
@@ -256,12 +274,23 @@ export function GooeyInput({
     setPinAnimKey((key) => key + 1);
   }, [disabled, isMapPin]);
 
-  const surfaceClass = isForm
-    ? "border border-input bg-white text-black shadow-none dark:bg-neutral-950 dark:text-white"
-    : "bg-foreground text-background shadow-sm ring-1 ring-border/60";
+  const surfaceClass = isUber
+    ? "border-0 bg-[#EEEEEE] text-black shadow-none"
+    : isForm
+      ? "border border-input bg-white text-black shadow-none dark:bg-neutral-950 dark:text-white"
+      : "bg-foreground text-background shadow-sm ring-1 ring-border/60";
   const radiusClass = isForm ? "rounded-lg" : "rounded-full";
-  const heightClass = isForm ? "h-8" : "h-10";
-  const bubbleSizeClass = isForm ? "size-8" : "size-10";
+  const heightClass = isUber ? "h-14" : isForm ? "h-8" : "h-10";
+  const bubbleSizeClass = isUber ? "size-14" : isForm ? "size-8" : "size-10";
+  const triggerPadClass = isUber
+    ? endAction
+      ? "px-4 pr-12"
+      : "px-4"
+    : endAction
+      ? "px-3 pr-11"
+      : "px-3";
+  const textClass = isUber ? "text-base font-medium" : "text-sm font-medium";
+  const inputTextClass = isUber ? "text-base font-medium" : "text-sm";
   const showTypewriter =
     Boolean(typewriterText) && isExpanded && searchText.length === 0;
   const typewriterWords = useMemo(() => {
@@ -283,6 +312,7 @@ export function GooeyInput({
       {isForm ? null : <GooeyFilter filterId={filterId} blur={gooeyBlur} />}
 
       <div
+        ref={barRef}
         className={cn(
           "relative flex w-full items-center justify-center overflow-hidden",
           heightClass,
@@ -306,8 +336,12 @@ export function GooeyInput({
             onClick={handleExpand}
             onPointerDown={handleFieldPointerDown}
             className={cn(
-              "flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden px-3 text-sm font-medium outline-none transition-[color,box-shadow]",
-              "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
+              "flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden outline-none transition-[color,box-shadow]",
+              triggerPadClass,
+              textClass,
+              isUber
+                ? "focus-within:ring-2 focus-within:ring-black"
+                : "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
               disabled && "pointer-events-none opacity-50",
               heightClass,
               radiusClass,
@@ -315,12 +349,13 @@ export function GooeyInput({
               classNames?.trigger,
             )}
           >
-            {!isExpanded ? (
+            {!isExpanded && mounted ? (
               isMapPin ? (
                 <MapPinIcon
                   layoutId={iconLayoutId}
                   playAnim={playPinPath}
                   animKey={pinAnimKey}
+                  size={pinSize}
                 />
               ) : (
                 <SearchIcon layoutId={iconLayoutId} />
@@ -342,20 +377,26 @@ export function GooeyInput({
                 placeholder={showTypewriter ? "" : placeholder}
                 aria-label={placeholder}
                 className={cn(
-                  "h-full w-full min-w-0 truncate bg-transparent text-sm outline-none",
-                  isForm
+                  "h-full w-full min-w-0 truncate bg-transparent outline-none",
+                  inputTextClass,
+                  isUber
                     ? cn(
-                        "text-black dark:text-white",
-                        isExpanded
-                          ? "placeholder:text-neutral-400"
-                          : "pointer-events-none placeholder:text-neutral-500",
+                        "text-black placeholder:text-[#6B6B6B]",
+                        !isExpanded && "pointer-events-none",
                       )
-                    : cn(
-                        "text-background",
-                        isExpanded
-                          ? "placeholder:text-background/50 dark:placeholder:text-background/45"
-                          : "pointer-events-none placeholder:text-background/80 dark:placeholder:text-background/70",
-                      ),
+                    : isForm
+                      ? cn(
+                          "text-black dark:text-white",
+                          isExpanded
+                            ? "placeholder:text-neutral-400"
+                            : "pointer-events-none placeholder:text-neutral-500",
+                        )
+                      : cn(
+                          "text-background",
+                          isExpanded
+                            ? "placeholder:text-background/50 dark:placeholder:text-background/45"
+                            : "pointer-events-none placeholder:text-background/80 dark:placeholder:text-background/70",
+                        ),
                   classNames?.input,
                 )}
               />
@@ -365,7 +406,12 @@ export function GooeyInput({
                     key={typewriterKey}
                     autoStart
                     words={typewriterWords}
-                    className="text-left text-sm font-normal leading-none sm:text-sm md:text-sm lg:text-sm"
+                    className={cn(
+                      "text-left font-normal leading-none",
+                      isUber
+                        ? "text-base text-[#6B6B6B] sm:text-base md:text-base lg:text-base"
+                        : "text-sm sm:text-sm md:text-sm lg:text-sm",
+                    )}
                     cursorClassName="hidden"
                   />
                 </div>
@@ -394,12 +440,13 @@ export function GooeyInput({
               classNames?.bubbleSurface,
             )}
           >
-            {isExpanded ? (
+            {isExpanded && mounted ? (
               isMapPin ? (
                 <MapPinIcon
                   layoutId={iconLayoutId}
                   playAnim={playPinPath}
                   animKey={pinAnimKey}
+                  size={pinSize}
                 />
               ) : (
                 <SearchIcon layoutId={iconLayoutId} />
@@ -408,6 +455,11 @@ export function GooeyInput({
           </div>
         </motion.div>
       </div>
+      {endAction ? (
+        <div className="absolute top-1/2 right-3 z-20 -translate-y-1/2">
+          {endAction}
+        </div>
+      ) : null}
       {children}
     </div>
   );

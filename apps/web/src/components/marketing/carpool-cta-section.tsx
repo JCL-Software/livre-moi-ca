@@ -63,7 +63,7 @@ function CtaCard({
       viewport={{ once: true }}
       transition={{ delay: 0.1 * (index + 1) }}
       {...cardProps}
-      className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-sm"
+      className="flex h-full flex-col rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-sm"
     >
       <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white">
         <Icon
@@ -73,14 +73,14 @@ function CtaCard({
           animation={primary ? "find" : undefined}
         />
       </span>
-      <h3 className="mt-4 text-xl font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-white/70">{text}</p>
+      <h3 className="mt-3 text-[15px] font-semibold text-white">{title}</h3>
+      <p className="mt-1.5 flex-1 text-[13px] leading-5 text-white/70">{text}</p>
       <Link
         href={href}
         className={
           primary
-            ? "mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-neutral-200"
-            : "mt-6 inline-flex items-center gap-2 rounded-lg border border-white/25 bg-transparent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+            ? "mt-6 inline-flex items-center gap-2 self-start rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition-colors hover:bg-neutral-200"
+            : "mt-6 inline-flex items-center gap-2 self-start rounded-lg border border-white/25 bg-transparent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
         }
       >
         {cta}
@@ -98,7 +98,7 @@ export function CarpoolCtaSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
+          className="uber-section-title uber-section-title-inverse text-center"
         >
           Trouvez votre place ou partagez votre trajet
         </motion.h2>

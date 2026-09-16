@@ -3,7 +3,6 @@
 import { toast } from "sonner";
 import { confirmBooking, markPickedUp, rejectBooking } from "@/lib/actions/bookings";
 import { OtpDialog } from "@/components/bookings/otp-dialog";
-import { Button } from "@/components/ui/button";
 import type { BookingStatus } from "@/lib/types";
 
 type Props = {
@@ -19,8 +18,9 @@ export function BookingActions({ bookingId, status, bookingType, role }: Props) 
       <div className="flex flex-wrap gap-2">
         {status === "PENDING" && (
           <>
-            <Button
-              size="sm"
+            <button
+              type="button"
+              className="btn-brand h-9 px-3 py-0 text-sm"
               onClick={async () => {
                 const result = await confirmBooking(bookingId);
                 if (!result.ok) toast.error(result.error);
@@ -28,23 +28,23 @@ export function BookingActions({ bookingId, status, bookingType, role }: Props) 
               }}
             >
               Accepter
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
+            </button>
+            <button
+              type="button"
+              className="btn-brand-secondary h-9 px-3 py-0 text-sm"
               onClick={async () => {
                 const result = await rejectBooking(bookingId);
                 if (!result.ok) toast.error(result.error);
               }}
             >
               Refuser
-            </Button>
+            </button>
           </>
         )}
         {bookingType === "PARCEL" && (status === "CONFIRMED" || status === "PENDING") && (
-          <Button
-            size="sm"
-            variant="secondary"
+          <button
+            type="button"
+            className="inline-flex h-9 items-center rounded-lg px-3 text-sm font-medium text-[#545454] transition-colors hover:bg-white hover:text-black"
             onClick={async () => {
               const result = await markPickedUp(bookingId);
               if (!result.ok) toast.error(result.error);
@@ -52,7 +52,7 @@ export function BookingActions({ bookingId, status, bookingType, role }: Props) 
             }}
           >
             Colis pris en charge
-          </Button>
+          </button>
         )}
         {bookingType === "PARCEL" && status === "PICKED_UP" && <OtpDialog bookingId={bookingId} />}
       </div>

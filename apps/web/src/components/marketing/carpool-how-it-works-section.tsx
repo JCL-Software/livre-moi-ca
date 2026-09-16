@@ -27,7 +27,7 @@ const PASSENGER: HowItWorksProfile = {
 const DRIVER: HowItWorksProfile = {
   heading: "Je propose un trajet",
   intro:
-    "Publiez un déplacement que vous aviez déjà prévu, indiquez vos places libres et partagez les frais avec des passagers de votre région.",
+    "Publiez un déplacement que vous aviez déjà prévu, indiquez vos places libres et partagez les frais avec des passagers du Québec et de l’Ontario.",
   imageSrc: "/brand/axio-conducteur-voiture.png",
   imageAlt: "Conducteur Livre-moi.ca prêt à partager son trajet",
   imageFit: "cover",
@@ -36,7 +36,7 @@ const DRIVER: HowItWorksProfile = {
     "Indiquez les places et l'espace bagages disponibles",
     "Consultez les demandes de passagers",
     "Confirmez les places et le point de rencontre",
-    "Effectuez le trajet et partagez les frais via l'application",
+    "Effectuez le trajet. Le paiement se fait en ligne.",
   ],
   ctaLabel: "Proposer un trajet",
   ctaHref: "/trajets/nouveau",
@@ -64,7 +64,7 @@ export function CarpoolHowItWorksSection() {
               content: <HowItWorksProfilePanel {...DRIVER} />,
             },
           ]}
-          containerClassName="mx-auto grid w-full max-w-xl grid-cols-2 justify-center gap-1.5 overflow-visible rounded-lg bg-white p-1.5 ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/10"
+          containerClassName="mx-auto grid w-full max-w-xl grid-cols-2 justify-center gap-1.5 overflow-visible rounded-lg bg-[#F6F6F6] p-1.5 dark:bg-neutral-900"
           tabClassName="w-full rounded-md px-3 py-2.5 text-center text-sm font-medium sm:text-[15px]"
           activeTabClassName="rounded-md"
           layoutId="how-it-works-covoiturage-tab"

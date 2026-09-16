@@ -4,18 +4,19 @@ import { Calculator } from "lucide-react";
 import { ArrowRight } from "@/components/animate-ui/icons/arrow-right";
 import { HeroSubtitle } from "@/components/marketing/hero-subtitle";
 import { Button as MovingBorderButton } from "@/components/ui/moving-border";
+import { WhereToSearch } from "@/components/ux-lab/where-to-search";
 
 export function HeroSection() {
   return (
     <section className="section-muted">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
         <div className="fade-in-left space-y-8">
-          <p className="text-sm font-medium text-neutral-500">
+          <p className="uber-home-kicker">
             Livraison collaborative
           </p>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-black sm:text-5xl lg:text-6xl dark:text-white">
+            <h1 className="uber-home-title">
               Votre colis voyage déjà avec quelqu&apos;un
             </h1>
             <HeroSubtitle>
@@ -26,6 +27,7 @@ export function HeroSection() {
           </div>
 
           <div className="space-y-3">
+            <WhereToSearch />
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/recherche?type=PARCEL" className="btn-brand">
                 Trouver un trajet

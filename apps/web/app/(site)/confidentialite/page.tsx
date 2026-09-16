@@ -30,11 +30,13 @@ export default function ConfidentialitePage() {
 
       <LegalSection title="Partage">
         <p>
-          Les autres utilisateurs d&apos;un même trajet voient les informations
-          utiles à la rencontre (prénom, photo, véhicule, statut de la
-          réservation). Les fournisseurs techniques (hébergement, authentification,
-          paiements) n&apos;y ont accès que pour opérer le service. Les
-          autorités peuvent en recevoir si la loi l&apos;exige.
+          Les annonces de colis et les trajets publiés sont visibles par tous
+          les utilisateurs. Les informations utiles à une rencontre (prénom,
+          photo, véhicule, statut de la réservation) sont partagées avec les
+          personnes concernées par un trajet ou une livraison confirmée. Les
+          fournisseurs techniques (hébergement, authentification, paiements)
+          n&apos;y ont accès que pour opérer le service. Les autorités peuvent
+          en recevoir si la loi l&apos;exige.
         </p>
       </LegalSection>
 

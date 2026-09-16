@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type SectionHeaderProps = {
   badge?: string;
   title: string;
-  subtitle?: React.ReactNode;
+  subtitle?: ReactNode;
+  subtitleClassName?: string;
   align?: "left" | "center";
   inlineBadge?: boolean;
   className?: string;
@@ -12,6 +14,7 @@ type SectionHeaderProps = {
 export function SectionHeader({
   title,
   subtitle,
+  subtitleClassName,
   align = "center",
   className,
 }: SectionHeaderProps) {
@@ -23,20 +26,18 @@ export function SectionHeader({
         className,
       )}
     >
-      <h2 className="text-[clamp(1.45rem,0.95rem+2.2vw,2.5rem)] font-semibold leading-tight tracking-tight text-black text-balance dark:text-white">
-        {title}
-      </h2>
-      <div
-        className={cn(
-          "mt-5 h-px w-16 bg-black",
-          align === "center" && "mx-auto",
-        )}
-      />
-      {subtitle && (
-        <p className="mt-4 text-base leading-relaxed text-[#5E5E5E] md:text-lg dark:text-neutral-400">
+      <h2 className="uber-section-title">{title}</h2>
+      {subtitle ? (
+        <p
+          className={cn(
+            "uber-section-lead mt-3",
+            subtitleClassName ??
+              (align === "center" ? "mx-auto max-w-2xl" : "max-w-2xl"),
+          )}
+        >
           {subtitle}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }

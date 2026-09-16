@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateAccount } from "@/lib/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import {
   confirmBookingRecord,
@@ -23,7 +24,7 @@ export async function createBooking(
   const result = await createBookingRecord(supabase, user.id, input);
   if (result.ok) {
     revalidatePath(`/trajets/${input.tripId}`);
-    revalidatePath("/tableau-de-bord");
+    revalidateAccount();
   }
   return result;
 }
@@ -31,14 +32,14 @@ export async function createBooking(
 export async function confirmBooking(bookingId: string): Promise<ActionResult> {
   const supabase = await createClient();
   const result = await confirmBookingRecord(supabase, bookingId);
-  if (result.ok) revalidatePath("/tableau-de-bord");
+  if (result.ok) revalidateAccount();
   return result;
 }
 
 export async function rejectBooking(bookingId: string): Promise<ActionResult> {
   const supabase = await createClient();
   const result = await rejectBookingRecord(supabase, bookingId);
-  if (result.ok) revalidatePath("/tableau-de-bord");
+  if (result.ok) revalidateAccount();
   return result;
 }
 
@@ -48,7 +49,7 @@ export async function markPickedUp(
 ): Promise<ActionResult> {
   const supabase = await createClient();
   const result = await markBookingPickedUp(supabase, bookingId, proofUrl);
-  if (result.ok) revalidatePath("/tableau-de-bord");
+  if (result.ok) revalidateAccount();
   return result;
 }
 
@@ -58,6 +59,6 @@ export async function verifyDeliveryOtp(
 ): Promise<ActionResult> {
   const supabase = await createClient();
   const result = await verifyDeliveryOtpCode(supabase, bookingId, code);
-  if (result.ok) revalidatePath("/tableau-de-bord");
+  if (result.ok) revalidateAccount();
   return result;
 }

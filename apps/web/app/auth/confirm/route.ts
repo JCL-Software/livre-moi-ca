@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const redirectTo = request.nextUrl.clone();
-  redirectTo.pathname = "/tableau-de-bord";
+  redirectTo.pathname = "/compte";
   redirectTo.search = "";
 
   if (tokenHash && type) {

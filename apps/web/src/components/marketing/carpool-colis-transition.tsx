@@ -12,18 +12,18 @@ export function CarpoolColisTransition() {
               <Package className="h-5 w-5" />
             </span>
             <div className="max-w-xl">
-              <h2 className="text-xl font-semibold tracking-tight text-black md:text-2xl dark:text-white">
+              <h2 className="uber-card-title">
                 Vous conduisez déjà ?
                 <br />
                 Vous pouvez aussi transporter un colis.
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600 md:text-base dark:text-neutral-400">
+              <p className="uber-section-lead mt-1.5">
                 Lorsque votre trajet le permet, utilisez l’espace disponible dans
                 votre véhicule pour aider un autre membre à faire avancer un colis.
               </p>
             </div>
           </div>
-          <Link href="/" className="btn-brand-secondary shrink-0">
+          <Link href="/livrer" className="btn-brand-secondary shrink-0">
             Découvrir le transport de colis
             <ArrowRight size={16} className="h-4 w-4" animateOnHover />
           </Link>

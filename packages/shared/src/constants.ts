@@ -1,4 +1,5 @@
-import type { ParcelSize } from "./types";
+import type { ParcelCategory, ParcelSize } from "./types";
+import { MAPBOX_STYLE_DEFAULT } from "./geo/map-style";
 
 export const APP_NAME = "Livre-moi.ca";
 export const APP_TAGLINE =
@@ -13,12 +14,44 @@ export const BRAND_BLACK = "#000000";
 
 export const QUEBEC_VIEWBOX = "-81.5,45.0,-70.0,50.5";
 
+/** Québec + Ontario — bbox Mapbox (minLon,minLat,maxLon,maxLat). */
+export const MAP_SEARCH_BBOX = "-95.2,41.6,-57.0,56.9";
+
+export const MAPBOX_STYLE_LIGHT = MAPBOX_STYLE_DEFAULT;
+export const MAPBOX_PROXIMITY_MONTREAL = "-73.5673,45.5017";
+
+/** Search Box — quotas : moins de frappes inutiles. */
+export const MAP_SEARCH_MIN_CHARS = 3;
+export const MAP_SEARCH_DEBOUNCE_MS = 400;
+
+/**
+ * Suivi live — 1 Directions au départ, recalcul seulement si déviation
+ * (mètres) et après un intervalle minimum.
+ */
+export const ROUTE_DEVIATION_THRESHOLD_M = 200;
+export const ROUTE_RECALC_MIN_INTERVAL_MS = 2 * 60 * 1000;
+
 export const PARCEL_LABELS: Record<ParcelSize, string> = {
   SMALL: "Petit — Enveloppe ou petit sac",
   MEDIUM: "Moyen — Boîte à chaussures ou petit carton",
   LARGE: "Grand — Carton ou petite valise",
   EXTRA_LARGE: "Très grand — Plusieurs boîtes ou équipement volumineux",
 };
+
+export const PARCEL_CATEGORIES: { value: ParcelCategory; label: string }[] = [
+  { value: "DOCUMENTS", label: "Documents" },
+  { value: "PARCEL", label: "Colis" },
+  { value: "TOOLS", label: "Outils & Équipements" },
+  { value: "CLOTHING", label: "Vêtements" },
+  { value: "FOOD", label: "Nourriture" },
+  { value: "ELECTRONICS", label: "Électronique" },
+  { value: "OTHER", label: "Autres" },
+];
+
+export const PARCEL_CATEGORY_LABELS: Record<ParcelCategory, string> =
+  Object.fromEntries(
+    PARCEL_CATEGORIES.map((item) => [item.value, item.label]),
+  ) as Record<ParcelCategory, string>;
 
 export const BOOKING_STATUS_LABELS: Record<string, string> = {
   PENDING: "En attente",
@@ -31,7 +64,7 @@ export const BOOKING_STATUS_LABELS: Record<string, string> = {
 
 export const PARCEL_LISTING_STATUS_LABELS: Record<string, string> = {
   OPEN: "Ouverte",
-  MATCHED: "Jumelée",
+  MATCHED: "Transport trouvé",
   CANCELLED: "Annulée",
   EXPIRED: "Expirée",
 };

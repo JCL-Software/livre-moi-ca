@@ -5,12 +5,13 @@ import type { NextConfig } from "next";
 const monorepoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@livre-moi/shared"],
+  transpilePackages: ["@livre-moi/shared", "mapbox-gl", "baseui", "styletron-react", "styletron-engine-atomic"],
   outputFileTracingRoot: monorepoRoot,
   turbopack: {
     root: monorepoRoot,
     resolveAlias: {
-      "maplibre-gl": "maplibre-gl/dist/maplibre-gl.js",
+      "date-fns/_lib/format/longFormatters":
+        "./src/lib/date-fns-long-formatters.ts",
     },
   },
   images: {
@@ -18,6 +19,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "api.mapbox.com",
       },
     ],
   },

@@ -1,0 +1,63 @@
+import Link from "next/link";
+import { AccountPageHeader } from "@/components/account/account-page-header";
+import { UberCard } from "@/components/baseweb/uber-ui";
+import { requireAccount } from "@/lib/account";
+import { formatMoney, PAYMENT_STATUS_LABELS } from "@/lib/account-format";
+
+export default async function AccountPaymentsPage() {
+  const { supabase, user } = await requireAccount();
+  const { data: bookings } = await supabase
+    .from("bookings")
+    .select("id, total_price, payment_status, booking_type, parcel_title, created_at")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(12);
+
+  return (
+    <div>
+      <AccountPageHeader
+        title="Paiements"
+        description="Suivez les montants liés à vos réservations. Le paiement se fait en ligne via la plateforme."
+      />
+
+      <UberCard className="mb-6">
+        <p className="m-0 text-sm font-medium text-black">Paiement sécurisé</p>
+        <p className="mt-2 mb-0 text-sm leading-relaxed text-[#545454]">
+          Les paiements sont sécurisés et conservés jusqu’à la confirmation de
+          livraison. Aucun échange d’argent comptant entre les parties.
+        </p>
+      </UberCard>
+
+      {(bookings ?? []).length === 0 ? (
+        <p className="text-sm text-[#545454]">
+          Aucune demande avec un montant.{" "}
+          <Link href="/recherche" className="underline underline-offset-4">
+            Rechercher un trajet
+          </Link>
+        </p>
+      ) : (
+        <ul className="m-0 space-y-3 p-0">
+          {(bookings ?? []).map((booking) => (
+            <li key={booking.id}>
+              <UberCard>
+                <div className="flex items-center justify-between gap-3 text-sm">
+                  <div>
+                    <p className="m-0 font-medium text-black">
+                      {booking.booking_type === "PARCEL"
+                        ? booking.parcel_title ?? "Colis"
+                        : "Place passager"}
+                    </p>
+                    <p className="mt-1 mb-0 text-[#545454]">
+                      {PAYMENT_STATUS_LABELS[booking.payment_status] ?? booking.payment_status}
+                    </p>
+                  </div>
+                  <p className="m-0 font-semibold text-black">{formatMoney(booking.total_price)}</p>
+                </div>
+              </UberCard>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

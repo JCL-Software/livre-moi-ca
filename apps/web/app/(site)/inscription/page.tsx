@@ -35,11 +35,8 @@ export default function SignupPage() {
   }
 
   return (
-    <AuthFormShell
-      title="Créer un compte"
-      subtitle="Rejoignez Livre-moi.ca pour envoyer des colis ou rentabiliser vos trajets."
-    >
-      <form className="my-8 flex flex-col gap-4" onSubmit={onSubmit}>
+    <AuthFormShell title="Créer un compte">
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <LabelInputContainer>
           <AuthLabel htmlFor="name">Nom complet</AuthLabel>
           <AuthInput
@@ -76,7 +73,7 @@ export default function SignupPage() {
         </LabelInputContainer>
 
         <AuthSubmitButton disabled={loading}>
-          {loading ? "Création…" : "S'inscrire →"}
+          {loading ? "Création…" : "Créer un compte"}
         </AuthSubmitButton>
       </form>
 

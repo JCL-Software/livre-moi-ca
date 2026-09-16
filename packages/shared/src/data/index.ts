@@ -6,18 +6,39 @@ export {
   rejectBookingRecord,
   verifyDeliveryOtpCode,
 } from "./bookings";
-export { listOpenParcelListings, publishParcelRecord, updateParcelRecord } from "./parcels";
+export {
+  getParcelDeliveryDetails,
+  listOpenParcelListings,
+  publishParcelRecord,
+  updateParcelRecord,
+} from "./parcels";
 export {
   cancelTripRecord,
   DEMO_TRIP_SAMPLES,
   publishTripRecord,
 } from "./trips";
-export { submitReviewRecord, updateProfileRecord } from "./profiles";
 export {
+  getPublicMemberProfile,
+  listReceivedReviews,
+  listReviewableBookings,
+  submitReviewRecord,
+  updateProfileRecord,
+} from "./profiles";
+export type { PublicMemberProfile } from "./profiles";
+export {
+  acknowledgeParcelPriceRecord,
+  confirmParcelOfferRecord,
   countUnreadNotifications,
+  getExistingParcelOffer,
   listConversationMessages,
+  listDriverParcelOffers,
+  listParcelOffersForListing,
+  listParcelOffersForListings,
+  listUserConversations,
   listUserNotifications,
+  markAllNotificationsReadRecord,
   markNotificationReadRecord,
   proposeParcelTransportRecord,
   sendConversationMessageRecord,
+  updateParcelOfferPriceRecord,
 } from "./messaging";

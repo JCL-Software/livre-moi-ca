@@ -20,12 +20,12 @@ export function CarpoolHeroSection() {
       <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-14 md:pb-16 md:pt-20">
         <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
           <div className="fade-in-left space-y-8">
-            <p className="text-sm font-medium text-neutral-500">
+            <p className="uber-home-kicker">
               Covoiturage régional au Québec et en Ontario
             </p>
 
             <div className="space-y-4">
-              <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-black sm:text-5xl lg:text-6xl dark:text-white">
+              <h1 className="uber-home-title">
                 Votre trajet est déjà prévu. Partagez-le simplement.
               </h1>
               <HeroSubtitle>

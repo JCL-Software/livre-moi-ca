@@ -12,7 +12,7 @@ export function DeliverCtaSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold tracking-tight text-white md:text-4xl"
+          className="uber-section-title uber-section-title-inverse"
         >
           Votre prochain trajet peut aussi transporter un colis.
         </motion.h2>
@@ -21,7 +21,7 @@ export function DeliverCtaSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="mt-8"
+          className="mt-8 flex flex-wrap items-center justify-center gap-4"
         >
           <Link
             href="/trajets/nouveau"
@@ -29,6 +29,12 @@ export function DeliverCtaSection() {
           >
             Publier mon trajet
             <ArrowRight className="h-5 w-5" size={20} animateOnHover />
+          </Link>
+          <Link
+            href="/colis"
+            className="text-base font-medium text-white underline-offset-4 hover:underline"
+          >
+            Voir les colis disponibles
           </Link>
         </motion.div>
       </div>

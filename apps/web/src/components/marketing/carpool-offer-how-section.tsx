@@ -29,8 +29,8 @@ const STEPS = [
   {
     step: 4,
     icon: CreditCardIcon,
-    title: "Encaissez automatiquement",
-    text: "Votre participation aux frais d'essence est virée directement sur votre compte une fois le voyage terminé.",
+    title: "Confirmez le trajet",
+    text: "Les frais convenus sont indiqués avant le départ. Le versement se fait en ligne.",
   },
 ];
 

@@ -1,29 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Navigation } from "lucide-react";
 import { MessageCircle } from "@/components/animate-ui/icons/message-circle";
-import { LiveTrackingMapDynamic } from "@/components/marketing/live-tracking-map-dynamic";
-import {
-  LIVE_TRACKING_ROUTES,
-  pickNextRouteIndex,
-} from "@/lib/live-tracking-routes";
+import { StaticMapImage } from "@/components/maps/static-map-image";
 
+/**
+ * Maquette marketing TrustJourney — image Static Mapbox uniquement.
+ * Évite les Map Loads GL (remounts de la boucle TrustJourney).
+ */
 export function LiveTrackingScreen() {
-  const [routeIndex, setRouteIndex] = useState(0);
-  const route = LIVE_TRACKING_ROUTES[routeIndex];
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      setRouteIndex((current) => pickNextRouteIndex(current));
-    }, 10000);
-    return () => window.clearInterval(id);
-  }, []);
-
   return (
-    <div className="relative h-full overflow-hidden bg-[#e8eaed] text-slate-900">
+    <div className="relative h-full overflow-hidden bg-[#e8eef4] text-slate-900">
       <div className="absolute inset-0">
-        <LiveTrackingMapDynamic activeRouteId={route.id} />
+        <StaticMapImage
+          width={400}
+          height={700}
+          zoom={10}
+          alt="Suivi en direct"
+        />
       </div>
 
       <div className="absolute bottom-[4.5rem] left-2 z-[1000] flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold text-slate-700 shadow-md ring-1 ring-black/5">

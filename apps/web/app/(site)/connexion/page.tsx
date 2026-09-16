@@ -18,7 +18,7 @@ import {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/tableau-de-bord";
+  const next = searchParams.get("next") ?? "/compte";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,11 +37,8 @@ function LoginForm() {
   }
 
   return (
-    <AuthFormShell
-      title="Connexion"
-      subtitle="Accédez à votre compte Livre-moi.ca pour suivre vos colis ou publier un trajet."
-    >
-      <form className="my-8 flex flex-col gap-4" onSubmit={onSubmit}>
+    <AuthFormShell title="Connexion">
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <LabelInputContainer>
           <AuthLabel htmlFor="email">Courriel</AuthLabel>
           <AuthInput
@@ -66,7 +63,7 @@ function LoginForm() {
         </LabelInputContainer>
 
         <AuthSubmitButton disabled={loading}>
-          {loading ? "Connexion…" : "Se connecter →"}
+          {loading ? "Connexion…" : "Se connecter"}
         </AuthSubmitButton>
       </form>
 
@@ -74,6 +71,12 @@ function LoginForm() {
 
       <div className="flex flex-col gap-4">
         <AuthGoogleButton action={async () => signInWithGoogle(next)} />
+
+        <AuthFooterLink
+          prompt="Mot de passe oublié ?"
+          href="/mot-de-passe-oublie"
+          label="Réinitialiser"
+        />
 
         <AuthFooterLink
           prompt="Pas encore de compte ?"

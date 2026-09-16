@@ -24,7 +24,7 @@ const REASONS = [
   {
     icon: Package,
     title: "Maximisez vos revenus (Passagers + Colis)",
-    text: "Vous avez 2 passagers et encore de la place dans le coffre ? Complétez avec un petit colis Livre-moi.ca pour rentabiliser à 100 % votre aller-retour.",
+    text: "Vous avez 2 passagers et encore de la place dans le coffre ? Complétez avec un petit colis Livre-moi.ca pour rentabiliser votre aller-retour.",
     accent: "from-orange-600/90 to-amber-700/90",
   },
 ];

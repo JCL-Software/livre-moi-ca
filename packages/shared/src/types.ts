@@ -1,5 +1,13 @@
 export type BookingType = "PASSENGER" | "PARCEL";
 export type ParcelSize = "SMALL" | "MEDIUM" | "LARGE" | "EXTRA_LARGE";
+export type ParcelCategory =
+  | "DOCUMENTS"
+  | "PARCEL"
+  | "TOOLS"
+  | "CLOTHING"
+  | "FOOD"
+  | "ELECTRONICS"
+  | "OTHER";
 export type TripStatus = "SCHEDULED" | "ACTIVE" | "COMPLETED" | "CANCELLED";
 export type ParcelListingStatus = "OPEN" | "MATCHED" | "CANCELLED" | "EXPIRED";
 export type BookingStatus =
@@ -14,6 +22,18 @@ export type GeoPoint = {
   lat: number;
   lng: number;
   name: string;
+  unit?: string;
+  city?: string;
+  region?: string;
+  postalCode?: string;
+  country?: string;
+};
+
+export type PlaceSuggestion = {
+  name: string;
+  mapboxId?: string;
+  lat?: number;
+  lng?: number;
 };
 
 export type IntermediateStop = {
@@ -27,6 +47,7 @@ export type TripPreferences = {
   smoking: boolean;
   pets: boolean;
   luggage: "SMALL" | "MEDIUM" | "LARGE";
+  note?: string;
 };
 
 export type Profile = {
@@ -77,6 +98,7 @@ export type SearchTripResult = {
   driver_name: string;
   driver_avatar: string | null;
   driver_rating: number;
+  driver_identity_verified: boolean;
   origin_name: string;
   destination_name: string;
   departure_time: string;
@@ -176,15 +198,48 @@ export type ParcelListing = {
   dest_lat?: number;
   dest_lng?: number;
   parcel_size: ParcelSize;
+  category?: ParcelCategory | null;
+  category_detail?: string | null;
   weight_kg: number;
   is_fragile: boolean;
   estimated_price: number | null;
   distance_km: number | null;
   desired_date: string | null;
-  recipient_name: string | null;
-  recipient_phone: string | null;
+  recipient_name?: string | null;
+  recipient_phone?: string | null;
+  photo_url?: string | null;
   status: ParcelListingStatus;
+  matched_conversation_id?: string | null;
+  agreed_price?: number | null;
+  agreed_driver_payout?: number | null;
+  agreed_commission?: number | null;
   created_at: string;
+};
+
+export type ParcelTransportOffer = {
+  conversationId: string;
+  listingId: string;
+  listingTitle: string;
+  listingRoute: string;
+  listingStatus: ParcelListingStatus;
+  matchedConversationId: string | null;
+  initiatorId: string;
+  counterpartId: string | null;
+  counterpartName: string;
+  counterpartAvatarUrl: string | null;
+  counterpartVerified: boolean;
+  createdAt: string;
+  lastMessage: string | null;
+  proposedPrice: number | null;
+  proposedBy: string | null;
+  suggestedPrice: number | null;
+  agreedPrice: number | null;
+};
+
+export type ExistingParcelOffer = {
+  conversationId: string;
+  proposedPrice: number | null;
+  proposedBy: string | null;
 };
 
 export type ListOpenParcelsFilters = {
@@ -201,6 +256,8 @@ export type PublishParcelInput = {
   destLat: number;
   destLng: number;
   parcelSize: ParcelSize;
+  category?: ParcelCategory;
+  categoryDetail?: string;
   weightKg: number;
   isFragile: boolean;
   title?: string;
@@ -208,8 +265,28 @@ export type PublishParcelInput = {
   estimatedPrice?: number;
   distanceKm?: number;
   desiredDate?: string;
+  originUnit?: string;
+  originAddress?: string;
+  destUnit?: string;
+  destAddress?: string;
+  recipientFirstName?: string;
+  recipientLastName?: string;
   recipientName?: string;
   recipientPhone?: string;
+  meetingPoint?: string;
+  photoUrl?: string | null;
+};
+
+export type ParcelDeliveryDetails = {
+  listing_id: string;
+  origin_unit: string | null;
+  origin_address: string | null;
+  dest_unit: string | null;
+  dest_address: string | null;
+  recipient_first_name: string | null;
+  recipient_last_name: string | null;
+  recipient_phone: string | null;
+  meeting_point: string | null;
 };
 
 export type UpdateProfileInput = {
@@ -243,6 +320,45 @@ export type ConversationMessage = {
   sender_id: string;
   content: string;
   created_at: string;
+};
+
+export type ConversationPreview = {
+  id: string;
+  parcel_listing_id: string | null;
+  initiator_id: string | null;
+  created_at: string;
+  listing_title: string | null;
+  listing_route: string | null;
+  listing_owner_id: string | null;
+  listing_status: string | null;
+  matched_conversation_id: string | null;
+  proposed_price: number | null;
+  proposed_by: string | null;
+  last_message: string | null;
+  last_message_at: string | null;
+  counterpart_id: string | null;
+  counterpart_name: string;
+  counterpart_avatar_url: string | null;
+  counterpart_verified: boolean;
+};
+
+export type ReceivedReview = {
+  id: string;
+  booking_id: string;
+  reviewer_id: string;
+  reviewer_name: string;
+  rating: number;
+  comment: string | null;
+  created_at: string;
+};
+
+export type ReviewableBooking = {
+  booking_id: string;
+  reviewee_id: string;
+  reviewee_name: string;
+  route: string;
+  booking_type: BookingType;
+  role: "customer" | "driver";
 };
 
 export type RouteGeoJson = {

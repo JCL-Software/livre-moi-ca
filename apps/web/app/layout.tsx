@@ -5,6 +5,7 @@ import { RegisterServiceWorker } from "@/components/pwa/register-sw";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 import "./globals.css";
 
+/** Secours glyphes / latins étendus si UberMove manque un caractère. */
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   display: "swap",
@@ -38,8 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="fr-CA"
+      data-ux-skin="baseweb"
       suppressHydrationWarning
-      className={`${inter.variable} ${inter.className} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
     >
       <body
         className="flex min-h-full flex-col bg-background font-sans text-foreground"

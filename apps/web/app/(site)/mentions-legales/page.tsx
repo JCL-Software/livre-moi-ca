@@ -15,8 +15,7 @@ export default function MentionsLegalesPage() {
           Le site {APP_NAME} est édité pour offrir une mise en relation entre
           conducteurs, passagers et expéditeurs de colis au Québec et en
           Ontario. Le service est en cours de déploiement : certaines fonctions
-          (paiements, application mobile, support) seront activées
-          progressivement.
+          (application mobile, support) seront activées progressivement.
         </p>
       </LegalSection>
 

@@ -1,10 +1,5 @@
-import Link from "next/link";
 import { MapPinned, Package } from "lucide-react";
-import { Clock3 } from "@/components/animate-ui/icons/clock-3";
-import { Star } from "@/components/animate-ui/icons/star";
-import { Users } from "@/components/animate-ui/icons/users";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { UberAvatar, UberCardLink, UberTag } from "@/components/baseweb/uber-ui";
 import type { SearchTripResult } from "@/lib/types";
 
 function formatTime(iso: string) {
@@ -19,57 +14,61 @@ function formatTime(iso: string) {
 
 export function TripCard({ trip }: { trip: SearchTripResult }) {
   return (
-    <Link href={`/trajets/${trip.id}`}>
-      <Card className="feature-card overflow-hidden rounded-2xl border-slate-200 shadow-sm transition-all dark:border-slate-800">
-        <CardContent className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <Clock3 className="h-4 w-4 text-orange-500" size={16} animateOnHover />
-              {formatTime(trip.departure_time)}
-              <span>· {trip.estimated_duration_min} min · {Number(trip.distance_km)} km</span>
-            </div>
-            <p className="font-space text-lg font-bold tracking-tight">
-              {trip.origin_name.split(",")[0]} → {trip.destination_name.split(",")[0]}
-            </p>
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="font-medium">{trip.driver_name || "Conducteur"}</span>
-              <span className="inline-flex items-center gap-1 text-muted-foreground">
-                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" size={14} animateOnHover />
-                {Number(trip.driver_rating).toFixed(1)}
+    <UberCardLink href={`/trajets/${trip.id}`}>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-2">
+          <p className="m-0 text-sm text-[#545454]">
+            {formatTime(trip.departure_time)}
+            <span>
+              {" "}
+              · {trip.estimated_duration_min} min · {Number(trip.distance_km)} km
+            </span>
+          </p>
+          <p className="uber-card-title">
+            {trip.origin_name.split(",")[0]} → {trip.destination_name.split(",")[0]}
+          </p>
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <UberAvatar
+              name={trip.driver_name || "Conducteur"}
+              src={trip.driver_avatar}
+              size="32px"
+              verified={trip.driver_identity_verified}
+            />
+            <span className="font-medium text-black">{trip.driver_name || "Conducteur"}</span>
+            <span className="text-[#545454]">{Number(trip.driver_rating).toFixed(1)}</span>
+            {trip.vehicle_model ? (
+              <span className="text-[#545454]">
+                {trip.vehicle_color} {trip.vehicle_model}
               </span>
-              {trip.vehicle_model && (
-                <span className="text-muted-foreground">
-                  {trip.vehicle_color} {trip.vehicle_model}
-                </span>
-              )}
-            </div>
-            {trip.intermediate_stops?.length > 0 && (
-              <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPinned className="h-3.5 w-3.5" />
-                Arrêts : {trip.intermediate_stops.map((stop) => stop.name).join(" · ")}
-              </p>
-            )}
+            ) : null}
           </div>
-          <div className="flex flex-col items-start gap-2 md:items-end">
-            <p className="text-2xl font-extrabold text-orange-500">
-              {Number(trip.price_per_seat).toFixed(0)} $
+          {trip.intermediate_stops?.length > 0 ? (
+            <p className="m-0 flex items-center gap-1 text-xs text-[#545454]">
+              <MapPinned size={14} aria-hidden />
+              Arrêts : {trip.intermediate_stops.map((stop) => stop.name).join(" · ")}
             </p>
-            <p className="text-xs text-muted-foreground">par place</p>
-            <div className="flex gap-2">
-              <Badge variant="secondary">
-                <Users className="h-3 w-3" size={12} animateOnHover />
-                {trip.available_seats} places
-              </Badge>
-              {trip.accepts_parcels && (
-                <Badge variant="outline">
-                  <Package className="h-3 w-3" />
+          ) : null}
+        </div>
+        <div className="flex flex-col items-start gap-2 md:items-end">
+          <p className="uber-price">
+            {Number(trip.price_per_seat).toFixed(0)} $
+          </p>
+          <p className="m-0 text-xs text-[#545454]">par place</p>
+          <div className="flex flex-wrap gap-2">
+            <UberTag>
+              {trip.available_seats} place{trip.available_seats > 1 ? "s" : ""}
+            </UberTag>
+            {trip.accepts_parcels ? (
+              <UberTag tone="muted">
+                <span className="inline-flex items-center gap-1">
+                  <Package size={12} aria-hidden />
                   Colis dès {Number(trip.parcel_base_price).toFixed(0)} $
-                </Badge>
-              )}
-            </div>
+                </span>
+              </UberTag>
+            ) : null}
           </div>
-        </CardContent>
-      </Card>
-    </Link>
+        </div>
+      </div>
+    </UberCardLink>
   );
 }

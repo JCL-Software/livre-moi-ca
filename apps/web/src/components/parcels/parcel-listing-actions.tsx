@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { proposeParcelTransport } from "@/lib/actions/messaging";
-import { Button as MovingBorderButton } from "@/components/ui/moving-border";
-import { cn } from "@/lib/utils";
+import type { ParcelListingStatus } from "@/lib/types";
+import { formatPrixCad } from "@livre-moi/shared/pricing";
 
 type Props = {
   listingId: string;
@@ -14,6 +14,11 @@ type Props = {
   isLoggedIn: boolean;
   acceptsParcels: boolean;
   identityVerified: boolean;
+  listingStatus: ParcelListingStatus;
+  existingConversationId: string | null;
+  isChosenTransporter: boolean;
+  suggestedPrice: number;
+  agreedPrice: number | null;
 };
 
 export function ParcelListingActions({
@@ -22,96 +27,143 @@ export function ParcelListingActions({
   isLoggedIn,
   acceptsParcels,
   identityVerified,
+  listingStatus,
+  existingConversationId,
+  isChosenTransporter,
+  suggestedPrice,
+  agreedPrice,
 }: Props) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const accountReady = isLoggedIn && acceptsParcels && identityVerified;
-  const canPropose = accountReady && !isOwner;
+  const listingOpen = listingStatus === "OPEN";
   const nextPath = `/colis/${listingId}`;
+  const [loading, setLoading] = useState(false);
 
-  async function onPropose() {
-    if (isOwner) return;
+  async function onAccept() {
     if (!isLoggedIn) {
       router.push(`/connexion?next=${encodeURIComponent(nextPath)}`);
       return;
     }
-    if (!acceptsParcels || !identityVerified) {
-      router.push("/profil");
+    if (!acceptsParcels) {
+      router.push("/compte/vehicule");
       return;
     }
-
+    if (!identityVerified) {
+      router.push("/compte/identite");
+      return;
+    }
     setLoading(true);
-    const result = await proposeParcelTransport(listingId);
+    const result = await proposeParcelTransport(listingId, suggestedPrice);
     setLoading(false);
     if (!result.ok) {
       toast.error(result.error);
       return;
     }
-    toast.success("Proposition envoyée. Vous pouvez discuter avec l'expéditeur.");
-    router.push(`/messages/${result.data.conversationId}`);
+    toast.success(
+      result.data.created
+        ? "Proposition envoyée au prix affiché."
+        : "Conversation ouverte.",
+    );
+    router.push(`/compte/messages/${result.data.conversationId}`);
+    router.refresh();
   }
 
   return (
     <div className="space-y-3">
       {isOwner ? (
-        <Link href={`/colis/${listingId}/edit`} className="btn-brand w-full">
-          Éditer mon colis
-        </Link>
-      ) : null}
-
-      <MovingBorderButton
-        type="button"
-        onClick={onPropose}
-        disabled={loading || isOwner}
-        borderRadius="0.5rem"
-        duration={5000}
-        containerClassName={cn(
-          "h-[54px] w-full p-[1px] text-base disabled:cursor-not-allowed disabled:opacity-45",
-          !canPropose && "opacity-45",
-        )}
-        borderClassName="h-16 w-16 bg-[radial-gradient(#000000_40%,transparent_60%)] opacity-50"
-        className="border-neutral-200 bg-white px-6 text-base font-medium text-black hover:bg-neutral-50 dark:border-white/15 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-900"
-      >
-        {loading ? "Mise en relation…" : "Accepter ce colis"}
-      </MovingBorderButton>
-
-      {isOwner ? (
-        <div className="space-y-1 text-xs leading-relaxed text-neutral-500">
-          <p>Vous êtes l&apos;expéditeur de cette annonce.</p>
-          <p>
-            Publier un colis n&apos;empêche pas d&apos;en accepter d&apos;autres
-            : activez « Accepter des colis » dans{" "}
-            <Link href="/profil" className="underline underline-offset-2">
-              les paramètres du compte
-            </Link>{" "}
-            et faites vérifier votre identité.
+        <>
+          <Link href={`/colis/${listingId}/edit`} className="btn-brand w-full">
+            Éditer mon colis
+          </Link>
+          <Link href="/compte/colis" className="btn-brand-secondary w-full">
+            Gérer les propositions
+          </Link>
+          <p className="text-xs leading-relaxed text-[#545454]">
+            {listingStatus === "MATCHED" ? (
+              <>
+                Ce colis est jumelé
+                {agreedPrice != null ? ` à ${formatPrixCad(agreedPrice)}` : ""}.
+                La négociation et le suivi se font dans{" "}
+                <Link href="/compte/colis" className="underline underline-offset-2">
+                  l&apos;espace compte
+                </Link>
+                .
+              </>
+            ) : listingOpen ? (
+              <>
+                Les propositions se gèrent dans{" "}
+                <Link href="/compte/colis" className="underline underline-offset-2">
+                  Mes colis
+                </Link>
+                . Un autre tarif peut se proposer dans le tchat, si besoin.
+              </>
+            ) : (
+              "Cette annonce n'est plus ouverte."
+            )}
           </p>
-        </div>
-      ) : !isLoggedIn ? (
-        <p className="text-xs leading-relaxed text-neutral-500">
-          Connectez-vous à votre compte pour accepter ce colis.
-        </p>
-      ) : !acceptsParcels || !identityVerified ? (
-        <p className="text-xs leading-relaxed text-neutral-500">
-          Pour accepter un colis,{" "}
-          {!acceptsParcels ? (
-            <>
-              activez « Accepter des colis » dans{" "}
-              <Link href="/profil" className="underline underline-offset-2">
-                les paramètres du compte
-              </Link>
-            </>
-          ) : null}
-          {!acceptsParcels && !identityVerified ? " et " : null}
-          {!identityVerified
-            ? "faites vérifier votre identité (KYC)"
-            : null}
-          .
-        </p>
+        </>
+      ) : existingConversationId ? (
+        <>
+          <Link
+            href={`/compte/messages/${existingConversationId}`}
+            className="btn-brand w-full"
+          >
+            Ouvrir la conversation
+          </Link>
+          <p className="text-xs leading-relaxed text-[#545454]">
+            {isChosenTransporter
+              ? `L'expéditeur vous a retenu${agreedPrice != null ? ` à ${formatPrixCad(agreedPrice)}` : ""}.`
+              : listingOpen
+                ? "Le prix affiché s’applique. Un autre tarif peut se proposer dans le tchat."
+                : "Ce colis a déjà un transporteur."}
+          </p>
+        </>
+      ) : listingOpen ? (
+        <>
+          <button
+            type="button"
+            onClick={onAccept}
+            disabled={loading}
+            className="btn-brand w-full disabled:cursor-not-allowed disabled:opacity-45"
+          >
+            {loading ? "Envoi…" : "Proposer de transporter"}
+          </button>
+          {!isLoggedIn ? (
+            <p className="text-xs leading-relaxed text-[#545454]">
+              Connectez-vous à votre compte pour proposer un tarif. Le montant
+              affiché s&apos;applique d&apos;emblée.
+            </p>
+          ) : !acceptsParcels || !identityVerified ? (
+            <p className="text-xs leading-relaxed text-[#545454]">
+              Pour proposer un tarif,{" "}
+              {!acceptsParcels ? (
+                <>
+                  activez « Accepter des colis » dans{" "}
+                  <Link href="/compte/vehicule" className="underline underline-offset-2">
+                    les paramètres du compte
+                  </Link>
+                </>
+              ) : null}
+              {!acceptsParcels && !identityVerified ? " et " : null}
+              {!identityVerified ? (
+                <>
+                  faites vérifier votre identité dans{" "}
+                  <Link href="/compte/identite" className="underline underline-offset-2">
+                    l&apos;espace compte
+                  </Link>
+                </>
+              ) : null}
+              .
+            </p>
+          ) : (
+            <p className="text-xs leading-relaxed text-[#545454]">
+              Une conversation s&apos;ouvre au prix affiché. Un autre tarif
+              peut se proposer dans le tchat, si besoin.
+            </p>
+          )}
+        </>
       ) : (
-        <p className="text-xs leading-relaxed text-neutral-500">
-          L&apos;expéditeur recevra une notification afin de pouvoir échanger
-          avec vous.
+        <p className="text-xs leading-relaxed text-[#545454]">
+          Cette annonce n&apos;accepte plus de propositions.
         </p>
       )}
     </div>

@@ -50,7 +50,7 @@ const adminSidebarItems: AdminSidebarItem[] = [
         id: "dashboard-user",
         name: "Mon espace",
         icon: "solar:user-circle-linear",
-        url: "/tableau-de-bord",
+        url: "/compte",
       },
     ],
   },

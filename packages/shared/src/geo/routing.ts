@@ -1,14 +1,44 @@
-import { getOrsApiKey } from "../env";
+import { getMapboxSecretToken } from "../env";
 import type { RouteGeoJson, RouteResult } from "../types";
 
 export type RoutePreference = "fastest" | "shortest";
 
 type RouteOptions = {
   preference?: RoutePreference;
+  overview?: "full" | "simplified";
 };
+
+type MapboxRoute = {
+  distance: number;
+  duration: number;
+  geometry?: RouteGeoJson;
+};
+
+const MEMORY_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const MEMORY_MAX = 400;
+const pairCache = new Map<string, { expires: number; value: RoutePair }>();
+const inflight = new Map<string, Promise<RoutePair>>();
 
 function toLineString(coords: [number, number][]): RouteGeoJson {
   return { type: "LineString", coordinates: coords };
+}
+
+function roundCoord(value: number) {
+  return Number(value.toFixed(4));
+}
+
+function cacheKey(
+  origin: { lat: number; lng: number },
+  dest: { lat: number; lng: number },
+  overview: "full" | "simplified",
+) {
+  return [
+    roundCoord(origin.lat),
+    roundCoord(origin.lng),
+    roundCoord(dest.lat),
+    roundCoord(dest.lng),
+    overview,
+  ].join(":");
 }
 
 function pickShortest<T extends { distance: number; duration: number }>(
@@ -37,15 +67,11 @@ function pickFastest<T extends { distance: number; duration: number }>(
   });
 }
 
-function fromOsrmRoute(route: {
-  distance: number;
-  duration: number;
-  geometry: RouteGeoJson;
-}): RouteResult {
+function fromMapboxRoute(route: MapboxRoute): RouteResult {
   return {
     distanceKm: Number((route.distance / 1000).toFixed(2)),
     durationMin: Math.round(route.duration / 60),
-    geojson: route.geometry,
+    geojson: route.geometry ?? toLineString([]),
   };
 }
 
@@ -56,98 +82,12 @@ function isSameRoute(a: RouteResult, b: RouteResult) {
   );
 }
 
-async function routeWithOrs(
-  origin: { lat: number; lng: number },
-  dest: { lat: number; lng: number },
-  apiKey: string,
-  preference: RoutePreference,
-): Promise<RouteResult> {
-  const response = await fetch(
-    "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
-    {
-      method: "POST",
-      headers: {
-        Authorization: apiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        coordinates: [
-          [origin.lng, origin.lat],
-          [dest.lng, dest.lat],
-        ],
-        preference: preference === "shortest" ? "shortest" : "recommended",
-      }),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("ORS indisponible");
+function remember(key: string, value: RoutePair) {
+  if (pairCache.size >= MEMORY_MAX) {
+    const first = pairCache.keys().next().value;
+    if (first) pairCache.delete(first);
   }
-
-  const data = (await response.json()) as {
-    features?: Array<{
-      properties?: { summary?: { distance: number; duration: number } };
-      geometry: RouteGeoJson;
-    }>;
-  };
-  const features = (data.features ?? []).map((item) => ({
-    distance: item.properties?.summary?.distance ?? Number.POSITIVE_INFINITY,
-    duration: item.properties?.summary?.duration ?? Number.POSITIVE_INFINITY,
-    item,
-  }));
-  const picked =
-    preference === "shortest" ? pickShortest(features) : pickFastest(features);
-  const feature = picked?.item ?? data.features?.[0];
-  const summary = feature?.properties?.summary;
-  if (!feature || !summary) throw new Error("ORS indisponible");
-  return {
-    distanceKm: Number((summary.distance / 1000).toFixed(2)),
-    durationMin: Math.round(summary.duration / 60),
-    geojson: feature.geometry,
-  };
-}
-
-async function fetchOsrmRoutes(
-  origin: { lat: number; lng: number },
-  dest: { lat: number; lng: number },
-  alternatives: boolean,
-) {
-  const extra = alternatives ? "&alternatives=true" : "";
-  const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${dest.lng},${dest.lat}?overview=full&geometries=geojson${extra}`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error("OSRM indisponible");
-  }
-
-  const data = (await response.json()) as {
-    routes?: Array<{
-      distance: number;
-      duration: number;
-      geometry: RouteGeoJson;
-    }>;
-  };
-  return data.routes ?? [];
-}
-
-async function routeWithOsrm(
-  origin: { lat: number; lng: number },
-  dest: { lat: number; lng: number },
-  preference: RoutePreference,
-): Promise<RouteResult> {
-  let routes: Awaited<ReturnType<typeof fetchOsrmRoutes>> = [];
-  try {
-    routes = await fetchOsrmRoutes(origin, dest, preference === "shortest");
-  } catch {
-    if (preference !== "shortest") throw new Error("OSRM indisponible");
-    routes = await fetchOsrmRoutes(origin, dest, false);
-  }
-
-  const picked =
-    preference === "shortest" ? pickShortest(routes) : pickFastest(routes);
-  if (!picked) throw new Error("Aucun itinéraire trouvé");
-
-  return fromOsrmRoute(picked);
+  pairCache.set(key, { expires: Date.now() + MEMORY_TTL_MS, value });
 }
 
 export function haversineFallback(
@@ -173,26 +113,58 @@ export function haversineFallback(
   };
 }
 
-export async function getRoute(
+async function fetchMapboxDirections(
   origin: { lat: number; lng: number },
   dest: { lat: number; lng: number },
-  options?: RouteOptions,
-): Promise<RouteResult> {
-  const preference = options?.preference ?? "fastest";
-  const orsKey = getOrsApiKey();
+  overview: "full" | "simplified",
+): Promise<MapboxRoute[]> {
+  const token = getMapboxSecretToken();
+  if (!token) throw new Error("Mapbox token manquant");
 
-  if (orsKey) {
-    try {
-      return await routeWithOrs(origin, dest, orsKey, preference);
-    } catch {
-      // repli OSRM
-    }
+  const coordinates = `${origin.lng},${origin.lat};${dest.lng},${dest.lat}`;
+  const params = new URLSearchParams({
+    alternatives: "true",
+    geometries: "geojson",
+    overview,
+    steps: "false",
+    language: "fr",
+    access_token: token,
+  });
+
+  const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${coordinates}?${params.toString()}`;
+  const response = await fetch(url, {
+    headers: { Accept: "application/json" },
+    next: { revalidate: 604800 },
+  } as RequestInit);
+
+  if (!response.ok) {
+    throw new Error("Mapbox Directions indisponible");
   }
 
+  const data = (await response.json()) as { routes?: MapboxRoute[] };
+  return (data.routes ?? []).filter((route) => Number.isFinite(route.distance));
+}
+
+async function loadRoutePair(
+  origin: { lat: number; lng: number },
+  dest: { lat: number; lng: number },
+  overview: "full" | "simplified",
+): Promise<RoutePair> {
   try {
-    return await routeWithOsrm(origin, dest, preference);
+    const routes = await fetchMapboxDirections(origin, dest, overview);
+    const shortestRaw = pickShortest(routes);
+    const fastestRaw = pickFastest(routes);
+    if (!shortestRaw || !fastestRaw) throw new Error("Aucun itinéraire trouvé");
+    const shortest = fromMapboxRoute(shortestRaw);
+    const fastest = fromMapboxRoute(fastestRaw);
+    return {
+      shortest,
+      fastest,
+      distinct: !isSameRoute(shortest, fastest),
+    };
   } catch {
-    return haversineFallback(origin, dest);
+    const fallback = haversineFallback(origin, dest);
+    return { shortest: fallback, fastest: fallback, distinct: false };
   }
 }
 
@@ -205,42 +177,35 @@ export type RoutePair = {
 export async function getShortestAndFastestRoutes(
   origin: { lat: number; lng: number },
   dest: { lat: number; lng: number },
+  options?: { overview?: "full" | "simplified" },
 ): Promise<RoutePair> {
-  const orsKey = getOrsApiKey();
+  const overview = options?.overview ?? "simplified";
+  const key = cacheKey(origin, dest, overview);
+  const cached = pairCache.get(key);
+  if (cached && cached.expires > Date.now()) return cached.value;
 
-  if (orsKey) {
-    try {
-      const [shortest, fastest] = await Promise.all([
-        routeWithOrs(origin, dest, orsKey, "shortest"),
-        routeWithOrs(origin, dest, orsKey, "fastest"),
-      ]);
-      return {
-        shortest,
-        fastest,
-        distinct: !isSameRoute(shortest, fastest),
-      };
-    } catch {
-      // repli OSRM
-    }
-  }
+  const pending = inflight.get(key);
+  if (pending) return pending;
 
+  const request = loadRoutePair(origin, dest, overview).then((value) => {
+    remember(key, value);
+    return value;
+  });
+  inflight.set(key, request);
   try {
-    let routes = await fetchOsrmRoutes(origin, dest, true);
-    if (routes.length === 0) {
-      routes = await fetchOsrmRoutes(origin, dest, false);
-    }
-    const shortestOsrm = pickShortest(routes);
-    const fastestOsrm = pickFastest(routes);
-    if (!shortestOsrm || !fastestOsrm) throw new Error("Aucun itinéraire trouvé");
-    const shortest = fromOsrmRoute(shortestOsrm);
-    const fastest = fromOsrmRoute(fastestOsrm);
-    return {
-      shortest,
-      fastest,
-      distinct: !isSameRoute(shortest, fastest),
-    };
-  } catch {
-    const fallback = haversineFallback(origin, dest);
-    return { shortest: fallback, fastest: fallback, distinct: false };
+    return await request;
+  } finally {
+    inflight.delete(key);
   }
+}
+
+export async function getRoute(
+  origin: { lat: number; lng: number },
+  dest: { lat: number; lng: number },
+  options?: RouteOptions,
+): Promise<RouteResult> {
+  const preference = options?.preference ?? "fastest";
+  const overview = options?.overview ?? "simplified";
+  const pair = await getShortestAndFastestRoutes(origin, dest, { overview });
+  return preference === "shortest" ? pair.shortest : pair.fastest;
 }

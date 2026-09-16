@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Check } from "@/components/animate-ui/icons/check";
 import { SearchForm } from "@/components/search/search-form";
 
@@ -18,23 +19,23 @@ export function EstimationSection() {
       <div className="mx-auto max-w-7xl px-4 py-16 md:py-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
           <div className="max-w-xl">
-            <p className="text-sm font-medium text-neutral-500">
-              Trouvez un trajet
+            <p className="uber-home-kicker">
+              Un trajet déjà prévu ?
             </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
-              Votre colis a besoin d&apos;un trajet ?
+            <h2 className="uber-section-title mt-2">
+              Un conducteur est déjà en route ?
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-neutral-600 md:text-lg dark:text-neutral-400">
-              Indiquez simplement où votre colis doit partir, où il doit arriver
-              et l&apos;espace dont il a besoin. Découvrez ensuite les trajets
-              disponibles près de chez vous.
+            <p className="uber-section-lead mt-3">
+              Si un trajet correspond déjà à votre route, vous pouvez réserver
+              le coffre. Sinon, publiez votre annonce : elle est publique et
+              les conducteurs peuvent vous proposer un transport
             </p>
 
             <ul className="mt-8 space-y-3">
               {BENEFITS.map((item) => (
                 <li
                   key={item}
-                  className="flex items-center gap-3 text-sm font-medium text-neutral-700 md:text-base dark:text-neutral-300"
+                  className="flex items-center gap-3 text-[13px] font-medium text-neutral-700 dark:text-neutral-300"
                 >
                   <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white dark:bg-white dark:text-black">
                     <Check className="h-3.5 w-3.5" size={14} animateOnHover />
@@ -50,8 +51,14 @@ export function EstimationSection() {
               appearance="navy"
               defaultType="PARCEL"
               showTypeToggle={false}
-              submitLabel="Voir les trajets disponibles"
+              submitLabel="Voir les trajets déjà prévus"
             />
+            <p className="mt-4 mb-0 text-sm text-[#545454]">
+              Pas de trajet correspondant ?{" "}
+              <Link href="/colis/nouveau" className="uber-search-secondary">
+                Publier un colis
+              </Link>
+            </p>
           </div>
         </div>
       </div>

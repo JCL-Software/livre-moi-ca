@@ -5,6 +5,19 @@ function firstDefined(...values: Array<string | undefined>): string | undefined 
   return undefined;
 }
 
+function usableMapboxToken(value: string | undefined): string | undefined {
+  const token = value?.trim();
+  if (!token || token.length < 20) return undefined;
+  if (
+    !token.startsWith("pk.") &&
+    !token.startsWith("sk.") &&
+    !token.startsWith("tk.")
+  ) {
+    return undefined;
+  }
+  return token;
+}
+
 export function getSupabaseUrl(): string {
   // Accès littéral requis : Next.js / Expo n'inlinent pas process.env[key].
   return (
@@ -36,6 +49,27 @@ export function getSiteUrl(): string {
   );
 }
 
-export function getOrsApiKey(): string | undefined {
-  return firstDefined(process.env.ORS_API_KEY, process.env.EXPO_PUBLIC_ORS_API_KEY);
+export function getMapboxSecretToken(): string {
+  return (
+    usableMapboxToken(
+      firstDefined(
+        process.env.MAPBOX_SECRET_TOKEN,
+        process.env.MAPBOX_ACCESS_TOKEN,
+        process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
+        process.env.EXPO_PUBLIC_MAPBOX_TOKEN,
+      ),
+    ) ?? ""
+  );
+}
+
+export function getMapboxPublicToken(): string {
+  return (
+    usableMapboxToken(
+      firstDefined(
+        process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
+        process.env.EXPO_PUBLIC_MAPBOX_TOKEN,
+        process.env.MAPBOX_ACCESS_TOKEN,
+      ),
+    ) ?? ""
+  );
 }

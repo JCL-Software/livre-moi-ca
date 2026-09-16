@@ -1,18 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { MapContainer, Marker, Polyline, Popup, TileLayer, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { OSM_TILE_ATTRIBUTION, OSM_TILE_URL } from "@/lib/geo/map-tiles";
-
-const pin = new L.Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
+import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
+import { fitMapToPoints, setLine, useMapboxMap } from "@/components/maps/use-mapbox-map";
+import { getWebMapboxToken } from "@/lib/geo/mapbox";
 
 type Props = {
   origin: { lat: number; lng: number; name: string };
@@ -21,47 +12,63 @@ type Props = {
   stops?: { lat: number; lng: number; name: string }[];
 };
 
-function FitBounds({
-  points,
-}: {
-  points: { lat: number; lng: number }[];
-}) {
-  const map = useMap();
-  useEffect(() => {
-    if (points.length === 0) return;
-    const bounds = L.latLngBounds(points.map((point) => [point.lat, point.lng]));
-    map.fitBounds(bounds, { padding: [28, 28] });
-  }, [map, points]);
-  return null;
+function toLngLat(path: [number, number][]): [number, number][] {
+  return path.map(([lat, lng]) => [lng, lat]);
 }
 
 export default function TripMap({ origin, destination, route, stops = [] }: Props) {
-  const positions = route && route.length > 1 ? route : [
-    [origin.lat, origin.lng] as [number, number],
-    [destination.lat, destination.lng] as [number, number],
-  ];
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { mapRef, ready } = useMapboxMap(containerRef, {
+    center: [origin.lng, origin.lat],
+    zoom: 7,
+    scrollZoom: false,
+  });
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
+  const token = getWebMapboxToken();
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+
+    const apply = () => {
+      const path =
+        route && route.length > 1
+          ? toLngLat(route)
+          : [
+              [origin.lng, origin.lat] as [number, number],
+              [destination.lng, destination.lat] as [number, number],
+            ];
+      setLine(map, "lm-trip-route", path, {
+        "line-color": "#111111",
+        "line-width": 4,
+      });
+
+      for (const marker of markersRef.current) marker.remove();
+      markersRef.current = [];
+      const points = [origin, ...stops, destination];
+      for (const point of points) {
+        const marker = new mapboxgl.Marker({ color: "#111111" })
+          .setLngLat([point.lng, point.lat])
+          .setPopup(new mapboxgl.Popup({ offset: 16 }).setText(point.name))
+          .addTo(map);
+        markersRef.current.push(marker);
+      }
+      fitMapToPoints(map, points, 32);
+    };
+
+    if (map.isStyleLoaded()) apply();
+    else map.once("load", apply);
+  }, [destination, mapRef, origin, ready, route, stops]);
+
+  if (!token) {
+    return (
+      <div className="flex h-full min-h-[280px] items-center justify-center rounded-xl bg-[#F6F6F6] text-sm text-neutral-500 dark:bg-neutral-900">
+        Ajoutez `NEXT_PUBLIC_MAPBOX_TOKEN` pour afficher la carte.
+      </div>
+    );
+  }
 
   return (
-    <MapContainer
-      center={[origin.lat, origin.lng]}
-      zoom={7}
-      className="h-full min-h-[280px] w-full rounded-xl"
-      scrollWheelZoom={false}
-    >
-      <TileLayer attribution={OSM_TILE_ATTRIBUTION} url={OSM_TILE_URL} />
-      <Marker position={[origin.lat, origin.lng]} icon={pin}>
-        <Popup>{origin.name}</Popup>
-      </Marker>
-      {stops.map((stop) => (
-        <Marker key={`${stop.name}-${stop.lat}`} position={[stop.lat, stop.lng]} icon={pin}>
-          <Popup>{stop.name}</Popup>
-        </Marker>
-      ))}
-      <Marker position={[destination.lat, destination.lng]} icon={pin}>
-        <Popup>{destination.name}</Popup>
-      </Marker>
-      <Polyline positions={positions} pathOptions={{ color: "#000000", weight: 4 }} />
-      <FitBounds points={[origin, destination, ...stops]} />
-    </MapContainer>
+    <div ref={containerRef} className="h-full min-h-[280px] w-full overflow-hidden rounded-xl" />
   );
 }

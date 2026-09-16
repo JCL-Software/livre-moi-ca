@@ -20,8 +20,8 @@ const ITEMS: {
   },
   {
     icon: CreditCardIcon,
-    title: "Paiement sécurisé dans l’application",
-    text: "Aucune transaction en argent comptant.",
+    title: "Tarif clair, sans argent comptant",
+    text: "Le paiement se fait en ligne. Les montants restent visibles avant le départ.",
   },
   {
     icon: MessageSquare,

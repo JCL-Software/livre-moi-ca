@@ -2,23 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Minus, Plus } from "lucide-react";
+import { Button, KIND, SIZE } from "baseui/button";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { createBooking } from "@/lib/actions/bookings";
 import { PARCEL_LABELS } from "@/lib/constants";
 import type { BookingType, ParcelSize } from "@/lib/types";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import { formatPrixCad } from "@livre-moi/shared/pricing";
 
 type Props = {
   tripId: string;
@@ -29,6 +21,23 @@ type Props = {
   loggedIn: boolean;
 };
 
+const FIELD =
+  "h-14 w-full rounded-lg border-0 bg-[#EEEEEE] px-4 text-base font-medium text-black outline-none focus:ring-2 focus:ring-black";
+
+function FieldLabel({
+  htmlFor,
+  children,
+}: {
+  htmlFor?: string;
+  children: string;
+}) {
+  return (
+    <label htmlFor={htmlFor} className="uber-home-kicker mb-1.5 block">
+      {children}
+    </label>
+  );
+}
+
 export function BookingForm({
   tripId,
   availableSeats,
@@ -38,7 +47,9 @@ export function BookingForm({
   loggedIn,
 }: Props) {
   const router = useRouter();
-  const [type, setType] = useState<BookingType>(availableSeats > 0 ? "PASSENGER" : "PARCEL");
+  const [type, setType] = useState<BookingType>(
+    availableSeats > 0 ? "PASSENGER" : "PARCEL",
+  );
   const [seats, setSeats] = useState(1);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -93,100 +104,152 @@ export function BookingForm({
     } else {
       toast.success("Demande envoyée au conducteur.");
     }
-    router.push("/tableau-de-bord");
+    router.push("/compte/voyages");
   }
 
   return (
     <div className="space-y-4">
-      <Tabs value={type} onValueChange={(value) => setType(value as BookingType)}>
-        <TabsList className="w-full">
-          <TabsTrigger value="PASSENGER" disabled={availableSeats < 1} className="flex-1">
-            Place · {pricePerSeat.toFixed(0)} $
-          </TabsTrigger>
-          <TabsTrigger value="PARCEL" disabled={!acceptsParcels} className="flex-1">
-            Colis · dès {parcelBasePrice.toFixed(0)} $
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="PASSENGER" className="space-y-3 pt-3">
-          <Label htmlFor="seats">Nombre de places</Label>
-          <Input
-            id="seats"
-            type="number"
-            min={1}
-            max={availableSeats}
-            value={seats}
-            onChange={(event) => setSeats(Number(event.target.value))}
-          />
-        </TabsContent>
-        <TabsContent value="PARCEL" className="space-y-3 pt-3">
-          <div className="space-y-1.5">
-            <Label htmlFor="title">Contenu du colis</Label>
-            <Input id="title" value={title} onChange={(event) => setTitle(event.target.value)} />
+      <div className="grid grid-cols-2 gap-1.5 rounded-lg bg-[#F6F6F6] p-1.5">
+        <button
+          type="button"
+          disabled={availableSeats < 1}
+          onClick={() => setType("PASSENGER")}
+          className={cn(
+            "rounded-md px-3 py-2.5 text-sm font-medium disabled:opacity-40",
+            type === "PASSENGER" ? "bg-white text-black" : "text-[#545454]",
+          )}
+        >
+          Place · {formatPrixCad(pricePerSeat)}
+        </button>
+        <button
+          type="button"
+          disabled={!acceptsParcels}
+          onClick={() => setType("PARCEL")}
+          className={cn(
+            "rounded-md px-3 py-2.5 text-sm font-medium disabled:opacity-40",
+            type === "PARCEL" ? "bg-white text-black" : "text-[#545454]",
+          )}
+        >
+          Colis · dès {formatPrixCad(parcelBasePrice)}
+        </button>
+      </div>
+
+      {type === "PASSENGER" ? (
+        <div>
+          <FieldLabel>Nombre de places</FieldLabel>
+          <div className="flex items-center justify-between rounded-lg bg-[#EEEEEE] px-3 py-2">
+            <button
+              type="button"
+              aria-label="Diminuer"
+              disabled={seats <= 1}
+              onClick={() => setSeats(seats - 1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-black disabled:opacity-40"
+            >
+              <Minus className="h-4 w-4" aria-hidden />
+            </button>
+            <p className="uber-price m-0">{seats}</p>
+            <button
+              type="button"
+              aria-label="Augmenter"
+              disabled={seats >= availableSeats}
+              onClick={() => setSeats(seats + 1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-black disabled:opacity-40"
+            >
+              <Plus className="h-4 w-4" aria-hidden />
+            </button>
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="desc">Description</Label>
-            <Textarea
-              id="desc"
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <div>
+            <FieldLabel htmlFor="booking-title">Contenu du colis</FieldLabel>
+            <input
+              id="booking-title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              className={FIELD}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label>Taille</Label>
-            <Select value={size} onValueChange={(value) => setSize(value as ParcelSize)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(PARCEL_LABELS).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div>
+            <FieldLabel htmlFor="booking-desc">Description</FieldLabel>
+            <textarea
+              id="booking-desc"
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              rows={3}
+              className="w-full rounded-lg border-0 bg-[#EEEEEE] px-4 py-3 text-base font-medium text-black outline-none focus:ring-2 focus:ring-black"
+            />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="weight">Poids (kg)</Label>
-            <Input
-              id="weight"
+          <div>
+            <FieldLabel htmlFor="booking-size">Taille</FieldLabel>
+            <select
+              id="booking-size"
+              value={size}
+              onChange={(event) => setSize(event.target.value as ParcelSize)}
+              className={FIELD}
+            >
+              {Object.entries(PARCEL_LABELS).map(([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <FieldLabel htmlFor="booking-weight">Poids (kg)</FieldLabel>
+            <input
+              id="booking-weight"
               type="number"
               min={0.1}
               step="0.1"
               value={weight}
               onChange={(event) => setWeight(Number(event.target.value))}
+              className={FIELD}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="rname">Destinataire</Label>
-            <Input
-              id="rname"
+          <div>
+            <FieldLabel htmlFor="booking-rname">Destinataire</FieldLabel>
+            <input
+              id="booking-rname"
               value={recipientName}
               onChange={(event) => setRecipientName(event.target.value)}
+              className={FIELD}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="rphone">Téléphone du destinataire</Label>
-            <Input
-              id="rphone"
+          <div>
+            <FieldLabel htmlFor="booking-rphone">Téléphone du destinataire</FieldLabel>
+            <input
+              id="booking-rphone"
               value={recipientPhone}
               onChange={(event) => setRecipientPhone(event.target.value)}
+              className={FIELD}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="photo">Photo de l&apos;état du colis</Label>
-            <Input
-              id="photo"
+          <div>
+            <FieldLabel htmlFor="booking-photo">Photo de l’état du colis</FieldLabel>
+            <input
+              id="booking-photo"
               type="file"
               accept="image/*"
               onChange={(event) => setPhotoFile(event.target.files?.[0] ?? null)}
+              className="block w-full text-sm text-[#545454] file:mr-3 file:rounded-lg file:border-0 file:bg-black file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-white"
             />
           </div>
-        </TabsContent>
-      </Tabs>
-      <Button className="w-full" onClick={onSubmit} disabled={loading}>
+        </div>
+      )}
+
+      <Button
+        kind={KIND.primary}
+        size={SIZE.large}
+        onClick={onSubmit}
+        disabled={loading}
+        overrides={{ BaseButton: { style: { width: "100%" } } }}
+      >
         {loading ? "Envoi…" : "Demander la réservation"}
       </Button>
+      <p className="m-0 text-xs leading-relaxed text-[#545454]">
+        Le tarif est affiché avant la réservation. Le paiement se fait en ligne.
+      </p>
     </div>
   );
 }

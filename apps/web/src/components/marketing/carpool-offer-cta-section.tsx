@@ -12,7 +12,7 @@ export function CarpoolOfferCtaSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold tracking-tight text-white md:text-4xl"
+          className="uber-section-title uber-section-title-inverse"
         >
           Votre prochain trajet peut aussi accueillir des passagers.
         </motion.h2>

@@ -35,7 +35,7 @@ export function BrandLogo({
       {showWordmark && (
         <span
           className={cn(
-            "text-xl font-semibold tracking-tight",
+            "font-display text-[20px] font-medium leading-7",
             isLight ? "text-white" : "text-black dark:text-white",
           )}
         >

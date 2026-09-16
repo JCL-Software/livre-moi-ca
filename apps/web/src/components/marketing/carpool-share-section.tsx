@@ -50,10 +50,10 @@ function ShareCard({
       <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F6F6F6] text-black dark:bg-neutral-900 dark:text-white">
         <Icon className="h-5 w-5" size={20} animate={active} />
       </span>
-      <h3 className="mt-4 text-lg font-semibold text-black dark:text-white">
+      <h3 className="mt-3 text-[15px] font-semibold leading-snug text-black dark:text-white">
         {title}
       </h3>
-      <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+      <p className="mt-1.5 text-[13px] leading-5 text-neutral-600 dark:text-neutral-400">
         {text}
       </p>
     </div>

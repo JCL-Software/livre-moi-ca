@@ -32,7 +32,7 @@ export default function ConditionsPage() {
       <LegalSection title="Réservations">
         <p>
           Une réservation est un accord entre les utilisateurs, facilité par la
-          plateforme. Le paiement, lorsqu&apos;il est activé, est encaissé par{" "}
+          plateforme. Le paiement est encaissé par{" "}
           {APP_NAME} selon les montants affichés au moment de la confirmation. Il
           n&apos;y a pas d&apos;échange d&apos;argent comptant entre les parties
           pour une réservation faite sur le site.

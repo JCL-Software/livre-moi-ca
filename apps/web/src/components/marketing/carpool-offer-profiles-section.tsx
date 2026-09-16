@@ -26,7 +26,7 @@ export function CarpoolOfferProfilesSection() {
       <div className="mx-auto max-w-6xl px-4">
         <SectionHeader
           badge="Qui peut proposer"
-          title="Si vous roulez déjà entre nos villes, vous pouvez proposer des places avec Livre-moi.ca."
+          title="Si vous roulez déjà au Québec ou en Ontario, vous pouvez proposer des places avec Livre-moi.ca."
         />
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

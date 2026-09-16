@@ -20,20 +20,20 @@ const STEPS = [
   {
     step: 2,
     icon: PackageIcon,
-    title: "Recevez des demandes",
-    text: "Les expéditeurs de la région vous contactent directement pour des envois compatibles avec votre itinéraire.",
+    title: "Proposez un tarif",
+    text: "Les annonces de colis sont publiques. Proposez un tarif sur celles qui correspondent à votre trajet.",
   },
   {
     step: 3,
     icon: MapPin,
-    title: "Choisissez le colis",
-    text: "Vous n'acceptez que les demandes qui vous conviennent — Format, horaire et point de rencontre.",
+    title: "L’expéditeur vous choisit",
+    text: "Vous n’êtes retenu que si votre offre convient — format, horaire et point de rencontre.",
   },
   {
     step: 4,
     icon: CameraIcon,
-    title: "Livrez et encaissez",
-    text: "Remettez le colis au destinataire, validez avec le code OTP et recevez votre paiement.",
+    title: "Confirmez la remise",
+    text: "Remettez le colis et validez avec le code. Le versement se fait en ligne.",
   },
 ];
 

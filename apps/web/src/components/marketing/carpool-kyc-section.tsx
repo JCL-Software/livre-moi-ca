@@ -33,8 +33,8 @@ const IDENTITY: HowItWorksProfile = {
     "Confirmer son identité via le processus intégré",
     "Attendre la validation avant d'accueillir des passagers",
   ],
-  ctaLabel: "Voir les étapes",
-  ctaHref: "/inscription",
+  ctaLabel: "Vérifier mon identité",
+  ctaHref: "/compte/identite",
 };
 
 const VEHICLE: HowItWorksProfile = {
@@ -45,12 +45,12 @@ const VEHICLE: HowItWorksProfile = {
   imageAlt: "Informations véhicule Livre-moi.ca",
   imageFit: "cover",
   items: [
-    "Indiquer le modèle et la couleur",
+    "Indiquer les informations du véhicule",
     "Préciser le nombre de places",
     "Décrire l'espace bagages disponible",
   ],
   ctaLabel: "Compléter mon véhicule",
-  ctaHref: "/profil",
+  ctaHref: "/compte/vehicule",
 };
 
 const PUBLISH: HowItWorksProfile = {
@@ -76,6 +76,7 @@ export function CarpoolKycSection() {
         <SectionHeader
           title="Avant de proposer un trajet, chaque conducteur doit être vérifié"
           subtitle="Le processus de vérification permet de mieux connaître les personnes qui proposent des places. Vérification d'identité, validation du profil, informations du véhicule et avis après le trajet restent distincts — Pour une décision plus éclairée, sans prétendre éliminer tous les risques."
+          subtitleClassName="mx-auto max-w-[45rem]"
         />
 
         <AnimatedTabs

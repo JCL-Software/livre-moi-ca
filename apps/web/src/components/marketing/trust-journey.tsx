@@ -173,6 +173,11 @@ export function TrustJourney() {
           );
         })}
       </ol>
+
+      <p className="uber-section-lead mx-auto max-w-2xl pt-4 text-center lg:pt-5">
+        Notifications, suivi en direct, photos et confirmation sécurisée : tout est
+        prévu pour que votre colis arrive à destination en toute confiance.
+      </p>
     </>
   );
 }

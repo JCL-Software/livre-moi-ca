@@ -7,6 +7,15 @@ export const parcelSizeSchema = z.enum([
   "LARGE",
   "EXTRA_LARGE",
 ]);
+export const parcelCategorySchema = z.enum([
+  "DOCUMENTS",
+  "PARCEL",
+  "TOOLS",
+  "CLOTHING",
+  "FOOD",
+  "ELECTRONICS",
+  "OTHER",
+]);
 export const tripStatusSchema = z.enum([
   "SCHEDULED",
   "ACTIVE",
@@ -32,6 +41,7 @@ export const tripPreferencesSchema = z.object({
   smoking: z.boolean(),
   pets: z.boolean(),
   luggage: z.enum(["SMALL", "MEDIUM", "LARGE"]),
+  note: z.string().max(500).optional(),
 });
 
 export const intermediateStopSchema = z.object({
@@ -82,15 +92,25 @@ export const publishParcelSchema = z.object({
   destLat: z.number().min(-90).max(90),
   destLng: z.number().min(-180).max(180),
   parcelSize: parcelSizeSchema,
-  weightKg: z.number().min(0.5).max(30),
+  category: parcelCategorySchema.optional(),
+  categoryDetail: z.string().max(80).optional(),
+  weightKg: z.number().min(0.5).max(100),
   isFragile: z.boolean(),
   title: z.string().max(120).optional(),
   description: z.string().max(1000).optional(),
   estimatedPrice: z.number().min(0).max(2000).optional(),
   distanceKm: z.number().min(0).max(5000).optional(),
   desiredDate: z.string().min(8).optional(),
+  originUnit: z.string().max(40).optional(),
+  originAddress: z.string().max(300).optional(),
+  destUnit: z.string().max(40).optional(),
+  destAddress: z.string().max(300).optional(),
+  recipientFirstName: z.string().max(80).optional(),
+  recipientLastName: z.string().max(80).optional(),
   recipientName: z.string().max(120).optional(),
   recipientPhone: z.string().max(30).optional(),
+  meetingPoint: z.string().max(200).optional(),
+  photoUrl: z.string().max(500).nullable().optional(),
 });
 
 export const publishTripSchema = z.object({

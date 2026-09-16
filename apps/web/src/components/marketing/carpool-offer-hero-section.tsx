@@ -8,17 +8,17 @@ export function CarpoolOfferHeroSection() {
     <section className="section-plain">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
         <div className="fade-in-left space-y-8">
-          <p className="text-sm font-medium text-neutral-500">
+          <p className="uber-home-kicker">
             Proposer un covoiturage
           </p>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-black sm:text-5xl lg:text-6xl dark:text-white">
+            <h1 className="uber-home-title">
               Vous roulez déjà ? Partagez vos places libres et réduisez vos frais.
             </h1>
             <HeroSubtitle>
               Proposez les sièges vides de votre véhicule sur les trajets que vous
-              planifiez déjà entre les villes de la région ou vers Montréal et Gatineau.
+              planifiez déjà, entre les villes du Québec et de l’Ontario.
             </HeroSubtitle>
           </div>
 

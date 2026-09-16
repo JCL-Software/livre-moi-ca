@@ -1,24 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { addDays, format, isSameDay, parseISO, startOfDay } from "date-fns";
-import { fr } from "date-fns/locale";
-import { Package } from "lucide-react";
-import { User } from "@/components/animate-ui/icons/user";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/animate-ui/components/radix/dropdown-menu";
-import { DropdownMenuContent as DropdownMenuContentPrimitive } from "@/components/animate-ui/primitives/radix/dropdown-menu";
+import { startOfDay } from "date-fns";
+import { ArrowUpDown, Minus, Plus } from "lucide-react";
 import { AddressAutocomplete } from "@/components/search/address-autocomplete";
-import { Button } from "@/components/ui/button";
-import { Button as MovingBorderButton } from "@/components/ui/moving-border";
-import { Calendar } from "@/components/ui/calendar";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { UberCalendarField } from "@/components/baseweb/uber-calendar";
+import { UberCard } from "@/components/baseweb/uber-ui";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
@@ -28,79 +16,111 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LUGGAGE_FILTER_LABELS, PARCEL_LABELS } from "@/lib/constants";
+import { LUGGAGE_FILTER_LABELS } from "@/lib/constants";
+import { PARCEL_FORMATS } from "@/lib/parcel-formats";
 import type { BookingType, GeoPoint, ParcelSize } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-const navyFieldClass =
-  "h-12 w-full rounded-lg border-transparent bg-white text-black shadow-none placeholder:text-neutral-400 transition-[border-color,box-shadow] duration-200 focus-visible:border-black focus-visible:ring-2 focus-visible:ring-black/10 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500 dark:focus-visible:border-white";
-
-const menuTriggerClass =
-  "flex h-8 w-full items-center justify-center gap-1.5 rounded-lg border border-input bg-transparent py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30 dark:hover:bg-input/50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4";
-
-function formatDateTriggerLabel(iso: string) {
-  if (!iso) return "Date";
-  const selected = parseISO(iso);
-  const today = startOfDay(new Date());
-  if (isSameDay(selected, today)) return "Aujourd'hui";
-  if (isSameDay(selected, addDays(today, 1))) return "Demain";
-  return format(selected, "d MMM yyyy", { locale: fr });
+function FieldLabel({
+  htmlFor,
+  children,
+}: {
+  htmlFor?: string;
+  children: ReactNode;
+}) {
+  return (
+    <label htmlFor={htmlFor} className="uber-home-kicker mb-1.5 block">
+      {children}
+    </label>
+  );
 }
 
 export function SearchForm({
   compact = false,
   defaultType = "PARCEL",
+  defaultOrigin = null,
+  defaultDestination = null,
+  defaultDate = "",
+  defaultSeats = "1",
+  defaultSize = "MEDIUM",
   showTypeToggle = true,
   passengerExtras = false,
-  submitLabel = "Rechercher un trajet",
+  submitLabel = "Rechercher",
   appearance = "default",
 }: {
   compact?: boolean;
   defaultType?: BookingType;
+  defaultOrigin?: GeoPoint | null;
+  defaultDestination?: GeoPoint | null;
+  defaultDate?: string;
+  defaultSeats?: string;
+  defaultSize?: ParcelSize;
   showTypeToggle?: boolean;
   passengerExtras?: boolean;
   submitLabel?: string;
   appearance?: "default" | "navy";
 }) {
   const router = useRouter();
-  const [origin, setOrigin] = useState<GeoPoint | null>(null);
-  const [destination, setDestination] = useState<GeoPoint | null>(null);
-  const [date, setDate] = useState("");
-  const [dateOpen, setDateOpen] = useState(false);
+  const [origin, setOrigin] = useState<GeoPoint | null>(defaultOrigin);
+  const [destination, setDestination] = useState<GeoPoint | null>(defaultDestination);
+  const [date, setDate] = useState(defaultDate);
   const [type, setType] = useState<BookingType>(defaultType);
-  const [size, setSize] = useState<ParcelSize>("MEDIUM");
-  const [seats, setSeats] = useState("1");
+  const [size, setSize] = useState<ParcelSize>(defaultSize);
+  const [seats, setSeats] = useState(Number(defaultSeats) || 1);
   const [luggage, setLuggage] = useState<keyof typeof LUGGAGE_FILTER_LABELS>("MEDIUM");
   const [maxTwoRear, setMaxTwoRear] = useState(false);
   const [intermediateStops, setIntermediateStops] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const originBarRef = useRef<HTMLDivElement>(null);
+  const destBarRef = useRef<HTMLDivElement>(null);
+  const [swapTop, setSwapTop] = useState<number | null>(null);
   const today = startOfDay(new Date());
-  const selectedDate = date ? parseISO(date) : undefined;
+  const isPassenger = type === "PASSENGER";
+  const isNavy = appearance === "navy";
 
-  useEffect(() => {
-    setDate(new Date().toISOString().slice(0, 10));
-  }, []);
+  useLayoutEffect(() => {
+    const wrap = wrapRef.current;
+    const first = originBarRef.current;
+    const second = destBarRef.current;
+    if (!wrap || !first || !second) return;
+
+    const update = () => {
+      const wr = wrap.getBoundingClientRect();
+      const a = first.getBoundingClientRect();
+      const b = second.getBoundingClientRect();
+      setSwapTop((a.top + a.bottom + b.top + b.bottom) / 4 - wr.top);
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(wrap);
+    observer.observe(first);
+    observer.observe(second);
+    window.addEventListener("resize", update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, [origin, destination, appearance]);
 
   useEffect(() => {
     setType(defaultType);
   }, [defaultType]);
 
   useEffect(() => {
-    if (origin || destination) {
-      setError(null);
+    if (defaultDate) {
+      setDate(defaultDate.slice(0, 10));
+      return;
     }
-  }, [origin, destination]);
+    const now = new Date();
+    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
+    setDate(local.toISOString().slice(0, 10));
+  }, [defaultDate]);
 
   useEffect(() => {
-    if (!error) return;
-
-    function clearError() {
-      setError(null);
-    }
-
-    document.addEventListener("pointerdown", clearError);
-    return () => document.removeEventListener("pointerdown", clearError);
-  }, [error]);
+    if (origin || destination) setError(null);
+  }, [origin, destination]);
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -116,13 +136,13 @@ export function SearchForm({
       dest: destination.name,
       dlat: String(destination.lat),
       dlng: String(destination.lng),
-      date,
+      date: date.slice(0, 10),
       type,
     });
     if (type === "PARCEL") {
       params.set("size", size);
     } else {
-      params.set("seats", seats);
+      params.set("seats", String(seats));
       if (passengerExtras) {
         params.set("luggage", luggage);
         if (maxTwoRear) params.set("maxRear", "2");
@@ -132,207 +152,164 @@ export function SearchForm({
     router.push(`/recherche?${params.toString()}`);
   }
 
-  const isPassenger = type === "PASSENGER";
-  const isNavy = appearance === "navy";
-  const useGooeyPlaces = isNavy || isPassenger;
-  const fieldLabelClass = isNavy ? "text-sm font-medium text-black dark:text-white" : undefined;
-
-  return (
-    <form
-      onSubmit={onSubmit}
-      className={cn(
-        "grid gap-4",
-        isNavy
-          ? "grid-cols-1"
-          : "rounded-xl border border-[#E8E8E8] bg-white p-4 md:grid-cols-12 md:p-6 dark:border-white/10 dark:bg-neutral-950",
-        compact && !isNavy && "shadow-sm",
-      )}
-    >
-      {showTypeToggle && (
-        <div className="flex gap-2 md:col-span-12">
-          <Button
+  const fields = (
+    <form onSubmit={onSubmit} className="space-y-4">
+      {showTypeToggle ? (
+        <div className="flex gap-2" role="group" aria-label="Type de recherche">
+          <button
             type="button"
-            variant={isPassenger ? "default" : "outline"}
             onClick={() => setType("PASSENGER")}
+            className={cn(
+              "rounded-full px-4 py-2 text-sm font-semibold",
+              isPassenger ? "bg-black text-white" : "bg-[#EEEEEE] text-black",
+            )}
           >
-            <User className="h-4 w-4" size={16} animateOnHover />
             Passager
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant={!isPassenger ? "default" : "outline"}
             onClick={() => setType("PARCEL")}
+            className={cn(
+              "rounded-full px-4 py-2 text-sm font-semibold",
+              !isPassenger ? "bg-black text-white" : "bg-[#EEEEEE] text-black",
+            )}
           >
-            <Package className="h-4 w-4" />
             Colis
-          </Button>
+          </button>
         </div>
-      )}
+      ) : null}
 
-      <div
-        className={cn(
-          !isNavy &&
-            (isPassenger
-              ? "md:col-span-3"
-              : "md:col-span-4"),
-        )}
-      >
-        <AddressAutocomplete
-          id="origin"
-          label={
-            isNavy
-              ? "Départ"
-              : isPassenger
-                ? undefined
-                : "Le colis part de"
-          }
-          placeholder={isPassenger ? "Lieu de départ…" : "Ville de départ…"}
-          value={origin}
-          onChange={setOrigin}
-          labelClassName={fieldLabelClass}
-          inputClassName={isNavy && !useGooeyPlaces ? navyFieldClass : undefined}
-          variant={useGooeyPlaces ? "gooey" : "default"}
-        />
-      </div>
-      <div
-        className={cn(
-          !isNavy &&
-            (isPassenger
-              ? "md:col-span-3"
-              : "md:col-span-4"),
-        )}
-      >
-        <AddressAutocomplete
-          id="destination"
-          label={
-            isNavy
-              ? "Destination"
-              : isPassenger
-                ? undefined
-                : "Le colis se rend à"
-          }
-          placeholder={isPassenger ? "Destination…" : "Ville d'arrivée…"}
-          value={destination}
-          onChange={setDestination}
-          labelClassName={fieldLabelClass}
-          inputClassName={isNavy && !useGooeyPlaces ? navyFieldClass : undefined}
-          variant={useGooeyPlaces ? "gooey" : "default"}
-        />
-      </div>
-      <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
-        {!useGooeyPlaces || isNavy ? (
-          <Label htmlFor="date" className={fieldLabelClass}>
-            Date souhaitée
-          </Label>
-        ) : null}
-        <DropdownMenu open={dateOpen} onOpenChange={setDateOpen}>
-          <DropdownMenuTrigger asChild>
+      <div className="relative" ref={wrapRef}>
+        <div>
+          {isNavy ? <FieldLabel htmlFor="origin">Prise en charge</FieldLabel> : null}
+          <AddressAutocomplete
+            id="origin"
+            placeholder="Lieu de prise en charge"
+            value={origin}
+            onChange={setOrigin}
+            variant="uber"
+            locate
+            barRef={originBarRef}
+          />
+        </div>
+        <div className="box-content h-9 py-4" aria-hidden="true" />
+        <div>
+          {isNavy ? <FieldLabel htmlFor="destination">Destination</FieldLabel> : null}
+          <AddressAutocomplete
+            id="destination"
+            placeholder="Destination"
+            value={destination}
+            onChange={setDestination}
+            variant="uber"
+            barRef={destBarRef}
+          />
+        </div>
+        {swapTop != null ? (
+          <div
+            className="pointer-events-none absolute left-0 z-20 flex h-9 w-14 -translate-y-1/2 items-center justify-center"
+            style={{ top: swapTop }}
+          >
             <button
               type="button"
-              id="date"
-              aria-label="Date"
-              className={cn(menuTriggerClass, isNavy && navyFieldClass)}
-            >
-              <span className="truncate">{formatDateTriggerLabel(date)}</span>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContentPrimitive
-            align="start"
-            sideOffset={4}
-            className="z-50 w-auto min-w-0 overflow-hidden rounded-md border border-[#E8E8E8] bg-white p-0 text-black shadow-md outline-none dark:border-white/10 dark:bg-neutral-950 dark:text-white"
-            onCloseAutoFocus={(event) => event.preventDefault()}
-          >
-            <Calendar
-              mode="single"
-              locale={fr}
-              selected={selectedDate}
-              defaultMonth={selectedDate ?? today}
-              disabled={{ before: today }}
-              className="bg-transparent"
-              onSelect={(day) => {
-                if (!day) return;
-                setDate(format(day, "yyyy-MM-dd"));
-                setDateOpen(false);
+              aria-label="Inverser origine et destination"
+              onClick={() => {
+                setOrigin(destination);
+                setDestination(origin);
               }}
-            />
-          </DropdownMenuContentPrimitive>
-        </DropdownMenu>
+              className="pointer-events-auto inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#EEEEEE] text-black shadow-sm hover:bg-[#E4E4E4]"
+            >
+              <ArrowUpDown className="h-4 w-4" aria-hidden />
+            </button>
+          </div>
+        ) : null}
       </div>
 
-      {isPassenger ? (
-        <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
-          {isNavy ? (
-            <Label htmlFor="seats" className={fieldLabelClass}>
-              Nombre de places
-            </Label>
-          ) : null}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+      <div className={cn("grid gap-3", compact ? "sm:grid-cols-2" : "sm:grid-cols-2")}>
+        <div>
+          {isNavy ? <FieldLabel htmlFor="date">Date</FieldLabel> : null}
+          <UberCalendarField
+            id="date"
+            value={date}
+            onChange={setDate}
+            minDate={today}
+            withTime={false}
+            triggerClassName="uber-date text-base font-medium"
+            aria-label="Date"
+          />
+        </div>
+
+        {isPassenger ? (
+          <div>
+            {isNavy ? <FieldLabel>Places</FieldLabel> : null}
+            <div className="flex h-14 items-center justify-between rounded-lg bg-[#EEEEEE] px-3">
               <button
                 type="button"
-                id="seats"
-                aria-label="Nombre de places"
-                className={cn(menuTriggerClass, isNavy && navyFieldClass)}
+                aria-label="Diminuer"
+                disabled={seats <= 1}
+                onClick={() => setSeats((value) => value - 1)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-black disabled:opacity-40"
               >
-                <span>
-                  {seats} place{seats === "1" ? "" : "s"}
-                </span>
+                <Minus className="h-4 w-4" aria-hidden />
               </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              sideOffset={4}
-              className="min-w-[8rem] border-[#E8E8E8] bg-white text-black dark:border-white/10 dark:bg-neutral-950 dark:text-white"
-            >
-              <DropdownMenuRadioGroup value={seats} onValueChange={setSeats}>
-                {[1, 2, 3, 4].map((n) => (
-                  <DropdownMenuRadioItem key={n} value={String(n)}>
-                    {n} place{n > 1 ? "s" : ""}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      ) : (
-        <>
-          <div className={cn("space-y-1.5", !isNavy && "md:col-span-2")}>
-            <Label className={fieldLabelClass}>
-              {isNavy ? "Format du colis" : "Quel espace votre colis occupe-t-il ?"}
-            </Label>
-            <Select value={size} onValueChange={(value) => setSize(value as ParcelSize)}>
-              <SelectTrigger className={isNavy ? cn(navyFieldClass, "w-full data-[size=default]:h-11") : undefined}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(PARCEL_LABELS).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <p className="m-0 text-base font-semibold text-black">
+                {seats} place{seats > 1 ? "s" : ""}
+              </p>
+              <button
+                type="button"
+                aria-label="Augmenter"
+                disabled={seats >= 4}
+                onClick={() => setSeats((value) => value + 1)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-black disabled:opacity-40"
+              >
+                <Plus className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
           </div>
-          {!isNavy && (
-            <p className="text-xs leading-relaxed text-slate-500 md:col-span-12 dark:text-slate-400">
-              En cas de doute, choisissez le format supérieur. Le conducteur pourra
-              confirmer l&apos;espace disponible avant d&apos;accepter.
-            </p>
-          )}
-        </>
-      )}
+        ) : null}
+      </div>
 
-      {isPassenger && passengerExtras && (
+      {!isPassenger ? (
+        <div>
+          <FieldLabel>Format du colis</FieldLabel>
+          <div className="grid grid-cols-4 gap-2" role="group" aria-label="Format du colis">
+            {PARCEL_FORMATS.map(({ size: code, value, icon: Icon }) => {
+              const selected = size === value;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setSize(value)}
+                  className={cn(
+                    "inline-flex h-12 items-center justify-center rounded-lg text-sm font-semibold",
+                    selected
+                      ? "bg-black text-white"
+                      : "bg-[#EEEEEE] text-black hover:bg-[#E4E4E4]",
+                  )}
+                >
+                  <Icon className="h-5 w-5" aria-hidden />
+                  <span className="sr-only">{code}</span>
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-2 mb-0 text-[15px] leading-5 text-[#545454]">
+            {PARCEL_FORMATS.find((item) => item.value === size)?.label}
+          </p>
+        </div>
+      ) : null}
+
+      {isPassenger && passengerExtras ? (
         <>
-          <div className="space-y-1.5 md:col-span-4">
-            <Label>Bagages autorisés</Label>
+          <div>
+            <Label className="uber-home-kicker mb-1.5 block">Bagages</Label>
             <Select
               value={luggage}
               onValueChange={(value) =>
                 setLuggage(value as keyof typeof LUGGAGE_FILTER_LABELS)
               }
             >
-              <SelectTrigger>
+              <SelectTrigger className="h-14 w-full rounded-lg border-0 bg-[#EEEEEE] px-4 text-base font-medium shadow-none">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -344,55 +321,37 @@ export function SearchForm({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col justify-end gap-3 md:col-span-8 md:flex-row md:items-center">
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-[#545454]">
               <Checkbox
                 checked={maxTwoRear}
                 onCheckedChange={(checked) => setMaxTwoRear(checked === true)}
               />
               Max. 2 personnes à l&apos;arrière
             </label>
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-[#545454]">
               <Checkbox
                 checked={intermediateStops}
                 onCheckedChange={(checked) => setIntermediateStops(checked === true)}
               />
-              Arrêts intermédiaires possibles
+              Arrêts possibles
             </label>
           </div>
         </>
-      )}
+      ) : null}
 
-      {error && (
-        <p className={cn("text-sm text-destructive", !isNavy && "md:col-span-12")}>
+      {error ? (
+        <p className="uber-error" role="alert">
           {error}
         </p>
-      )}
+      ) : null}
 
-      <div className={cn(!isNavy && "md:col-span-12")}>
-        {isNavy ? (
-          <MovingBorderButton
-            type="submit"
-            borderRadius="0.5rem"
-            duration={6000}
-            containerClassName="h-12 w-full p-[1px] text-base"
-            borderClassName="h-16 w-16 bg-[radial-gradient(#000000_40%,transparent_60%)] opacity-40"
-            className="border-black/10 bg-black font-medium text-white hover:bg-neutral-800 dark:border-white/10 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
-          >
-            {submitLabel}
-          </MovingBorderButton>
-        ) : (
-          <HoverBorderGradient
-            as="button"
-            type="submit"
-            duration={1}
-            containerClassName="h-8 w-full flex-row gap-0 rounded-lg border-transparent bg-transparent p-px hover:bg-transparent md:w-auto dark:bg-transparent"
-            className="flex h-[calc(100%-2px)] items-center justify-center rounded-[inherit] bg-black px-2.5 py-0 text-sm font-medium text-white dark:bg-white dark:text-black"
-          >
-            {submitLabel}
-          </HoverBorderGradient>
-        )}
-      </div>
+      <button type="submit" className="btn-brand h-12 w-full sm:w-auto sm:px-6">
+        {submitLabel}
+      </button>
     </form>
   );
+
+  if (isNavy) return fields;
+  return <UberCard>{fields}</UberCard>;
 }

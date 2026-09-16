@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export const heroSubtitleClassName =
-  "max-w-xl text-base font-normal leading-7 text-neutral-600 sm:text-lg dark:text-neutral-400";
+export const heroSubtitleClassName = "uber-home-lead";
 
 export function HeroSubtitle({
   children,

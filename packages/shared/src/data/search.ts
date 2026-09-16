@@ -22,5 +22,24 @@ export async function searchTrips(
   });
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: (data ?? []) as SearchTripResult[] };
+
+  const trips = (data ?? []) as SearchTripResult[];
+  const driverIds = [...new Set(trips.map((trip) => trip.driver_id).filter(Boolean))];
+  const { data: drivers } = driverIds.length
+    ? await client
+        .from("profiles")
+        .select("id, identity_verified")
+        .in("id", driverIds)
+    : { data: [] };
+  const verified = new Map(
+    (drivers ?? []).map((row) => [row.id, Boolean(row.identity_verified)]),
+  );
+
+  return {
+    ok: true,
+    data: trips.map((trip) => ({
+      ...trip,
+      driver_identity_verified: verified.get(trip.driver_id) ?? false,
+    })),
+  };
 }

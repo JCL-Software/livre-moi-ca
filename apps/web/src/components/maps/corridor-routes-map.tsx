@@ -1,63 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
-import L from "leaflet";
-import {
-  MapContainer,
-  Marker,
-  Polyline,
-  Popup,
-  TileLayer,
-  useMap,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
+import { fitMapToPoints, setLine, useMapboxMap } from "@/components/maps/use-mapbox-map";
 import { CORRIDOR_CITIES } from "@/lib/constants";
 import {
   buildRoutePoints,
   getRouteCityNames,
   type PopularRoute,
 } from "@/lib/carpool-routes";
-import { OSM_TILE_ATTRIBUTION, OSM_TILE_URL } from "@/lib/geo/map-tiles";
-
-const cityIcon = L.divIcon({
-  className: "",
-  html: `<span style="display:block;width:10px;height:10px;border-radius:9999px;background:#000;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25)"></span>`,
-  iconSize: [10, 10],
-  iconAnchor: [5, 5],
-});
-
-const activeCityIcon = L.divIcon({
-  className: "",
-  html: `<span style="display:block;width:14px;height:14px;border-radius:9999px;background:#000;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25)"></span>`,
-  iconSize: [14, 14],
-  iconAnchor: [7, 7],
-});
-
-function FitCorridorBounds({
-  points,
-  selectedRoute,
-}: {
-  points: { lat: number; lng: number }[];
-  selectedRoute: PopularRoute | null;
-}) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (selectedRoute) {
-      const routePoints = buildRoutePoints(selectedRoute).map(([lat, lng]) => ({ lat, lng }));
-      if (routePoints.length > 0) {
-        const bounds = L.latLngBounds(routePoints.map((p) => [p.lat, p.lng]));
-        map.fitBounds(bounds, { padding: [48, 48], maxZoom: 8 });
-        return;
-      }
-    }
-    if (points.length === 0) return;
-    const bounds = L.latLngBounds(points.map((point) => [point.lat, point.lng]));
-    map.fitBounds(bounds, { padding: [32, 32] });
-  }, [map, points, selectedRoute]);
-
-  return null;
-}
+import { getWebMapboxToken } from "@/lib/geo/mapbox";
 
 type CorridorRoutesMapProps = {
   routes: readonly PopularRoute[];
@@ -70,60 +22,94 @@ export default function CorridorRoutesMap({
   selectedIndex,
   onSelectRoute,
 }: CorridorRoutesMapProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { mapRef, ready } = useMapboxMap(containerRef, {
+    center: [-76.5, 47.5],
+    zoom: 6,
+    scrollZoom: false,
+  });
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
+  const token = getWebMapboxToken();
   const selectedRoute = selectedIndex !== null ? routes[selectedIndex] : null;
-  const activeCityNames = selectedRoute ? new Set(getRouteCityNames(selectedRoute)) : null;
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+
+    const clickHandlers: Array<{ id: string; handler: () => void }> = [];
+
+    const apply = () => {
+      routes.forEach((route, index) => {
+        const points = buildRoutePoints(route);
+        if (points.length < 2) return;
+        const isActive = selectedIndex === index;
+        const layerId = `lm-corridor-${index}`;
+        setLine(
+          map,
+          layerId,
+          points.map(([lat, lng]) => [lng, lat] as [number, number]),
+          {
+            "line-color": isActive ? "#000000" : "#c6c6c6",
+            "line-width": isActive ? 5 : 2,
+            "line-opacity": isActive ? 1 : 0.45,
+            "line-dasharray": isActive ? [1, 0] : [1.2, 1.6],
+          },
+        );
+        if (map.getLayer(layerId)) {
+          const handler = () => onSelectRoute(index);
+          map.on("click", layerId, handler);
+          clickHandlers.push({ id: layerId, handler });
+        }
+      });
+
+      for (const marker of markersRef.current) marker.remove();
+      markersRef.current = [];
+      const activeCityNames = selectedRoute ? new Set(getRouteCityNames(selectedRoute)) : null;
+      for (const city of CORRIDOR_CITIES) {
+        const isActive = activeCityNames?.has(city.name) ?? false;
+        const el = document.createElement("span");
+        el.style.cssText = `display:block;width:${isActive ? 14 : 10}px;height:${isActive ? 14 : 10}px;border-radius:9999px;background:#000;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25)`;
+        const marker = new mapboxgl.Marker({ element: el })
+          .setLngLat([city.lng, city.lat])
+          .setPopup(new mapboxgl.Popup({ offset: 12 }).setText(city.name))
+          .addTo(map);
+        markersRef.current.push(marker);
+      }
+
+      if (selectedRoute) {
+        const routePoints = buildRoutePoints(selectedRoute).map(([lat, lng]) => ({ lat, lng }));
+        if (routePoints.length > 0) {
+          fitMapToPoints(map, routePoints, 48);
+          return;
+        }
+      }
+      fitMapToPoints(
+        map,
+        CORRIDOR_CITIES.map((city) => ({ lat: city.lat, lng: city.lng })),
+        32,
+      );
+    };
+
+    if (map.isStyleLoaded()) apply();
+    else map.once("load", apply);
+
+    return () => {
+      map.off("load", apply);
+      for (const { id, handler } of clickHandlers) {
+        map.off("click", id, handler);
+      }
+    };
+  }, [mapRef, onSelectRoute, ready, routes, selectedIndex, selectedRoute]);
+
+  if (!token) {
+    return (
+      <div className="flex h-full min-h-[320px] items-center justify-center rounded-2xl bg-[#F6F6F6] text-sm text-neutral-500 dark:bg-neutral-900">
+        Ajoutez `NEXT_PUBLIC_MAPBOX_TOKEN` pour afficher la carte.
+      </div>
+    );
+  }
 
   return (
-    <MapContainer
-      center={[47.5, -76.5]}
-      zoom={6}
-      className="h-full min-h-[320px] w-full rounded-2xl"
-      scrollWheelZoom={false}
-    >
-      <TileLayer attribution={OSM_TILE_ATTRIBUTION} url={OSM_TILE_URL} />
-
-      {routes.map((route, index) => {
-        const points = buildRoutePoints(route);
-        const isActive = selectedIndex === index;
-        if (points.length < 2) return null;
-
-        return (
-          <Polyline
-            key={route.label}
-            positions={points}
-            pathOptions={{
-              color: isActive ? "#000000" : "#c6c6c6",
-              weight: isActive ? 5 : 2,
-              opacity: isActive ? 1 : 0.45,
-              dashArray: isActive ? undefined : "6 8",
-            }}
-            eventHandlers={{
-              click: () => onSelectRoute(index),
-              mouseover: () => onSelectRoute(index),
-            }}
-          />
-        );
-      })}
-
-      {CORRIDOR_CITIES.map((city) => {
-        const isActive = activeCityNames?.has(city.name) ?? false;
-        return (
-          <Marker
-            key={city.name}
-            position={[city.lat, city.lng]}
-            icon={isActive ? activeCityIcon : cityIcon}
-          >
-            <Popup>
-              <span className="text-sm font-semibold">{city.name}</span>
-            </Popup>
-          </Marker>
-        );
-      })}
-
-      <FitCorridorBounds
-        points={CORRIDOR_CITIES.map((city) => ({ lat: city.lat, lng: city.lng }))}
-        selectedRoute={selectedRoute}
-      />
-    </MapContainer>
+    <div ref={containerRef} className="h-full min-h-[320px] w-full overflow-hidden rounded-2xl" />
   );
 }
